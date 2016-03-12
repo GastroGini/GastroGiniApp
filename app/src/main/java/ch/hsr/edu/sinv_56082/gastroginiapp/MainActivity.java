@@ -2,16 +2,23 @@ package ch.hsr.edu.sinv_56082.gastroginiapp;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.List;
+
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.DatabaseHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Contact;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +27,36 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /********** SQLite connection ************/
+
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        /**
+         * CRUD Operations
+         *
+         * you will see the result below in console....
+         *
+         * */
+        // Inserting Contacts
+        Log.d("Insert: ", "Inserting ..");
+        db.addContact(new Contact("Ravi", "9100000000"));
+        db.addContact(new Contact("Srinivas", "9199999999"));
+        db.addContact(new Contact("Tommy", "9522222222"));
+        db.addContact(new Contact("Karthik", "9533333333"));
+
+        // Reading all contacts
+        Log.d("Reading: ", "Reading all contacts..");
+        List<Contact> contacts = db.getAllContacts();
+
+        for (Contact cn : contacts) {
+            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
+            // Writing Contacts to log
+            Log.d("Name: ", log);
+        }
+
+
+        /**********************/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
