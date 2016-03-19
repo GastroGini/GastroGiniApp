@@ -37,6 +37,10 @@
         <activity
             android:name=".ui.VerbindenActivity"
             android:label="@string/title_activity_verbinden"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.FestBearbeiten"
+            android:label="@string/title_activity_fest_bearbeiten"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

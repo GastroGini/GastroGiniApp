@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         HomeFragment homeFragment = new HomeFragment();
-        fragmentTransaction.replace(R.id.main_view,homeFragment);
+        fragmentTransaction.replace(R.id.content_main,homeFragment);
         fragmentTransaction.commit();
     }
 

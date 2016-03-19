@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
         bestellenBtn.setOnClickListener(getOnClickListener(BestellenActivity.class));
         festwaehlenBtn.setOnClickListener(getOnClickListener(FestWaehlenActivity.class));
         verbindenBtn.setOnClickListener(getOnClickListener(VerbindenActivity.class));
+
         return homeFragmentView;
     }
 

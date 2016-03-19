@@ -1,24 +1,21 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.FestWaehlenFragment;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
 
-public class FestWaehlenActivity extends AppCompatActivity {
+public class FestBearbeiten extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fest_waehlen);
+        setContentView(R.layout.activity_fest_bearbeiten);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,11 +28,9 @@ public class FestWaehlenActivity extends AppCompatActivity {
             }
         });
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FestWaehlenFragment festFragment = new FestWaehlenFragment();
-        fragmentTransaction.replace(R.id.content_fest_waehlen,festFragment);
-        fragmentTransaction.commit();
+        EditText title = (EditText)findViewById(R.id.festBearbeitenTitle);
+        Bundle args = getIntent().getExtras();
+        title.setText(args.get("title").toString());
     }
 
 }

@@ -11,4 +11,5 @@
     <string name="title_activity_bestellen">Bestellen</string>
     <string name="title_activity_fest_waehlen">Fest wählen</string>
     <string name="title_activity_verbinden">Verbinden</string>
+    <string name="title_activity_fest_bearbeiten">FestBearbeiten</string>
 </resources>
