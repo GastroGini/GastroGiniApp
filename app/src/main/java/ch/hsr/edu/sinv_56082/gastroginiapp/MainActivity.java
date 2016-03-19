@@ -1,5 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,8 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        HomeFragment homeFragment = new HomeFragment();
+        fragmentTransaction.replace(R.id.main_view,homeFragment);
+        fragmentTransaction.commit();
     }
 
     @Override
