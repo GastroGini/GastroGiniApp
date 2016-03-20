@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "ProductLists")
-public class ProductList extends Model{
+public class ProductList extends UUIDModel{
 
-    @Column(unique = true)
-    public UUID uuid;
 
     @Column
     public String name;

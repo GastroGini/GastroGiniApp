@@ -8,20 +8,35 @@ import com.activeandroid.annotation.Table;
 import java.util.List;
 import java.util.UUID;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
+
 @Table(name = "Persons")
-public class Person extends Model{
-
-    @Column(unique = true)
-    public UUID uuid;
+public class Person extends UUIDModel{
 
     @Column
-    public String name;
+    public String firstName;
 
     @Column
-    public String email;
+    public String lastName;
 
-    @Column
-    public String phone;
+    public Person(String firstName, String lastName){
+        super();
+        init(firstName, lastName);
+    }
+
+    public Person(UUID uuid, String firstName, String lastName){
+        super(uuid);
+        init(firstName, lastName);
+    }
+
+    private void init(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
 
     public List<WorkAssignment> workAssignments(){
         return getMany(WorkAssignment.class, "person");

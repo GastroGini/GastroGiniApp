@@ -8,11 +8,11 @@ import com.activeandroid.annotation.Table;
 import java.util.List;
 import java.util.UUID;
 
-@Table(name = "ProductDescriptions")
-public class ProductDescription extends Model{
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
-    @Column(unique = true)
-    public UUID uuid;
+@Table(name = "ProductDescriptions")
+public class ProductDescription extends UUIDModel{
+
 
     @Column
     public String name;

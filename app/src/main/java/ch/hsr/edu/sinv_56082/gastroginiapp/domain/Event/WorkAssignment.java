@@ -8,11 +8,10 @@ import com.activeandroid.annotation.Table;
 import java.util.Date;
 import java.util.UUID;
 
-@Table(name = "WorkAssignments")
-public class WorkAssignment extends Model{
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
-    @Column(unique = true)
-    public UUID uuid;
+@Table(name = "WorkAssignments")
+public class WorkAssignment extends UUIDModel{
 
     @Column
     public Date startTime;

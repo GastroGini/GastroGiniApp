@@ -10,12 +10,10 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Orders")
-public class EventOrder extends Model{
-
-    @Column(unique = true)
-    public UUID uuid;
+public class EventOrder extends UUIDModel{
 
     @Column
     public EventTable eventTable;

@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Orders.OrderPosition;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Products")
-public class Product extends Model{
-
-    @Column(unique = true)
-    public UUID uuid;
+public class Product extends UUIDModel{
 
     @Column
     public double price;
