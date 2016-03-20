@@ -8,6 +8,8 @@ import com.activeandroid.annotation.Table;
 import java.util.List;
 import java.util.UUID;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event.Event;
+
 @Table(name = "ProductLists")
 public class ProductList extends Model{
 
@@ -19,6 +21,10 @@ public class ProductList extends Model{
 
     public List<Product> products(){
         return getMany(Product.class, "productList");
+    }
+
+    public List<Event> events(){
+        return getMany(Event.class, "productList");
     }
 
 }

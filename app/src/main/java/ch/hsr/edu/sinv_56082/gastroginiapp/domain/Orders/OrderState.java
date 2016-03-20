@@ -5,6 +5,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "OrderStates")
@@ -18,5 +19,9 @@ public class OrderState extends Model{
 
     @Column
     public String description;
+
+    public List<OrderPosition> orderPositions(){
+        return getMany(OrderPosition.class, "orderState");
+    }
 
 }

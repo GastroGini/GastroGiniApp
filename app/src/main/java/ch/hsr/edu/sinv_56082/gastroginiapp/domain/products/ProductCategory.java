@@ -10,6 +10,8 @@ import java.util.UUID;
 @Table(name = "ProductCategories")
 public class ProductCategory extends Model{
 
+    public ProductCategory(){}
+
     @Column(unique = true)
     public UUID uuid;
 
