@@ -41,6 +41,10 @@
         <activity
             android:name=".ui.FestBearbeiten"
             android:label="@string/title_activity_fest_bearbeiten"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TischActivity"
+            android:label="@string/title_activity_tisch"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

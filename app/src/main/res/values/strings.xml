@@ -12,4 +12,26 @@
     <string name="title_activity_fest_waehlen">Fest wählen</string>
     <string name="title_activity_verbinden">Verbinden</string>
     <string name="title_activity_fest_bearbeiten">FestBearbeiten</string>
+    <string-array name="tisch_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="produktList_array">
+        <item>ProduktListe 1</item>
+        <item>ProduktListe 2</item>
+        <item>ProduktListe 3</item>
+        <item>ProduktListe 4</item>
+        <item>ProduktListe 5</item>
+    </string-array>
+    <string name="title_activity_tisch">TischActivity</string>
 </resources>

@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Fest;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Tisch;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.FestBearbeiten;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.FesteAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ItemClickListener;
@@ -58,5 +59,10 @@ public class FestWaehlenFragment extends Fragment implements ItemClickListener {
         Intent intent = new Intent(getActivity(),FestBearbeiten.class);
         intent.putExtra("title",fest.getTitle());
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClicked(Tisch tisch) {
+        //TODO: restructure to avoid refused bequest
     }
 }
