@@ -33,5 +33,10 @@
         <item>ProduktListe 4</item>
         <item>ProduktListe 5</item>
     </string-array>
-    <string name="title_activity_tisch">TischActivity</string>
+    <string name="title_activity_tisch">Tisch Activity</string>
+    <string name="title_activity_bestellen_tisch">Bestellen Tisch Activity</string>
+    <string name="preis">Preis</string>
+    <string name="groesse">Grösse</string>
+    <string name="produkt">Produkt</string>
+    <string name="anzahl">Anzahl</string>
 </resources>

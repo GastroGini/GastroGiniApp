@@ -16,6 +16,7 @@ import java.util.List;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Fest;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Tisch;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.BestellenTischActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ItemClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TischeAdapter;
 
@@ -68,10 +69,8 @@ public class TischeFragment extends Fragment implements ItemClickListener {
      @Override
      public void onItemClicked(Tisch tisch) {
          //TODO: prepare activity to go to onClick
-         /*
-         Intent intent = new Intent(getActivity(),FestBearbeiten.class);
+         Intent intent = new Intent(getActivity(),BestellenTischActivity.class);
          intent.putExtra("title",tisch.getTischDescription());
          startActivity(intent);
-         */
      }
  }
