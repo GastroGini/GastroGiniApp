@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Mustervorlage"
-        android:id="@+id/column_festText"
+        android:id="@+id/column_tischText"
         android:layout_margin="20dp" />
 
     <FrameLayout

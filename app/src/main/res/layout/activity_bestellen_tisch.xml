@@ -2,11 +2,10 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fest_waehlen_container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.FestWaehlenActivity">
+    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.BestellenTischActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_fest_waehlen" />
+    <include layout="@layout/content_bestellen_tisch" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

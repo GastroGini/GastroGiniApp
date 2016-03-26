@@ -10,16 +10,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.TischeFragment;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.BestellenTischFragment;
 
-public class BestellenActivity extends AppCompatActivity {
+public class BestellenTischActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bestellen);
+        setContentView(R.layout.activity_bestellen_tisch);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Bundle args = getIntent().getExtras();
+        toolbar.setTitle("Bestellen " + args.get("title").toString());
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -33,9 +34,10 @@ public class BestellenActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        TischeFragment tischeFragment = new TischeFragment();
-        fragmentTransaction.replace(R.id.bestellenScreen, tischeFragment);
+        BestellenTischFragment btFragment = new BestellenTischFragment();
+        fragmentTransaction.replace(R.id.recyclerViewContainer_bestellenTisch,btFragment);
         fragmentTransaction.commit();
+
     }
 
 }
