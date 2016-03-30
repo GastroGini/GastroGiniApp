@@ -14,6 +14,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.FestWaehlenFragment;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
 
 public class FestWaehlenActivity extends AppCompatActivity {
+    FestWaehlenFragment festFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class FestWaehlenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fest_waehlen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,12 +31,20 @@ public class FestWaehlenActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FestWaehlenFragment festFragment = new FestWaehlenFragment();
+        festFragment = new FestWaehlenFragment();
         fragmentTransaction.replace(R.id.content_fest_waehlen,festFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        festFragment.refreshList();
+
     }
 
 }

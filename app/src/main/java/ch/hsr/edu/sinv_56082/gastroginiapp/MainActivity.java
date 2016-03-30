@@ -15,6 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ApplicationObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Fest;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -45,6 +49,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*Dummy Data*/
+        List<Fest> feste = ApplicationObject.getFesteList();
+        feste.add(new Fest("Fest 1"));
+        feste.add(new Fest("Fest 2"));
+        feste.add(new Fest("Fest 3"));
+        feste.add(new Fest("Fest 4"));
+        feste.add(new Fest("Fest 5"));
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
