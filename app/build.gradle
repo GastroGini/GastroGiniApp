@@ -16,6 +16,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -24,17 +25,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
         }
-
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testCoverageEnabled true
-        }
     }
 
 
     productFlavors {
         unitTest // Creates a new scope which wraps only unit tests
+
+        dev {
+            minSdkVersion 23
+        }
+        prod {
+            minSdkVersion 14
+        }
     }
 
     sourceSets {
@@ -53,17 +55,14 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
 
-
-    //Butterknife
-    compile 'com.jakewharton:butterknife:7.0.1'
     //Activeandroid ORM
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 
 
     //Testing
-    compile 'junit:junit:4.12'
-    compile 'org.robolectric:robolectric:3.0'
-    testCompile 'junit:junit:4.12'
+    //compile 'junit:junit:4.12'
+    //compile 'org.robolectric:robolectric:3.0'
+    //testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
 
     // Espresso
