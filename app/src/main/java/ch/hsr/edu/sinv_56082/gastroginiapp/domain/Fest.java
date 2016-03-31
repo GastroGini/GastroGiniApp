@@ -1,6 +1,9 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-public class Fest {
+import java.io.Serializable;
+import java.util.Observable;
+
+public class Fest extends Observable implements Serializable {
     private String title;
 
     public Fest(String title){
@@ -9,5 +12,10 @@ public class Fest {
 
     public String getTitle(){
         return title;
+    }
+    public void setTitle(String title){
+        this.title = title;
+        setChanged();
+        notifyObservers();
     }
 }

@@ -62,7 +62,7 @@ public class TischeFragment extends Fragment implements ItemClickListener {
     }
 
      @Override
-     public void onItemClicked(Fest fest) {
+     public void onItemClicked(Fest fest, int position) {
          //TODO: restructure to avoid refused bequest
      }
 

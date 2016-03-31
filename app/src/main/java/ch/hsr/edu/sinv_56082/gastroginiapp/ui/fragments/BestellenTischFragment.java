@@ -60,7 +60,7 @@ public class BestellenTischFragment extends Fragment implements ItemClickListene
     }
 
     @Override
-    public void onItemClicked(Fest fest) {
+    public void onItemClicked(Fest fest, int position) {
         //TODO: remove refused bequest
     }
 
