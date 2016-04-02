@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,30 +26,6 @@
             android:name="AA_DB_VERSION"
             android:value="0.1" />
 
-        <activity
-            android:name=".ui.BestellenActivity"
-            android:label="@string/title_activity_bestellen"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.FestWaehlenActivity"
-            android:label="@string/title_activity_fest_waehlen"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.VerbindenActivity"
-            android:label="@string/title_activity_verbinden"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.FestBearbeiten"
-            android:label="@string/title_activity_fest_bearbeiten"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.TischActivity"
-            android:label="@string/title_activity_tisch"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.BestellenTischActivity"
-            android:label="@string/title_activity_bestellen_tisch"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp;
+package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,9 +17,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ApplicationObject;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Fest;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.fragments.HomeFragment;
+import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,20 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        /*Dummy Data*/
-        List<Fest> feste = ApplicationObject.getFesteList();
-        feste.add(new Fest("Fest 1"));
-        feste.add(new Fest("Fest 2"));
-        feste.add(new Fest("Fest 3"));
-        feste.add(new Fest("Fest 4"));
-        feste.add(new Fest("Fest 5"));
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        HomeFragment homeFragment = new HomeFragment();
-        fragmentTransaction.replace(R.id.content_main,homeFragment);
-        fragmentTransaction.commit();
     }
 
     @Override
