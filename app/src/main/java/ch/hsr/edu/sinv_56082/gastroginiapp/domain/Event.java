@@ -1,7 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -21,6 +19,15 @@ public class Event extends Observable implements Serializable{
 
     public Event(String title){
         this.title = title;
+        this.productList = new ProductList("Dummy set");
+    }
+
+    public ProductList getProductList(){
+        return productList;
+    }
+
+    public void setProductList(ProductList productList){
+        this.productList = productList;
     }
 
     public String getTitle(){
@@ -36,8 +43,12 @@ public class Event extends Observable implements Serializable{
         return amountOfTables;
     }
 
-    public void setAmountOfTables(int amountOfTables){
-        this.amountOfTables = amountOfTables;
+    public void setAmountOfTables(String amountOfTables){
+        if(amountOfTables.isEmpty()){
+            this.amountOfTables = 0;
+        }else{
+            this.amountOfTables = Integer.parseInt(amountOfTables);
+        }
         setChanged();
         notifyObservers();
     }
@@ -47,7 +58,9 @@ public class Event extends Observable implements Serializable{
     }
 
     public void setStartTime(String startTime){
-        convertStringToDate(startTime,this.startTime);
+        this.startTime = convertStringToDate(startTime);
+        setChanged();
+        notifyObservers();
     }
 
     public String getEndTime(){
@@ -55,18 +68,20 @@ public class Event extends Observable implements Serializable{
     }
 
     public void setEndTime(String endTime){
-        convertStringToDate(endTime, this.endTime);
+        this.endTime = convertStringToDate(endTime);
+        setChanged();
+        notifyObservers();
     }
 
-    private void convertStringToDate(String time, Date date) {
+    private Date convertStringToDate(String time) {
+        Date date = new Date();
         try{
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
             date = df.parse(time);
-            setChanged();
-            notifyObservers();
         }catch(ParseException ex){
             ex.printStackTrace();
         }
+        return date;
     }
 
     private String convertDateToString(Date time) {

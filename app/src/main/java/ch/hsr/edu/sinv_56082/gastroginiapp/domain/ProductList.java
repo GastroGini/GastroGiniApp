@@ -1,9 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductList {
+public class ProductList implements Serializable {
     private List<Product> products = new ArrayList<>();
     private String name;
 
@@ -25,5 +26,10 @@ public class ProductList {
 
     public Product getProduct(int position){
         return products.get(position);
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

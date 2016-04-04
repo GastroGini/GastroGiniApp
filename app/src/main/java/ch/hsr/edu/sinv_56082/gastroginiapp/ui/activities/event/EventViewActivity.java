@@ -8,12 +8,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.JoinEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 
@@ -43,9 +48,27 @@ public class EventViewActivity extends AppCompatActivity {
         final Button eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
         final Button eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
 
+        /* dummy data */
+
+        List<ProductList> productLists = new ArrayList<>();
+        productLists.add(new ProductList("ProductList 1"));
+        productLists.add(new ProductList("ProductList 2"));
+        productLists.add(new ProductList("ProductList 3"));
+        productLists.add(new ProductList("ProductList 4"));
+
+        /* dummy data */
+
+        ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
+        productList.setAdapter(spinnerAdapter);
+
         eventTitle.setText(event.getTitle());
         amountOfTables.setText(event.getAmountOfTables() + "");
         executionDate.setText(event.getStartTime());
+        for(int i = 0;i < productLists.size();i++){
+            if(productLists.get(i).getName().equals(event.getProductList().getName())){
+                productList.setSelection(i);
+            }
+        }
 
         if(event.getTitle().isEmpty() || event.getAmountOfTables() == 0){
             eventViewSaveButton.setClickable(false);
@@ -102,7 +125,7 @@ public class EventViewActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    event.setAmountOfTables(Integer.parseInt(s.toString()));
+                    event.setAmountOfTables(s.toString());
                 }
             });
 
@@ -130,9 +153,10 @@ public class EventViewActivity extends AppCompatActivity {
                     event.setStartTime(date);
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("title",event.getTitle());
-                    resultIntent.putExtra("amountOfTables", event.getAmountOfTables());
+                    resultIntent.putExtra("amountOfTables", event.getAmountOfTables() + "");
                     resultIntent.putExtra("executionDate",event.getStartTime());
                     resultIntent.putExtra("position",position);
+                    resultIntent.putExtra("productList",(ProductList)productList.getSelectedItem());
                     setResult(Activity.RESULT_OK,resultIntent);
                     finish();
                 }

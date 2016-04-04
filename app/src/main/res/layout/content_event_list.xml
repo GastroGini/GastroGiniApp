@@ -53,7 +53,8 @@
             android:src="@android:drawable/ic_menu_edit"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
-            android:tint="@color/colorIconLight" />
+            android:tint="@color/colorIconLight"
+            android:tintMode="multiply" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

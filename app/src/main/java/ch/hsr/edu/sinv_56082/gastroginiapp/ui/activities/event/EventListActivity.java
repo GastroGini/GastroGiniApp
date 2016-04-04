@@ -18,6 +18,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.ItemClickListener;
 
@@ -26,6 +27,7 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
     final private List<Event> foreignEventList = new ArrayList<>();
     final private static int MYEVENTLIST_IDENTIFIER = 1;
     final private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
+    private boolean myEventsCollapsedState = true;
     private EventsAdapter myEventsAdapter;
     private EventsAdapter foreignEventsAdapter;
     private TextView infoText;
@@ -39,19 +41,22 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
                 if(resultCode == Activity.RESULT_OK){
                     Bundle args = data.getExtras();
                     String newTitle = args.getString("title");
-                    int newAmountOfTables = args.getInt("amountOfTables");
+                    String newAmountOfTables = args.getString("amountOfTables");
                     String newExecutionDate = args.getString("executionDate");
                     int position = args.getInt("position");
+                    ProductList productList = (ProductList)args.get("productList");
                     if(position == myEventList.size()){
                         Event event = new Event(newTitle);
                         event.setAmountOfTables(newAmountOfTables);
                         event.setStartTime(newExecutionDate);
+                        event.setProductList(productList);
                         myEventList.add(event);
                     }else{
                         Event event = myEventList.get(position);
                         event.setTitle(newTitle);
                         event.setAmountOfTables(newAmountOfTables);
                         event.setStartTime(newExecutionDate);
+                        event.setProductList(productList);
                     }
                     myEventsAdapter.notifyDataSetChanged();
                 }
@@ -110,7 +115,9 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myEventsAdapter.changeEditMode();
                 Intent intent = new Intent(activity, EventViewActivity.class);
+                intent.putExtra("event", new Event(""));
                 intent.putExtra("title","");
                 intent.putExtra("pos",myEventList.size());
                 startActivityForResult(intent,MYEVENTLIST_IDENTIFIER);
@@ -135,7 +142,7 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
         myEventsRecyclerView.setHasFixedSize(true);
         foreignEventsRecyclerView.setHasFixedSize(true);
 
-        ImageView myEventExpandCollapseIcon = (ImageView) findViewById(R.id.myEventsExpandCollapseIcon);
+        final ImageView myEventExpandCollapseIcon = (ImageView) findViewById(R.id.myEventsExpandCollapseIcon);
         ImageView foreignEventExpandCollapseIcon = (ImageView) findViewById(R.id.foreignEventsExpandCollapseIcon);
         ImageView myEventEditModeIcon = (ImageView) findViewById(R.id.myEventsEditModeIcon);
         infoText = (TextView) findViewById(R.id.noAvailableEventsText);
@@ -151,11 +158,14 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
         myEventExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(myEventsRecyclerView.getVisibility() == View.VISIBLE){
+                if(!myEventsCollapsedState){
                     myEventsRecyclerView.setVisibility(View.GONE);
+                    infoText.setVisibility(View.GONE);
                 }else{
                     myEventsRecyclerView.setVisibility(View.VISIBLE);
+                    checkIfEventListEmpty();
                 }
+                myEventsCollapsedState = !myEventsCollapsedState;
             }
         });
 
