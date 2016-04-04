@@ -32,6 +32,10 @@
         <activity
             android:name=".ui.activities.event.EventViewActivity"
             android:label="@string/title_activity_event_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.components.connection.StartEventActivity"
+            android:label="@string/title_activity_start_event"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

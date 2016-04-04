@@ -28,4 +28,5 @@
     <string name="title_activity_home_screen">Home Screen</string>
     <string name="title_activity_event_list">Event List</string>
     <string name="title_activity_event_view">Event View</string>
+    <string name="title_activity_start_event">StartEventActivity</string>
 </resources>
