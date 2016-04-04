@@ -69,7 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:hint="Passwort(Fest)" />
+                android:hint="Passwort(Fest)"
+                android:password="true" />
 
         </android.support.design.widget.TextInputLayout>
 

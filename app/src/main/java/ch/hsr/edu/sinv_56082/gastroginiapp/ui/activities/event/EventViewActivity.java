@@ -18,6 +18,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.JoinEventAct
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 
 public class EventViewActivity extends AppCompatActivity {
+    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,11 @@ public class EventViewActivity extends AppCompatActivity {
         final EventViewActivity eva = this;
 
         Bundle args = getIntent().getExtras();
-        final String title = args.get("title").toString();
+        final Event event = (Event)args.get("event");
         final int position = args.getInt("pos");
         final int identifier = args.getInt("identifier");
-        setTitle(title);
+        setTitle(event.getTitle());
+        date = event.getStartTime();
 
         final EditText eventTitle = (EditText) findViewById(R.id.eventViewTitleInput);
         final EditText amountOfTables = (EditText) findViewById(R.id.eventViewAnzahlTischeInput);
@@ -41,8 +43,13 @@ public class EventViewActivity extends AppCompatActivity {
         final Button eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
         final Button eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
 
-        final Event event = new Event(title);
-        eventTitle.setText(title);
+        eventTitle.setText(event.getTitle());
+        amountOfTables.setText(event.getAmountOfTables() + "");
+        executionDate.setText(event.getStartTime());
+
+        if(event.getTitle().isEmpty() || event.getAmountOfTables() == 0){
+            eventViewSaveButton.setClickable(false);
+        }
 
         if(identifier == EventListActivity.getForeigneventlistIdentifier()){
             eventTitle.setClickable(false);
@@ -82,12 +89,49 @@ public class EventViewActivity extends AppCompatActivity {
                 }
             });
 
+            amountOfTables.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    event.setAmountOfTables(Integer.parseInt(s.toString()));
+                }
+            });
+
+            executionDate.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    date = s.toString();
+                }
+            });
+
             eventViewSaveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO: Persistency Logic
+                    event.setStartTime(date);
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("changedTitle",event.getTitle());
+                    resultIntent.putExtra("title",event.getTitle());
+                    resultIntent.putExtra("amountOfTables", event.getAmountOfTables());
+                    resultIntent.putExtra("executionDate",event.getStartTime());
                     resultIntent.putExtra("position",position);
                     setResult(Activity.RESULT_OK,resultIntent);
                     finish();

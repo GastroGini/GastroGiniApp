@@ -38,12 +38,20 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
             case MYEVENTLIST_IDENTIFIER:{
                 if(resultCode == Activity.RESULT_OK){
                     Bundle args = data.getExtras();
-                    String newTitle = args.getString("changedTitle");
+                    String newTitle = args.getString("title");
+                    int newAmountOfTables = args.getInt("amountOfTables");
+                    String newExecutionDate = args.getString("executionDate");
                     int position = args.getInt("position");
                     if(position == myEventList.size()){
-                        myEventList.add(new Event(newTitle));
+                        Event event = new Event(newTitle);
+                        event.setAmountOfTables(newAmountOfTables);
+                        event.setStartTime(newExecutionDate);
+                        myEventList.add(event);
                     }else{
-                        myEventList.get(position).setTitle(newTitle);
+                        Event event = myEventList.get(position);
+                        event.setTitle(newTitle);
+                        event.setAmountOfTables(newAmountOfTables);
+                        event.setStartTime(newExecutionDate);
                     }
                     myEventsAdapter.notifyDataSetChanged();
                 }
@@ -63,10 +71,10 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
     }
 
     @Override
-    public void onClick(String title, int position, int identifier) {
+    public void onClick(Event event, int position, int identifier) {
         try {
             Intent intent = new Intent(this, EventViewActivity.class);
-            intent.putExtra("title", title);
+            intent.putExtra("event", event);
             intent.putExtra("pos",position);
             intent.putExtra("identifier",identifier);
             startActivityForResult(intent, identifier);
