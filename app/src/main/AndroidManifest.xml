@@ -34,8 +34,12 @@
             android:label="@string/title_activity_event_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.components.connection.StartEventActivity"
+            android:name=".ui.activities.connection.StartEventActivity"
             android:label="@string/title_activity_start_event"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.connection.JoinEventActivity"
+            android:label="@string/title_activity_join_event"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

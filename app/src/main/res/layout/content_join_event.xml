@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.activities.connection.StartEventActivity"
-    tools:showIn="@layout/activity_start_event">
+    tools:showIn="@layout/activity_join_event">
 
     <TextView
         android:layout_width="match_parent"
@@ -78,46 +78,8 @@
             android:layout_width="160dp"
             android:layout_gravity="right"
             android:layout_margin="16dp"
-            android:text="Hosten"
+            android:text="Beitreten"
             />
-
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Fest lokal hosten"
-        android:id="@+id/hostEventLocalTitle"
-        android:textSize="@dimen/title_text_size"
-        android:padding="16dp"
-        android:background="@color/colorSubTitleDark"
-        android:textColor="@color/colorTextLight"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/startEventUserNameLocal"
-        android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/startEventUserNameLocalInput"
-            android:layout_width="match_parent"
-            android:textSize="16dp"
-            android:layout_height="wrap_content"
-            android:hint="Benutzername" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="160dp"
-        android:layout_gravity="right"
-        android:layout_margin="16dp"
-        android:text="Lokal hosten"
-        />
 </LinearLayout>

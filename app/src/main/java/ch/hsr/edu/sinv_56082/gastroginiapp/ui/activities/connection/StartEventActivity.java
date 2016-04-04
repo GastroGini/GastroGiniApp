@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.connection;
+package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

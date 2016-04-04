@@ -24,8 +24,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.ItemClickListener
 public class EventListActivity extends AppCompatActivity implements ItemClickListener, Serializable{
     final private List<Event> myEventList = new ArrayList<>();
     final private List<Event> foreignEventList = new ArrayList<>();
-    final private int MYEVENTLIST_IDENTIFIER = 1;
-    final private int FOREIGNEVENTLIST_IDENTIFIER = 2;
+    final private static int MYEVENTLIST_IDENTIFIER = 1;
+    final private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
     private EventsAdapter myEventsAdapter;
     private EventsAdapter foreignEventsAdapter;
     private TextView infoText;
@@ -68,6 +68,7 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
             Intent intent = new Intent(this, EventViewActivity.class);
             intent.putExtra("title", title);
             intent.putExtra("pos",position);
+            intent.putExtra("identifier",identifier);
             startActivityForResult(intent, identifier);
         }catch(ClassCastException ex){
             ex.printStackTrace();
@@ -170,5 +171,13 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
             myEventsRecyclerView.setVisibility(View.VISIBLE);
             infoText.setVisibility(View.GONE);
         }
+    }
+
+    public static int getMyeventlistIdentifier(){
+        return MYEVENTLIST_IDENTIFIER;
+    }
+
+    public static int getForeigneventlistIdentifier(){
+        return FOREIGNEVENTLIST_IDENTIFIER;
     }
 }
