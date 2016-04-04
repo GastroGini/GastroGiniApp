@@ -1,13 +1,17 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.query.Select;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UUIDModel extends Model {
 
-    @Column(unique = true)
+    @Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public UUID uuid;
 
     public UUIDModel(){
@@ -18,8 +22,7 @@ public class UUIDModel extends Model {
         this.uuid = uuid;
     }
 
-    public UUIDModel(String uuidString){
-        this.uuid = UUID.fromString(uuidString);
+    public static <T extends UUIDModel> T getFromUUID(Class<T> type, UUID uuid){
+        return new Select().from(type).where("uuid = ?", uuid).executeSingle();
     }
-
 }
