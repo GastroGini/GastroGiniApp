@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,4 +13,111 @@
     tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.connection.StartEventActivity"
     tools:showIn="@layout/activity_start_event">
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fest hosten"
+        android:id="@+id/hostEventTitle"
+        android:textSize="@dimen/title_text_size"
+        android:padding="16dp"
+        android:background="@color/colorSubTitleDark"
+        android:textColor="@color/colorTextLight"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.connection.StartEventActivity"
+        tools:showIn="@layout/activity_start_event"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/startEventUserName"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/startEventUserNameInput"
+                android:layout_width="match_parent"
+                android:textSize="16dp"
+                android:layout_height="wrap_content"
+                android:hint="Benutzername" />
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/startEventPassword"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/startEventPasswordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:hint="Passwort(Fest)" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="160dp"
+            android:layout_gravity="right"
+            android:layout_margin="16dp"
+            android:text="Hosten"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fest lokal hosten"
+        android:id="@+id/hostEventLocalTitle"
+        android:textSize="@dimen/title_text_size"
+        android:padding="16dp"
+        android:background="@color/colorSubTitleDark"
+        android:textColor="@color/colorTextLight"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/startEventUserNameLocal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/startEventUserNameLocalInput"
+            android:layout_width="match_parent"
+            android:textSize="16dp"
+            android:layout_height="wrap_content"
+            android:hint="Benutzername" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_gravity="right"
+        android:layout_margin="16dp"
+        android:text="Lokal hosten"
+        />
+</LinearLayout>

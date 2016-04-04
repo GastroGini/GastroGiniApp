@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.connection.StartEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
 
 public class EventViewActivity extends AppCompatActivity {
@@ -53,6 +54,9 @@ public class EventViewActivity extends AppCompatActivity {
         });
 
         Button eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
+        Button eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
+        final EventViewActivity eva = this;
+
         eventViewSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +66,14 @@ public class EventViewActivity extends AppCompatActivity {
                 resultIntent.putExtra("position",position);
                 setResult(Activity.RESULT_OK,resultIntent);
                 finish();
+            }
+        });
+
+        eventViewStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(eva, StartEventActivity.class);
+                startActivity(intent);
             }
         });
     }
