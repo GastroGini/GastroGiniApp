@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.activities.event.EventListActivity"
+    tools:showIn="@layout/activity_event_list">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSubTitleDark">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meine Feste"
+            android:id="@+id/eventListMyEvents"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="@dimen/title_text_size"
+            android:padding="16dp"
+            android:background="@color/colorSubTitleDark"
+            android:textColor="@color/colorTextLight" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/myEventsExpandCollapseIcon"
+            android:src="@drawable/ic_menu_slideshow"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/myEventsEditModeIcon"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight"
+            android:tintMode="multiply" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventListMyEventsRecyclerView"
+        android:layout_below="@+id/eventListMyEvents"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="2"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sie haben noch keine Feste erstellt, über den &quot;+&quot; Button können Sie Ihren eigenen Fest erstellen"
+        android:id="@+id/noAvailableEventsText"
+        android:layout_margin="16dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSubTitleDark">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fremde Feste"
+            android:id="@+id/eventListForeignEvents"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="@dimen/title_text_size"
+            android:padding="16dp"
+            android:background="@color/colorSubTitleDark"
+            android:textColor="@color/colorTextLight" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/foreignEventsExpandCollapseIcon"
+            android:src="@drawable/ic_menu_slideshow"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventListForeignEventsRecyclerView"
+        android:layout_below="@+id/eventListMyEvents"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layoutMode="clipBounds"
+        android:layout_weight="2" />
+</LinearLayout>

@@ -3,15 +3,21 @@
     package="ch.hsr.edu.sinv_56082.gastroginiapp">
 
     <application
-        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Data.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="0.1" />
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:name=".ui.activities.HomeScreenActivity"
+            android:label="@string/title_activity_home_screen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,34 +25,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data android:name="AA_DB_NAME" android:value="Data.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
-
         <activity
-            android:name=".ui.BestellenActivity"
-            android:label="@string/title_activity_bestellen"
+            android:name=".ui.activities.event.EventListActivity"
+            android:label="@string/title_activity_event_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.FestWaehlenActivity"
-            android:label="@string/title_activity_fest_waehlen"
+            android:name=".ui.activities.event.EventViewActivity"
+            android:label="@string/title_activity_event_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.VerbindenActivity"
-            android:label="@string/title_activity_verbinden"
+            android:name=".ui.activities.connection.StartEventActivity"
+            android:label="@string/title_activity_start_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.FestBearbeiten"
-            android:label="@string/title_activity_fest_bearbeiten"
+            android:name=".ui.activities.connection.JoinEventActivity"
+            android:label="@string/title_activity_join_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.TischActivity"
-            android:label="@string/title_activity_tisch"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.BestellenTischActivity"
-            android:label="@string/title_activity_bestellen_tisch"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".ui.activities.order.ServiceHome"
+            android:label="@string/title_activity_service_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
