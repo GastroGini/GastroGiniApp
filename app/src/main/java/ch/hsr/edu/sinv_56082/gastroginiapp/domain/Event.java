@@ -1,11 +1,15 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
+import com.activeandroid.annotation.Table;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 
@@ -15,11 +19,39 @@ public class Event extends Observable implements Serializable{
     private int amountOfTables = 0;
     private Date startTime = new Date();
     private Date endTime = new Date(startTime.getTime() + DAY_IN_MILLISECONDS);
+    private List<EventTable> tables = new ArrayList<>();
     private ProductList productList;
 
     public Event(String title){
         this.title = title;
         this.productList = new ProductList("Dummy set");
+    }
+
+    public Event(String title,int amountOfTables){
+        this.title = title;
+        this.amountOfTables = amountOfTables;
+        constructTables();
+        this.productList = new ProductList("Dummy set");
+    }
+
+    private void constructTables() {
+        if(this.amountOfTables > tables.size()){
+            for(int i = tables.size();i < this.amountOfTables;i++){
+                tables.add(new EventTable("Table " + i));
+            }
+        }
+
+        if(this.amountOfTables < tables.size()){
+            for(int i = tables.size(); i > this.amountOfTables;i--){
+                tables.remove(i-1);
+            }
+        }
+    }
+
+    public Event(String title, int amountOfTables,ProductList productList){
+        this.title = title;
+        this.amountOfTables = amountOfTables;
+        this.productList = productList;
     }
 
     public ProductList getProductList(){
@@ -49,6 +81,7 @@ public class Event extends Observable implements Serializable{
         }else{
             this.amountOfTables = Integer.parseInt(amountOfTables);
         }
+        constructTables();
         setChanged();
         notifyObservers();
     }
@@ -71,6 +104,10 @@ public class Event extends Observable implements Serializable{
         this.endTime = convertStringToDate(endTime);
         setChanged();
         notifyObservers();
+    }
+
+    public List<EventTable> getTables(){
+        return tables;
     }
 
     private Date convertStringToDate(String time) {

@@ -1,6 +1,8 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-public class ProductDescription {
+import java.io.Serializable;
+
+public class ProductDescription implements Serializable {
     private String name;
     private String description;
     private ProductCatalog productCatalog;

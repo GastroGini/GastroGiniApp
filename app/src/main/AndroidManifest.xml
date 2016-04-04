@@ -40,6 +40,10 @@
         <activity
             android:name=".ui.activities.connection.JoinEventActivity"
             android:label="@string/title_activity_join_event"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.order.ServiceHome"
+            android:label="@string/title_activity_service_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

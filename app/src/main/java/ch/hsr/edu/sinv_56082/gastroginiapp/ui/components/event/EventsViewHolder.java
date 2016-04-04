@@ -9,13 +9,18 @@ import android.widget.TextView;
 public class EventsViewHolder extends RecyclerView.ViewHolder {
     View myEventView;
     TextView columnRowEventTitle;
+    TextView columnRowAmountOfTables;
+    TextView columnRowStartDate;
     ImageView columnRowEventDelete;
 
-    public EventsViewHolder(View myEventView, TextView columnRowEventTitle, ImageView columnRowEventDelete) {
+    public EventsViewHolder(View myEventView, TextView columnRowEventTitle, ImageView columnRowEventDelete,
+                            TextView columnRowAmountOfTables, TextView columnRowStartDate) {
         super(myEventView);
         this.myEventView = myEventView;
         this.columnRowEventTitle = columnRowEventTitle;
         this.columnRowEventDelete = columnRowEventDelete;
+        this.columnRowAmountOfTables = columnRowAmountOfTables;
+        this.columnRowStartDate = columnRowStartDate;
     }
 
     public View getEventView(){
@@ -24,6 +29,14 @@ public class EventsViewHolder extends RecyclerView.ViewHolder {
 
     public TextView getTitleTextView(){
         return columnRowEventTitle;
+    }
+
+    public TextView getAmountOfTablesView(){
+        return columnRowAmountOfTables;
+    }
+
+    public TextView getStartDateView(){
+        return columnRowStartDate;
     }
 
     public ImageView getDeleteIconView(){

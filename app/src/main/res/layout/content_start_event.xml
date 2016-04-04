@@ -80,7 +80,7 @@
             android:layout_gravity="right"
             android:layout_margin="16dp"
             android:text="Hosten"
-            />
+            android:id="@+id/hostButton" />
 
     </LinearLayout>
 
@@ -120,5 +120,5 @@
         android:layout_gravity="right"
         android:layout_margin="16dp"
         android:text="Lokal hosten"
-        />
+        android:id="@+id/localHostButton" />
 </LinearLayout>

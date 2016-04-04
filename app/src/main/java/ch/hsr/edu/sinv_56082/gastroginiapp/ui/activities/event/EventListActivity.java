@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,9 +21,9 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.ItemClickListener;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
 
-public class EventListActivity extends AppCompatActivity implements ItemClickListener, Serializable{
+public class EventListActivity extends AppCompatActivity implements EventClickListener, Serializable{
     final private List<Event> myEventList = new ArrayList<>();
     final private List<Event> foreignEventList = new ArrayList<>();
     final private static int MYEVENTLIST_IDENTIFIER = 1;
@@ -89,25 +90,38 @@ public class EventListActivity extends AppCompatActivity implements ItemClickLis
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final AppCompatActivity activity = this;
 
         /* Dummy data, replace with persistency */
-        myEventList.add(new Event("My Fest 1"));
-        myEventList.add(new Event("My Fest 2"));
-        myEventList.add(new Event("My Fest 3"));
-        myEventList.add(new Event("My Fest 4"));
-        myEventList.add(new Event("My Fest 5"));
+        myEventList.add(new Event("My Fest 1",22));
+        myEventList.add(new Event("My Fest 2",11));
+        myEventList.add(new Event("My Fest 3",30));
+        myEventList.add(new Event("My Fest 4",4));
+        myEventList.add(new Event("My Fest 5",0));
 
-        foreignEventList.add(new Event("Foreign Fest 1"));
-        foreignEventList.add(new Event("Foreign Fest 2"));
-        foreignEventList.add(new Event("Foreign Fest 3"));
-        foreignEventList.add(new Event("Foreign Fest 4"));
-        foreignEventList.add(new Event("Foreign Fest 5"));
+        foreignEventList.add(new Event("Foreign Fest 1",10));
+        foreignEventList.add(new Event("Foreign Fest 2",5));
+        foreignEventList.add(new Event("Foreign Fest 3",12));
+        foreignEventList.add(new Event("Foreign Fest 4",4));
+        foreignEventList.add(new Event("Foreign Fest 5",2));
 
         /* Dummy data */
 

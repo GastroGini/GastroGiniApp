@@ -1,11 +1,9 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.Serializable;
@@ -16,12 +14,12 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implements Serializable {
-    final private ItemClickListener mListener;
+    final private EventClickListener mListener;
     private int identifier;
     private List<Event> eventList = new ArrayList<>();
     private boolean editMode = false;
 
-    public EventsAdapter(ItemClickListener mListener, List<Event> eventList, int identifier){
+    public EventsAdapter(EventClickListener mListener, List<Event> eventList, int identifier){
         this.mListener = mListener;
         this.eventList = eventList;
         this.identifier = identifier;
@@ -31,14 +29,19 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View columnViewFeste = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_events, parent, false);
         TextView columnRowEventTitle = (TextView) columnViewFeste.findViewById(R.id.columnRowEventTitle);
+        TextView columnRowAmountOfTables = (TextView) columnViewFeste.findViewById(R.id.columnRowAmountOfTables);
+        TextView columnRowStartDate = (TextView) columnViewFeste.findViewById(R.id.columnRowStartDate);
         ImageView columnRowEventDelete = (ImageView) columnViewFeste.findViewById(R.id.columnRowEventDeleteIcon);
-        EventsViewHolder mevh = new EventsViewHolder(columnViewFeste,columnRowEventTitle,columnRowEventDelete);
+        EventsViewHolder mevh = new EventsViewHolder(columnViewFeste,columnRowEventTitle,
+                columnRowEventDelete, columnRowAmountOfTables,columnRowStartDate);
         return mevh;
     }
 
     @Override
     public void onBindViewHolder(EventsViewHolder holder, int position) {
         final int pos = position;
+        holder.getAmountOfTablesView().setText(eventList.get(pos).getAmountOfTables() + "");
+        holder.getStartDateView().setText(eventList.get(pos).getStartTime());
         holder.getTitleTextView().setText(eventList.get(position).getTitle());
         if(getEditMode()){
             holder.getDeleteIconView().setVisibility(View.VISIBLE);
