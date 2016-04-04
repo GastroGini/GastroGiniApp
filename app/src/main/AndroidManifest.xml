@@ -40,8 +40,16 @@
             android:label="@string/title_activity_join_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.activities.menu.MenuMain"
+            android:label="@string/title_activity_menu_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.activities.order.ServiceHome"
             android:label="@string/title_activity_service_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.activities.menu.MenucardListView"
+            android:label="@string/title_activity_menucard_list_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
