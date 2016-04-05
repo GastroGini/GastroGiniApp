@@ -70,12 +70,12 @@ public class EventViewActivity extends AppCompatActivity implements View.OnClick
 
         Bundle args = getIntent().getExtras();
         if(args != null){
-            event = new Select().from(Event.class).where("uuid = ?", UUID.fromString(args.getString("event-uuid"))).executeSingle();
+            event = Event.get(UUID.fromString(args.getString("event-uuid")));
         }else{
             //event = new Select().from(Event.class).where("uuid = ?", UUID.fromString(args.getString("event-uuid"))).executeSingle();
             UUID localUser = ((LocalData) getApplication()).getLocalUser();
             Log.d("TEST", localUser.toString());
-            Person user = new Select().from(Person.class).where("uuid = ?", localUser).executeSingle();
+            Person user = Person.get(localUser);
             event = new Event(new ProductList("Unused List"), "Test", new Date(), new Date(), user);
         }
 

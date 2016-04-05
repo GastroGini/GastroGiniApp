@@ -10,6 +10,7 @@ import android.widget.Button;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.DummyData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuMain;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -31,6 +32,14 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(activity,EventListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, MenuMain.class);
                 startActivity(intent);
             }
         });

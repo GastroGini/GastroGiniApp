@@ -54,7 +54,7 @@ public class StartEventActivity extends AppCompatActivity {
         eventPasswordInput = (EditText) findViewById(R.id.startEventPasswordInput);
 
 
-        event = new Select().from(Event.class).where("uuid=?", UUID.fromString(getIntent().getExtras().getString("event-uuid"))).executeSingle();
+        event = Event.get(UUID.fromString(getIntent().getExtras().getString("event-uuid")));
         startEventActivity = this;
 
         hostButton.setOnClickListener(new View.OnClickListener() {

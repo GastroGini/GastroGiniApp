@@ -28,7 +28,7 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle args = getIntent().getExtras();
-        Event event = new Select().from(Event.class).where("uuid = ?",UUID.fromString(args.getString("event-uuid"))).executeSingle();
+        Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
         String userName = args.get("userName").toString();
         String eventPassword = args.get("eventPassword").toString();
 
