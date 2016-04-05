@@ -15,9 +15,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 public class EventTablesAdapter extends RecyclerView.Adapter<EventTablesViewHolder> {
     private List<EventTable> tables;
     private EventTableClickListener mListener;
-    public EventTablesAdapter(EventTableClickListener mListener,List<EventTable> tables){
+    private int identifier;
+    public EventTablesAdapter(EventTableClickListener mListener,List<EventTable> tables, int identifier){
         this.tables = tables;
         this.mListener = mListener;
+        this.identifier=identifier;
     }
 
     @Override
@@ -29,12 +31,13 @@ public class EventTablesAdapter extends RecyclerView.Adapter<EventTablesViewHold
     }
 
     @Override
-    public void onBindViewHolder(EventTablesViewHolder holder, int position) {
+    public void onBindViewHolder(EventTablesViewHolder holder, final int position) {
+        final int pos=position;
         holder.getEventTableTextView().setText(tables.get(position).name);
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Implement click logic for list item
+                mListener.onClick(tables.get(pos), identifier);
             }
         });
     }

@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.activeandroid.query.Select;
@@ -20,7 +22,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableClickLi
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
 public class ServiceHome extends AppCompatActivity implements EventTableClickListener {
-
+    private static int MYEVENTTABLE_IDENTIFIER=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,31 +36,32 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
 
         setTitle("GastroGini - Event: " + event.name);
 
-        //TODO: Remove password display, just for showcase
-        getSupportActionBar().setSubtitle( "User: " + userName + " | Event Password: " + eventPassword);
-
         RecyclerView eventTablesRecyclerView = (RecyclerView)findViewById(R.id.eventTablesRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
+        EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables(), MYEVENTTABLE_IDENTIFIER);
         eventTablesRecyclerView.setLayoutManager(linearLayoutManager);
         eventTablesRecyclerView.setAdapter(adapter);
         eventTablesRecyclerView.setHasFixedSize(true);
-
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
     }
 
     @Override
-    public void onClick(EventTable eventTable) {
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onClick(EventTable eventTable, int identifier) {
+        try {
+            Intent intent = new Intent(this, TableOrderView.class);
+            intent.putExtra("eventTable-uuid", eventTable.uuid.toString());
+            startActivityForResult(intent, identifier);
+        }catch(ClassCastException ex){
+            ex.printStackTrace();
+        }
     }
 }
