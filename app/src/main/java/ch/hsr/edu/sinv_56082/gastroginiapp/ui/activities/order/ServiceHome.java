@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.activeandroid.query.Select;
+
+import java.util.UUID;
+
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
@@ -24,18 +28,18 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle args = getIntent().getExtras();
-        Event event = (Event) args.get("event");
+        Event event = new Select().from(Event.class).where("uuid = ?",UUID.fromString(args.getString("event-uuid"))).executeSingle();
         String userName = args.get("userName").toString();
         String eventPassword = args.get("eventPassword").toString();
 
-        setTitle("GastroGini - Event: " + event.getTitle());
+        setTitle("GastroGini - Event: " + event.name);
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle( "User: " + userName + " | Event Password: " + eventPassword);
 
         RecyclerView eventTablesRecyclerView = (RecyclerView)findViewById(R.id.eventTablesRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        EventTablesAdapter adapter = new EventTablesAdapter(this,event.getTables());
+        EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
         eventTablesRecyclerView.setLayoutManager(linearLayoutManager);
         eventTablesRecyclerView.setAdapter(adapter);
         eventTablesRecyclerView.setHasFixedSize(true);
@@ -54,7 +58,7 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
     }
 
     @Override
-    public void onClick(EventTable eventTable, int position) {
+    public void onClick(EventTable eventTable) {
 
     }
 }

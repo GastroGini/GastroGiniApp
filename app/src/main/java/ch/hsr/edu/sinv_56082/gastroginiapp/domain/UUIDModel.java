@@ -1,12 +1,9 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.query.Select;
 
-import java.util.List;
 import java.util.UUID;
 
 public class UUIDModel extends Model {
@@ -25,4 +22,5 @@ public class UUIDModel extends Model {
     public static <T extends UUIDModel> T getFromUUID(Class<T> type, UUID uuid){
         return new Select().from(type).where("uuid = ?", uuid).executeSingle();
     }
+
 }

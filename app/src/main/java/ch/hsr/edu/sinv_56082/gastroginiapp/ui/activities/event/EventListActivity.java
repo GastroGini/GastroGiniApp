@@ -13,21 +13,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
 
 public class EventListActivity extends AppCompatActivity implements EventClickListener, Serializable{
-    final private List<Event> myEventList = new ArrayList<>();
-    final private List<Event> foreignEventList = new ArrayList<>();
-    final private static int MYEVENTLIST_IDENTIFIER = 1;
-    final private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
+    private List<Event> myEventList = new ArrayList<>();
+    private List<Event> foreignEventList = new ArrayList<>();
+    private static int MYEVENTLIST_IDENTIFIER = 1;
+    private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
     private boolean myEventsCollapsedState = true;
     private EventsAdapter myEventsAdapter;
     private EventsAdapter foreignEventsAdapter;
@@ -36,53 +37,20 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        switch(requestCode){
-            case MYEVENTLIST_IDENTIFIER:{
-                if(resultCode == Activity.RESULT_OK){
-                    Bundle args = data.getExtras();
-                    String newTitle = args.getString("title");
-                    String newAmountOfTables = args.getString("amountOfTables");
-                    String newExecutionDate = args.getString("executionDate");
-                    int position = args.getInt("position");
-                    ProductList productList = (ProductList)args.get("productList");
-                    if(position == myEventList.size()){
-                        Event event = new Event(newTitle);
-                        event.setAmountOfTables(newAmountOfTables);
-                        event.setStartTime(newExecutionDate);
-                        event.setProductList(productList);
-                        myEventList.add(event);
-                    }else{
-                        Event event = myEventList.get(position);
-                        event.setTitle(newTitle);
-                        event.setAmountOfTables(newAmountOfTables);
-                        event.setStartTime(newExecutionDate);
-                        event.setProductList(productList);
-                    }
-                    myEventsAdapter.notifyDataSetChanged();
-                }
-            }
-            break;
-            case FOREIGNEVENTLIST_IDENTIFIER:{
-                if(resultCode == Activity.RESULT_OK){
-                    Bundle args = data.getExtras();
-                    String newTitle = args.getString("changedTitle");
-                    int position = args.getInt("position");
-                    foreignEventList.get(position).setTitle(newTitle);
-                    foreignEventsAdapter.notifyDataSetChanged();
-                }
-            }
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == MYEVENTLIST_IDENTIFIER || requestCode == FOREIGNEVENTLIST_IDENTIFIER) {
+            myEventList.clear();
+            myEventList.addAll(new Select().from(Event.class).<Event>execute());
         }
         checkIfEventListEmpty();
     }
 
     @Override
-    public void onClick(Event event, int position, int identifier) {
+    public void onClick(Event event, int identifier) {
         try {
             Intent intent = new Intent(this, EventViewActivity.class);
-            intent.putExtra("event", event);
-            intent.putExtra("pos",position);
-            intent.putExtra("identifier",identifier);
+            intent.putExtra("event-uuid", event.uuid.toString());
             startActivityForResult(intent, identifier);
         }catch(ClassCastException ex){
             ex.printStackTrace();
@@ -110,20 +78,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
 
         final AppCompatActivity activity = this;
 
-        /* Dummy data, replace with persistency */
-        myEventList.add(new Event("My Fest 1",22));
-        myEventList.add(new Event("My Fest 2",11));
-        myEventList.add(new Event("My Fest 3",30));
-        myEventList.add(new Event("My Fest 4",4));
-        myEventList.add(new Event("My Fest 5",0));
-
-        foreignEventList.add(new Event("Foreign Fest 1",10));
-        foreignEventList.add(new Event("Foreign Fest 2",5));
-        foreignEventList.add(new Event("Foreign Fest 3",12));
-        foreignEventList.add(new Event("Foreign Fest 4",4));
-        foreignEventList.add(new Event("Foreign Fest 5",2));
-
-        /* Dummy data */
+        myEventList.addAll(new Select().from(Event.class).<Event>execute());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -131,9 +86,6 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
             public void onClick(View view) {
                 myEventsAdapter.changeEditMode();
                 Intent intent = new Intent(activity, EventViewActivity.class);
-                intent.putExtra("event", new Event(""));
-                intent.putExtra("title","");
-                intent.putExtra("pos",myEventList.size());
                 startActivityForResult(intent,MYEVENTLIST_IDENTIFIER);
             }
         });

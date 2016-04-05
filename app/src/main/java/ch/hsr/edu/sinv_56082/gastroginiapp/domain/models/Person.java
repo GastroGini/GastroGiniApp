@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.backup;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 
 import com.activeandroid.annotation.Column;
@@ -12,6 +12,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 @Table(name = "Persons")
 public class Person extends UUIDModel{
 
+    public Person(){}
+
     @Column
     public String firstName;
 
@@ -24,7 +26,7 @@ public class Person extends UUIDModel{
     }
 
     public Person(UUID uuid, String firstName, String lastName){
-        super(uuid);
+        super();
         init(firstName, lastName);
     }
 

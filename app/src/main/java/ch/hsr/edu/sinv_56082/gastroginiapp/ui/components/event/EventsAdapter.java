@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implements Serializable {
@@ -40,9 +40,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
     @Override
     public void onBindViewHolder(EventsViewHolder holder, int position) {
         final int pos = position;
-        holder.getAmountOfTablesView().setText(eventList.get(pos).getAmountOfTables() + "");
-        holder.getStartDateView().setText(eventList.get(pos).getStartTime());
-        holder.getTitleTextView().setText(eventList.get(position).getTitle());
+        holder.getAmountOfTablesView().setText(eventList.get(pos).eventTables().size() + "");
+        holder.getStartDateView().setText(eventList.get(pos).startTime.toString());
+        holder.getTitleTextView().setText(eventList.get(position).name);
         if(getEditMode()){
             holder.getDeleteIconView().setVisibility(View.VISIBLE);
         }else{
@@ -62,7 +62,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
             holder.getEventView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onClick(eventList.get(pos),pos,identifier);
+                    mListener.onClick(eventList.get(pos),identifier);
                 }
             });
         }

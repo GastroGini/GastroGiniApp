@@ -1,18 +1,28 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.domain.products;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 
-import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 import java.util.List;
-import java.util.UUID;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Orders.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Products")
 public class Product extends UUIDModel{
+
+    public Product(){}
+
+    public Product(ProductDescription productDescription,
+                   ProductList productList,
+                   double price,
+                   String volume){
+        super();
+        this.productDescription = productDescription;
+        this.productList = productList;
+        this.price = price;
+        this.volume = volume;
+    }
 
     @Column
     public double price;

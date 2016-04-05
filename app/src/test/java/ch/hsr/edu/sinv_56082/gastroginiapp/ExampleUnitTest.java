@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
 
 import org.junit.Test;
@@ -8,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.products.ProductCategory;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 
 import static org.junit.Assert.*;
 

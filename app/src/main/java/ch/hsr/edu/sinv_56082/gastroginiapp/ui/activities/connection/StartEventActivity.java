@@ -13,11 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.activeandroid.query.Select;
+
+import java.util.UUID;
+
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 
 public class StartEventActivity extends AppCompatActivity {
+
+    private EditText userNameLocalInput;
+    private EditText userNameInput;
+    private EditText eventPasswordInput;
+    private Event event;
+    private StartEventActivity startEventActivity;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -39,19 +49,21 @@ public class StartEventActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button hostButton = (Button) findViewById(R.id.hostButton);
         Button localHostButton = (Button) findViewById(R.id.localHostButton);
-        final EditText userNameLocalInput = (EditText) findViewById(R.id.startEventUserNameLocalInput);
-        final EditText userNameInput = (EditText) findViewById(R.id.startEventUserNameInput);
-        final EditText eventPasswordInput = (EditText) findViewById(R.id.startEventPasswordInput);
-        final Event event = (Event) getIntent().getExtras().get("event");
-        final StartEventActivity sea = this;
+        userNameLocalInput = (EditText) findViewById(R.id.startEventUserNameLocalInput);
+        userNameInput = (EditText) findViewById(R.id.startEventUserNameInput);
+        eventPasswordInput = (EditText) findViewById(R.id.startEventPasswordInput);
+
+
+        event = new Select().from(Event.class).where("uuid=?", UUID.fromString(getIntent().getExtras().getString("event-uuid"))).executeSingle();
+        startEventActivity = this;
 
         hostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userName = userNameInput.getText().toString();
                 String eventPassword = eventPasswordInput.getText().toString();
-                Intent intent = new Intent(sea,ServiceHome.class);
-                intent.putExtra("event", event);
+                Intent intent = new Intent(startEventActivity,ServiceHome.class);
+                intent.putExtra("event-uuid", event.uuid.toString());
                 intent.putExtra("userName",userName);
                 intent.putExtra("eventPassword",eventPassword);
                 startActivity(intent);
@@ -63,8 +75,8 @@ public class StartEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userNameLocal = userNameLocalInput.getText().toString();
                 String eventPassword = "";
-                Intent intent = new Intent(sea, ServiceHome.class);
-                intent.putExtra("event", event);
+                Intent intent = new Intent(startEventActivity, ServiceHome.class);
+                intent.putExtra("event-uuid", event.uuid.toString());
                 intent.putExtra("userName",userNameLocal);
                 intent.putExtra("eventPassword",eventPassword);
                 startActivity(intent);

@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.backup;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -8,10 +8,20 @@ import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.products.ProductList;
 
 @Table(name = "Events")
 public class Event extends UUIDModel{
+
+    public Event(){}
+
+    public Event(ProductList productList, String name, Date startTime, Date endTime, Person host) {
+        super();
+        this.productList = productList;
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.host = host;
+    }
 
     @Column
     public String name;
@@ -36,7 +46,7 @@ public class Event extends UUIDModel{
     }
 
     public Event(UUID uuid, String name, Date startTime, Date endTime, Person host, ProductList productList){
-        super(uuid);
+        super();
         init(name,  startTime,  endTime,  host,  productList);
     }
 

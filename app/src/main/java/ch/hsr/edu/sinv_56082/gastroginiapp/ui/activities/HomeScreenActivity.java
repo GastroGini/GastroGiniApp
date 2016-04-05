@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.DummyData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
 
 public class HomeScreenActivity extends AppCompatActivity {
@@ -16,6 +17,9 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        new DummyData();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final AppCompatActivity activity = this;

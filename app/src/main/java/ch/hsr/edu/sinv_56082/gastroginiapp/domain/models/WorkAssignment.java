@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.backup;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 
 import com.activeandroid.annotation.Column;
@@ -10,6 +10,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "WorkAssignments")
 public class WorkAssignment extends UUIDModel{
+
+    public WorkAssignment(){}
 
     @Column
     public Date startTime;
