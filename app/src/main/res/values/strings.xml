@@ -39,5 +39,9 @@
     <string name="title_activity_menucard_list_view">MenucardListView</string>
 
     <string name="title_activity_service_home">ServiceHome</string>
-
+    <string name="title_activity_table_order_view">TableOrderView</string>
+    <string name="title_activity_order_pay_view">OrderPayView</string>
+    <string name="title_activity_new_order_view">NewOrderView</string>
+    <string name="title_activity_order_control_view">OrderControlView</string>
+    <string name="title_activity_product_description_list">ProductDescriptionListActivity</string>
 </resources>

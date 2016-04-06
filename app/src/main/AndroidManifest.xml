@@ -9,9 +9,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data android:name="AA_DB_NAME" android:value="Data.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Data.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
 
         <activity
             android:name=".ui.activities.HomeScreenActivity"
@@ -46,6 +49,10 @@
         <activity
             android:name=".ui.activities.order.ServiceHome"
             android:label="@string/title_activity_service_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.menu.ProductDescriptionListActivity"
+            android:label="@string/title_activity_product_description_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.activities.menu.MenucardListView"

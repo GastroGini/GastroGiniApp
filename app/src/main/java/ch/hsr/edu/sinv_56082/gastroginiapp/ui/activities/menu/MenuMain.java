@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 
 public class MenuMain extends AppCompatActivity {
 
@@ -42,6 +43,17 @@ public class MenuMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, MenucardListView.class);
+                startActivity(intent);
+            }
+        });
+
+
+        Button productsButton = (Button) findViewById(R.id.productsButton);
+
+        productsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, ProductDescriptionListActivity.class);
                 startActivity(intent);
             }
         });
