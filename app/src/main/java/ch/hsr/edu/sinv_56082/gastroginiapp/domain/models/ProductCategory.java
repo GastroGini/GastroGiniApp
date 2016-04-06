@@ -22,4 +22,9 @@ public class ProductCategory extends UUIDModel{
     public List<ProductDescription> productDescriptions(){
         return getMany(ProductDescription.class, "productCategory");
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

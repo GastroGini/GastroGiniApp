@@ -53,10 +53,18 @@
         <activity
             android:name=".ui.activities.menu.ProductDescriptionListActivity"
             android:label="@string/title_activity_product_description_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenucardListView"
             android:label="@string/title_activity_menucard_list_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.menu.MenuProductDescriptionEditActivity"
+            android:label="@string/title_activity_menu_product_description_edit"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.menu.ProductDescriptionViewActivity"
+            android:label="@string/title_activity_product_description_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,23 +26,30 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
 
 public class EventListActivity extends AppCompatActivity implements EventClickListener, Serializable{
+
     private List<Event> myEventList = new ArrayList<>();
     private List<Event> foreignEventList = new ArrayList<>();
+
+
     private static int MYEVENTLIST_IDENTIFIER = 1;
     private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
+
+
     private boolean myEventsCollapsedState = true;
     private EventsAdapter myEventsAdapter;
     private EventsAdapter foreignEventsAdapter;
     private TextView infoText;
     private RecyclerView myEventsRecyclerView;
+    private AppCompatActivity activity;
+    private RecyclerView foreignEventsRecyclerView;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == MYEVENTLIST_IDENTIFIER || requestCode == FOREIGNEVENTLIST_IDENTIFIER) {
+        if(resultCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
             myEventList.addAll(new Select().from(Event.class).<Event>execute());
+            myEventsAdapter.notifyDataSetChanged();
         }
         checkIfEventListEmpty();
     }
@@ -76,7 +84,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final AppCompatActivity activity = this;
+        activity = this;
 
         myEventList.addAll(new Select().from(Event.class).<Event>execute());
 
@@ -91,16 +99,13 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         });
 
         myEventsRecyclerView = (RecyclerView)findViewById(R.id.eventListMyEventsRecyclerView);
-        final RecyclerView foreignEventsRecyclerView = (RecyclerView) findViewById(R.id.eventListForeignEventsRecyclerView);
-
-        LinearLayoutManager myLinearLayoutManager = new LinearLayoutManager(this);
-        LinearLayoutManager foreignLinearLayoutManager = new LinearLayoutManager(this);
+        foreignEventsRecyclerView = (RecyclerView) findViewById(R.id.eventListForeignEventsRecyclerView);
 
         myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER);
         foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
-        myEventsRecyclerView.setLayoutManager(myLinearLayoutManager);
-        foreignEventsRecyclerView.setLayoutManager(foreignLinearLayoutManager);
+        myEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        foreignEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         myEventsRecyclerView.setAdapter(myEventsAdapter);
         foreignEventsRecyclerView.setAdapter(foreignEventsAdapter);

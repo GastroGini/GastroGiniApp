@@ -44,4 +44,10 @@
     <string name="title_activity_new_order_view">NewOrderView</string>
     <string name="title_activity_order_control_view">OrderControlView</string>
     <string name="title_activity_product_description_list">ProductDescriptionListActivity</string>
+    <string name="title_activity_menu_product_description_edit">MenuProductDescriptionEditActivity
+    </string>
+    <string name="save">Speichern</string>
+    <string name="title_activity_product_description_view">ProductDescriptionViewActivity</string>
+    <string name="description">Beschreibung</string>
+    <string name="string_name">Name</string>
 </resources>
