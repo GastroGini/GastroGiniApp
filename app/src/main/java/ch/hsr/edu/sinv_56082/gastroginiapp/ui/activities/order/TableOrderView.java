@@ -24,7 +24,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 public class TableOrderView extends AppCompatActivity {
     private List<EventOrder> myEventOrderList = new ArrayList<>();
     private List<OrderPosition> myOrderPositionList = new ArrayList<>();
-    private RecyclerView myEventOrdersRyceclerView;
+    private RecyclerView myEventOrdersRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +41,13 @@ public class TableOrderView extends AppCompatActivity {
 
         final AppCompatActivity activity = this;
 
-        //myEventOrderList.addAll(new Select().from(EventOrder.class).where("uuid = ?", UUID.fromString(args.getString("eventOrder-uuid"))).execute();
+        myEventOrderList = eventTable.orders();
+        for (EventOrder order:myEventOrderList){
+            myOrderPositionList.addAll(order.orderPositions());
+        }
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_order);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
+        fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -54,9 +56,20 @@ public class TableOrderView extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        myEventOrdersRyceclerView = (RecyclerView)findViewById(R.id.eventOrderRecyclerView);
-        LinearLayoutManager myLinearLayoutManager = new LinearLayoutManager(this);
+        FloatingActionButton fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
+        fab_select_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        myEventOrdersRecyclerView = (RecyclerView)findViewById(R.id.eventOrderRecyclerView);
+        LinearLayoutManager myLinearLayoutManager = new LinearLayoutManager(this);
+        my
     }
 
 }
