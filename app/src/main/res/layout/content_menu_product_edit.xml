@@ -9,8 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuProductDescriptionEditActivity"
-    tools:showIn="@layout/activity_menu_product_description_edit">
+    tools:context=".ui.activities.menu.MenuProductEditActivity"
+    tools:showIn="@layout/activity_menu_product_edit">
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,7 +24,7 @@
         android:weightSum="1">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/productDescriptionEditNameLayout"
+            android:id="@+id/productEditPriceLayout"
             android:layout_width="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/productDescriptionEditName"
+                android:id="@+id/productEditPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/string_name" />
@@ -40,7 +40,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/productDescriptionEditDescLayout"
+            android:id="@+id/productEditVolumeLayout"
             android:layout_width="160dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -50,7 +50,7 @@
             android:inputType="number">
 
             <EditText
-                android:id="@+id/productDescriptionEditDesc"
+                android:id="@+id/productEditVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/description" />
@@ -62,7 +62,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/productDescriptionCategorySelect"
+            android:id="@+id/productDescriptionSelect"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:focusable="true"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/save"
-            android:id="@+id/productDescriptionSaveButton" />
+            android:id="@+id/productEditSaveButton" />
 
     </LinearLayout>
 

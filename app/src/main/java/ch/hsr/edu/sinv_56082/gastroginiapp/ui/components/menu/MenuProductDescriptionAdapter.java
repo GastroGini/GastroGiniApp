@@ -31,14 +31,15 @@ public class MenuProductDescriptionAdapter extends RecyclerView.Adapter<MenuProd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_product_description, parent, false);
-        TextView textView = (TextView) view.findViewById(R.id.productDescriptionName);
-        TextView desc = (TextView) view.findViewById(R.id.productDescriptionDesc);
-        return new ViewHolder(view, textView, desc);
+        return new ViewHolder(view,
+                (TextView) view.findViewById(R.id.productDescriptionName),
+                (TextView) view.findViewById(R.id.productDescriptionDesc));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.getTextView().setText(productDescs.get(position).name);
+        holder.getDesc().setText(productDescs.get(position).description);
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -65,6 +65,10 @@
         <activity
             android:name=".ui.activities.menu.ProductDescriptionViewActivity"
             android:label="@string/title_activity_product_description_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.menu.MenuProductEditActivity"
+            android:label="@string/title_activity_menu_product_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
