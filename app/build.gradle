@@ -12,11 +12,11 @@ android {
 
     defaultConfig {
         applicationId "ch.hsr.edu.sinv_56082.gastroginiapp"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+        multiDexEnabled false
     }
 
     buildTypes {
@@ -32,10 +32,10 @@ android {
         unitTest // Creates a new scope which wraps only unit tests
 
         dev {
-            minSdkVersion 14
+            minSdkVersion 16
         }
         prod {
-            minSdkVersion 14
+            minSdkVersion 16
         }
     }
 

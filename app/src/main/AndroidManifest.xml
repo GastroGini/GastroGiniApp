@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.hsr.edu.sinv_56082.gastroginiapp">
 
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.INTERNET"/>s
+
+
     <application
         android:name=".app.LocalData"
         android:allowBackup="true"
@@ -61,10 +72,6 @@
         <activity
             android:name=".ui.activities.menu.MenuProductDescriptionEditActivity"
             android:label="@string/title_activity_menu_product_description_edit"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.activities.menu.ProductDescriptionViewActivity"
-            android:label="@string/title_activity_product_description_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuProductEditActivity"

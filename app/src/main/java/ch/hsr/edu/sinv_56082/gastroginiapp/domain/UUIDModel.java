@@ -4,9 +4,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.query.Select;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class UUIDModel extends Model {
+public class UUIDModel extends Model implements Serializable {
 
     @Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public UUID uuid;
