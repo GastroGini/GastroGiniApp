@@ -19,8 +19,4 @@ public class UUIDModel extends Model {
         this.uuid = uuid;
     }
 
-    public static <T extends UUIDModel> T getFromUUID(Class<T> type, UUID uuid){
-        return new Select().from(type).where("uuid = ?", uuid).executeSingle();
-    }
-
 }

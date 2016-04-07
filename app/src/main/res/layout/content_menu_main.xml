@@ -10,24 +10,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.HomeScreenActivity"
-    tools:showIn="@layout/activity_home_screen">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="280dp"
-        android:src="@drawable/logo"
-        android:layout_margin="16dp" />
+    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuMain"
+    tools:showIn="@layout/activity_menu_main">
+
     <Button
         android:layout_width="match_parent"
-        android:text="Feste"
+        android:text="@string/menu_main_menuMapButtonText"
         android:layout_margin="16dp"
         android:layout_height="wrap_content"
-        android:id="@+id/eventButton" />
+        android:id="@+id/menuMapButton" />
     <Button
         android:layout_width="match_parent"
         android:layout_margin="16dp"
-        android:text="Menu"
+        android:text="@string/menu_main_productsButtonText"
         android:layout_height="wrap_content"
-        android:id="@+id/menuButton" />
+        android:id="@+id/productsButton" />
 
 </LinearLayout>

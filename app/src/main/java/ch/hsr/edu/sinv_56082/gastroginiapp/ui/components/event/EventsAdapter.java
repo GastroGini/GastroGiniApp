@@ -28,13 +28,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
     @Override
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View columnViewFeste = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_events, parent, false);
-        TextView columnRowEventTitle = (TextView) columnViewFeste.findViewById(R.id.columnRowEventTitle);
-        TextView columnRowAmountOfTables = (TextView) columnViewFeste.findViewById(R.id.columnRowAmountOfTables);
-        TextView columnRowStartDate = (TextView) columnViewFeste.findViewById(R.id.columnRowStartDate);
-        ImageView columnRowEventDelete = (ImageView) columnViewFeste.findViewById(R.id.columnRowEventDeleteIcon);
-        EventsViewHolder mevh = new EventsViewHolder(columnViewFeste,columnRowEventTitle,
-                columnRowEventDelete, columnRowAmountOfTables,columnRowStartDate);
-        return mevh;
+        return new EventsViewHolder(
+                columnViewFeste,
+                (TextView) columnViewFeste.findViewById(R.id.columnRowEventTitle),
+                (ImageView) columnViewFeste.findViewById(R.id.columnRowEventDeleteIcon),
+                (TextView) columnViewFeste.findViewById(R.id.columnRowAmountOfTables),
+                (TextView) columnViewFeste.findViewById(R.id.columnRowStartDate)
+        );
     }
 
     @Override

@@ -9,8 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventViewActivity"
-    tools:showIn="@layout/activity_event_view">
+    tools:context=".ui.activities.menu.MenuProductEditActivity"
+    tools:showIn="@layout/activity_menu_product_edit">
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,23 +24,23 @@
         android:weightSum="1">
 
         <android.support.design.widget.TextInputLayout
-        android:id="@+id/eventViewInputLayout"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/eventViewTitleInput"
+            android:id="@+id/productEditPriceLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Titel" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/productEditPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/string_name" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/eventViewAnzahlTischeInputLayout"
+            android:id="@+id/productEditVolumeLayout"
             android:layout_width="160dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -50,66 +50,37 @@
             android:inputType="number">
 
             <EditText
-                android:id="@+id/eventViewAnzahlTischeInput"
+                android:id="@+id/productEditVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Anzahl Tische" />
+                android:hint="@string/description" />
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/eventViewDatumInputLayout"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content"
-            android:elegantTextHeight="true"
-            android:inputType="number">
 
-
-            <EditText
-                android:id="@+id/eventViewDatumInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ausführungsdatum" />
-
-        </android.support.design.widget.TextInputLayout>
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/eventViewProduktListeSpinner"
+            android:id="@+id/productDescriptionSelect"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            android:entries="@array/produktList_array"
             android:focusable="true"
             android:spinnerMode="dialog" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5" />
+            android:layout_weight="1" />
 
-        <LinearLayout
+
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="16dp"
-                android:text="Speichern"
-                android:id="@+id/eventViewSaveButton" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            android:layout_margin="16dp"
+            android:text="@string/save"
+            android:id="@+id/productEditSaveButton" />
 
-                android:layout_margin="16dp"
-                android:text="Starten"
-                android:id="@+id/eventViewStartButton" />
-        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

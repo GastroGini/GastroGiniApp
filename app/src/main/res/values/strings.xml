@@ -30,5 +30,25 @@
     <string name="title_activity_event_view">Event View</string>
     <string name="title_activity_start_event">StartEventActivity</string>
     <string name="title_activity_join_event">JoinEventActivity</string>
+    <string name="title_activity_menu_main">MenuMain</string>
+
+
+    <!-- MenuMain -->
+    <string name="menu_main_menuMapButtonText">Menukarte</string>
+    <string name="menu_main_productsButtonText">Produkte</string>
+    <string name="title_activity_menucard_list_view">MenucardListView</string>
+
     <string name="title_activity_service_home">ServiceHome</string>
+    <string name="title_activity_table_order_view">TableOrderView</string>
+    <string name="title_activity_order_pay_view">OrderPayView</string>
+    <string name="title_activity_new_order_view">NewOrderView</string>
+    <string name="title_activity_order_control_view">OrderControlView</string>
+    <string name="title_activity_product_description_list">ProductDescriptionListActivity</string>
+    <string name="title_activity_menu_product_description_edit">MenuProductDescriptionEditActivity
+    </string>
+    <string name="save">Speichern</string>
+    <string name="title_activity_product_description_view">ProductDescriptionViewActivity</string>
+    <string name="description">Beschreibung</string>
+    <string name="string_name">Name</string>
+    <string name="title_activity_menu_product_edit">MenuProductEditActivity</string>
 </resources>
