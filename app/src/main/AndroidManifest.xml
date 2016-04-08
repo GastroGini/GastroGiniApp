@@ -70,6 +70,10 @@
             android:name=".ui.activities.menu.MenuProductEditActivity"
             android:label="@string/title_activity_menu_product_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.activities.order.TableOrderView"
+            android:label="@string/title_activity_table_order_view"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

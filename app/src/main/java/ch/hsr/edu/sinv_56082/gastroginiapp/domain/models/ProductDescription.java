@@ -12,6 +12,16 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "ProductDescriptions")
 public class ProductDescription extends UUIDModel{
+    @Column
+    public String name;
+
+
+    @Column
+    public String description;
+
+    @Column
+    public ProductCategory productCategory;
+
 
     public ProductDescription(){}
 
@@ -22,14 +32,18 @@ public class ProductDescription extends UUIDModel{
         this.productCategory = productCategory;
     }
 
-    @Column
-    public String name;
+    public String getName() {
+        return name;
+    }
 
-    @Column
-    public String description;
+    public String getDescription() {
+        return description;
+    }
 
-    @Column
-    public ProductCategory productCategory;
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
 
     public static ProductDescription get(UUID uuid){
         return new Select().from(ProductDescription.class).where("uuid = ?", uuid).executeSingle();

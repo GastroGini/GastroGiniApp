@@ -12,6 +12,20 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Products")
 public class Product extends UUIDModel{
+    @Column
+    public double price;
+
+
+
+    @Column
+    public String volume;
+
+    @Column
+    public ProductDescription productDescription;
+
+    @Column
+    public ProductList productList;
+
 
     public Product(){}
 
@@ -26,6 +40,26 @@ public class Product extends UUIDModel{
         this.volume = volume;
     }
 
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public ProductDescription getProductDescription() {
+        return productDescription;
+    }
+
+    public ProductList getProductList() {
+        return productList;
+    }
+
+
+
+
     public static Product get(UUID uuid){
         return new Select().from(Product.class).where("uuid = ?", uuid).executeSingle();
     }
@@ -34,17 +68,7 @@ public class Product extends UUIDModel{
         return get(UUID.fromString(uuid));
     }
 
-    @Column
-    public double price;
 
-    @Column
-    public String volume;
-
-    @Column
-    public ProductDescription productDescription;
-
-    @Column
-    public ProductList productList;
 
 
     public List<OrderPosition> orderPositions(){

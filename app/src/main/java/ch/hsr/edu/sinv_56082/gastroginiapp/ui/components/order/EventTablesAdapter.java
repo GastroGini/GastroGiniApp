@@ -1,7 +1,9 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,17 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 public class EventTablesAdapter extends RecyclerView.Adapter<EventTablesViewHolder> {
     private List<EventTable> tables;
-    private EventTableClickListener mListener;
-    public EventTablesAdapter(EventTableClickListener mListener,List<EventTable> tables){
+    private ServiceHome activity;
+    public EventTablesAdapter(ServiceHome activity,List<EventTable> tables){
         this.tables = tables;
-        this.mListener = mListener;
+        this.activity = activity;
     }
 
     @Override
@@ -34,7 +40,9 @@ public class EventTablesAdapter extends RecyclerView.Adapter<EventTablesViewHold
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Implement click logic for list item
+                Log.e("MyTagGoesHere", "Hacim buraya geldim");
+                Intent intent = new Intent(activity, TableOrderView.class);
+                activity.startActivity(intent);
             }
         });
     }
