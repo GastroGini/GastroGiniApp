@@ -7,7 +7,7 @@ import com.activeandroid.query.Select;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class UUIDModel extends Model implements Serializable {
+public class UUIDModel extends Model {
 
     @Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public UUID uuid;

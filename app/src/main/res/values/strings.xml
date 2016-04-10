@@ -51,4 +51,8 @@
     <string name="description">Beschreibung</string>
     <string name="string_name">Name</string>
     <string name="title_activity_menu_product_edit">MenuProductEditActivity</string>
+    <string name="date_format">dd.MM.yyyy H:s</string>
+    <string name="eventDate">Ausführungsdatum</string>
+    <string name="eventProductList">Produktliste</string>
+    <string name="number_of_tables">Anzahl Tische</string>
 </resources>

@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -105,7 +105,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         myEventsRecyclerView = (RecyclerView)findViewById(R.id.eventListMyEventsRecyclerView);
         foreignEventsRecyclerView = (ListView) findViewById(R.id.eventListForeignEventsRecyclerView);
 
-        myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER);
+        myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
         myEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -113,6 +113,12 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
 
         myEventsRecyclerView.setAdapter(myEventsAdapter);
         foreignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
+        foreignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((LocalData)getApplication()).p2p.connectTo(foreignEventList.get(position));
+            }
+        });
 
         myEventsRecyclerView.setHasFixedSize(true);
         //foreignEventsRecyclerView.setHasFixedSize(true);
@@ -169,16 +175,28 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        ((LocalData)getApplication()).p2p.startBroadcastReciever(activity);
+
         ((LocalData)getApplication()).p2p.removeLocalServie();
 
         ((LocalData)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
+                for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
+                    if (holder.device.deviceAddress.equals(service.device.deviceAddress)) {
+                        foreignEventList.remove(holder);
+                        break;
+                    }
+                }
 
+                foreignEventList.add(service);
+                ((BaseAdapter) foreignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
         });
 
         ((LocalData)getApplication()).p2p.discoverServices();
+
+
     }
 
     public static int getMyeventlistIdentifier(){

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -44,6 +46,11 @@ public class P2pHandler {
         registerConnectionInfoListener();
         registerWifiBroadcastReciver();
         registerMessageHandler();
+    }
+
+
+    public void startBroadcastReciever(Context context){
+        context.registerReceiver(wifiBroadcatsReciver, intentFilter);
     }
 
 
@@ -94,7 +101,7 @@ public class P2pHandler {
         wifiP2pManager.clearLocalServices(wifiP2pChannel, null);
     }
 
-    public void setLocalService(String eventName) {
+    public void setLocalService(final String eventName) {
         Map<String, String> record = new HashMap<>();
         record.put(TXTRECORD_PROP_AVAILABLE, "visible");
 
@@ -104,7 +111,7 @@ public class P2pHandler {
         wifiP2pManager.addLocalService(wifiP2pChannel, wifiP2pService, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Log.d(TAG, "onSuccess: added Local Service: " + SERVICE_INSTANCE);
+                Log.d(TAG, "onSuccess: added Local Service: " + SERVICE_INSTANCE + eventName);
             }
 
             @Override
@@ -121,6 +128,11 @@ public class P2pHandler {
         public ServiceResponseHolder(String name, WifiP2pDevice device) {
             this.name = name;
             this.device = device;
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 
@@ -199,10 +211,30 @@ public class P2pHandler {
 
     }
 
+    public void connectTo(final ServiceResponseHolder holder){
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = holder.device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+        wifiP2pManager.connect(wifiP2pChannel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: Connected to device: "+holder);
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG, "onFailure: failed to connect to device: "+holder);
+            }
+        });
+    }
+
+
     private void registerConnectionInfoListener() {
         connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
             @Override
             public void onConnectionInfoAvailable(WifiP2pInfo info) {
+                Log.d(TAG, "onConnectionInfoAvailable: Connection info recieved"+info.toString());
+
                 if (info.isGroupOwner) {
                     try {
                         new ServerSocketHandler(handler).start();
@@ -227,11 +259,14 @@ public class P2pHandler {
     }
 
     private void registerWifiBroadcastReciver() {
+        final String TAG ="WIFI_BroadcastReciever";
         wifiBroadcatsReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
+                Log.d(TAG, "onReceive: "+action);
                 if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
+
                     int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
                     if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                         setIsWifiP2pEnabled(true);

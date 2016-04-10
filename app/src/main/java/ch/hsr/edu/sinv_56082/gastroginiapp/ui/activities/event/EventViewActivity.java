@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.activeandroid.query.Select;
@@ -30,7 +31,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DatePickerUtil;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
 public class EventViewActivity extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class EventViewActivity extends AppCompatActivity {
 
     private EditText eventTitle;
     private EditText amountOfTables;
-    private EditText executionDate ;
+    private Button executionDate ;
     private Spinner productList;
     private Button eventViewSaveButton;
     private Button eventViewStartButton;
@@ -82,14 +83,10 @@ public class EventViewActivity extends AppCompatActivity {
 
         eventTitle = (EditText) findViewById(R.id.eventViewTitleInput);
         amountOfTables = (EditText) findViewById(R.id.eventViewAnzahlTischeInput);
-        executionDate = (EditText) findViewById(R.id.eventViewDatumInput);
+        executionDate = (Button) findViewById(R.id.eventViewDatumInput);
         productList = (Spinner) findViewById(R.id.eventViewProduktListeSpinner);
         eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
         eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
-
-
-
-
 
 
         List<ProductList> productLists = new Select().from(ProductList.class).execute();
@@ -103,7 +100,7 @@ public class EventViewActivity extends AppCompatActivity {
         } else {
             amountOfTables.setText("0");
         }
-        executionDate.setText(event.startTime.toString()); // TODO FORMAT
+        executionDate.setText(DateHelpers.dateToString(this,event.startTime));
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
@@ -121,11 +118,11 @@ public class EventViewActivity extends AppCompatActivity {
         executionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerUtil(eventViewActivity, new DatePickerUtil.Callback() {
+                new DateHelpers.Picker(eventViewActivity, new DateHelpers.Callback() {
                     @Override
                     public void onSet(Date date) {
                         event.startTime = date;
-                        executionDate.setText(date.toString());
+                        executionDate.setText(DateHelpers.dateToString(eventViewActivity, date));
                     }
                 });
             }

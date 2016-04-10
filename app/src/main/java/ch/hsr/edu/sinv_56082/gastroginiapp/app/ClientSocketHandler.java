@@ -30,6 +30,8 @@ public class ClientSocketHandler extends Thread {
             Log.d(TAG, "Launching the I/O handler");
             messageHandler = new MessageHandler(socket, handler);
             new Thread(messageHandler).start();
+
+            messageHandler.write("client Hello");
         } catch (IOException e) {
             e.printStackTrace();
             try {

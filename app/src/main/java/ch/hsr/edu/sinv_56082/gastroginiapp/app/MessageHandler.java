@@ -34,7 +34,9 @@ public class MessageHandler implements Runnable{
             while (true) {
                 Scanner s = new Scanner(iStream).useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
-                handler.obtainMessage(P2pHandler.RECIEVED_MESSAGE, result).sendToTarget();
+                if (result != "") {
+                    handler.obtainMessage(P2pHandler.RECIEVED_MESSAGE, result).sendToTarget();
+                }
             }
         } catch (IOException e) {
             Log.e("", "Exception during reading", e);
