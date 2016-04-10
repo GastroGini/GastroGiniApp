@@ -16,6 +16,7 @@ import com.activeandroid.query.Select;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
@@ -27,6 +28,9 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_service_home);
@@ -38,6 +42,10 @@ public class ServiceHome extends AppCompatActivity implements EventTableClickLis
         String eventPassword = args.get("eventPassword").toString();
 
         setTitle("GastroGini - Event: " + event.name);
+
+
+        ((LocalData)getApplication()).p2p.setLocalService(event.name + " " + userName);
+
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle( "User: " + userName + " | Event Password: " + eventPassword);

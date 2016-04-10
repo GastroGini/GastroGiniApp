@@ -63,10 +63,6 @@
             android:label="@string/title_activity_menu_product_description_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.menu.ProductDescriptionViewActivity"
-            android:label="@string/title_activity_product_description_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.activities.menu.MenuProductEditActivity"
             android:label="@string/title_activity_menu_product_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -75,5 +71,16 @@
             android:label="@string/title_activity_table_order_view"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
+
+
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission
+        android:required="true"
+        android:name="android.permission.INTERNET"/>
 
 </manifest>

@@ -104,7 +104,17 @@
             android:tint="@color/colorIconLight" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
+        android:id="@+id/eventListForeignEventsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventListMyEvents"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="2"
+        />
+
+    <!--<android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/eventListForeignEventsRecyclerView"
@@ -112,5 +122,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layoutMode="clipBounds"
-        android:layout_weight="2" />
+        android:layout_weight="2" />-->
 </LinearLayout>

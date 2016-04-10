@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 
 public class MenuMain extends AppCompatActivity {
@@ -57,6 +58,12 @@ public class MenuMain extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //((LocalData)getApplication()).p2p.removeLocalServie();
+    }
 }

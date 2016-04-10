@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,20 @@ import java.util.List;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implements Serializable {
     final private EventClickListener mListener;
     private int identifier;
+    private Context context;
     private List<Event> eventList = new ArrayList<>();
     private boolean editMode = false;
 
-    public EventsAdapter(EventClickListener mListener, List<Event> eventList, int identifier){
+    public EventsAdapter(EventClickListener mListener, List<Event> eventList, int identifier, Context context){
         this.mListener = mListener;
         this.eventList = eventList;
         this.identifier = identifier;
+        this.context = context;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
     public void onBindViewHolder(EventsViewHolder holder, int position) {
         final int pos = position;
         holder.getAmountOfTablesView().setText(eventList.get(pos).eventTables().size() + "");
-        holder.getStartDateView().setText(eventList.get(pos).startTime.toString());
+        holder.getStartDateView().setText(DateHelpers.dateToString(context,eventList.get(pos).startTime));
         holder.getTitleTextView().setText(eventList.get(position).name);
         if(getEditMode()){
             holder.getDeleteIconView().setVisibility(View.VISIBLE);
