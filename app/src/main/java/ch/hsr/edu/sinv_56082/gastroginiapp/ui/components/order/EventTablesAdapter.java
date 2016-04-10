@@ -19,6 +19,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView;
 import static android.support.v4.app.ActivityCompat.startActivity;
 
 public class EventTablesAdapter extends RecyclerView.Adapter<EventTablesViewHolder> {
+
+    public interface EventTableClickListener {
+        void onClick(EventTable eventTable);
+    }
+
     private List<EventTable> tables;
     private ServiceHome activity;
     public EventTablesAdapter(ServiceHome activity,List<EventTable> tables){

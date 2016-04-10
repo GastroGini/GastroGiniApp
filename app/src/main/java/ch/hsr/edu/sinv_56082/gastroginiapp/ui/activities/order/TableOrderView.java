@@ -21,7 +21,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableItemClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;

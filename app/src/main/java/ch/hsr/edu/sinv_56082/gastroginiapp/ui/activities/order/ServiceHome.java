@@ -20,10 +20,9 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
-public class ServiceHome extends AppCompatActivity implements EventTableClickListener {
+public class ServiceHome extends AppCompatActivity implements EventTablesAdapter.EventTableClickListener {
 
 
     @Override
