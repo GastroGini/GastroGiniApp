@@ -20,6 +20,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesViewHo
 
 
 public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
+
+    public interface TableItemClickListener {
+        void onClick(EventTable tableItem);
+    }
+
     private List<Product> orderItems;
     private TableOrderView activity;
     public TableRowAdapter(TableOrderView activity,List<Product> orderItems){
