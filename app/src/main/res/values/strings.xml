@@ -37,6 +37,7 @@
     <string name="menu_main_menuMapButtonText">Menukarte</string>
     <string name="menu_main_productsButtonText">Produkte</string>
     <string name="title_activity_menucard_list_view">MenucardListView</string>
+    <string name="title_activity_menucard_view">Menucard View</string>
 
     <string name="title_activity_service_home">ServiceHome</string>
     <string name="title_activity_table_order_view">TableOrderView</string>
