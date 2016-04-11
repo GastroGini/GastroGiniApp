@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
+    public void test() throws Exception {
         ProductCategory cat = new ProductCategory();
         cat.name = "test";
         cat.save();

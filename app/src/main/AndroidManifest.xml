@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.hsr.edu.sinv_56082.gastroginiapp">
 
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.CHANGE_WIFI_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:required="true" />
+
     <application
         android:name=".app.LocalData"
         android:allowBackup="true"
@@ -65,11 +75,12 @@
         <activity
             android:name=".ui.activities.menu.MenuProductEditActivity"
             android:label="@string/title_activity_menu_product_edit"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order.TableOrderView"
             android:label="@string/title_activity_table_order_view"
             android:theme="@style/AppTheme.NoActionBar" />
+
 
         <activity
             android:name=".ui.activities.menu.MenuCardView.MenuCardView"
@@ -77,17 +88,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
          
+
+        <activity
+            android:name=".ui.activities.event.EventStaticViewActivity"
+            android:label="@string/title_activity_event_static_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
-
-
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.INTERNET"/>
 
 </manifest>
