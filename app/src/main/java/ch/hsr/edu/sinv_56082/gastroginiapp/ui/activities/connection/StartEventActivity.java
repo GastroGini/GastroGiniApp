@@ -69,7 +69,7 @@ public class StartEventActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+//TODO: Refactor into one methode call
         localHostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
