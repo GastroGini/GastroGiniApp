@@ -36,7 +36,7 @@ public class ProductList extends UUIDModel{
     }
 
     public static ProductList get(UUID uuid){
-        return new Select().from(ProductList.class).where("uuid = ?", uuid).executeSingle();
+        return new Select().from(ProductList.class).where("uuid = ?", uuid.toString()).executeSingle();
     }
 
     public static ProductList get(String uuid){

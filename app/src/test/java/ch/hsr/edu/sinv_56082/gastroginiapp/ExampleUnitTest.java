@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21, manifest = "src/main/AndroidManifest.xml", packageName = "ch.hsr.edu.sinv_56082.gastroginiapp")
 public class ExampleUnitTest {
     @Test
     public void test() throws Exception {
@@ -21,7 +21,7 @@ public class ExampleUnitTest {
         cat.name = "test";
         cat.save();
 
-        ProductCategory cat2 = new Select().from(ProductCategory.class).executeSingle();
+        ProductCategory cat2 = ProductCategory.get(cat.getUuid());
         assertEquals(cat.name, cat2.name);
     }
 }

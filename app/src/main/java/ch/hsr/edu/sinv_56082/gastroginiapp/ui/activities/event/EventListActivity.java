@@ -62,7 +62,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     public void onClick(Event event, int identifier) {
         try {
             Intent intent = new Intent(this, EventViewActivity.class);
-            intent.putExtra("event-uuid", event.uuid.toString());
+            intent.putExtra("event-uuid", event.getUuid().toString());
             startActivityForResult(intent, identifier);
         }catch(ClassCastException ex){
             ex.printStackTrace();
