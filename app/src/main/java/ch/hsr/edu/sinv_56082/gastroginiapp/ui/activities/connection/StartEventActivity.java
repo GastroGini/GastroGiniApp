@@ -63,7 +63,7 @@ public class StartEventActivity extends AppCompatActivity {
                 String userName = userNameInput.getText().toString();
                 String eventPassword = eventPasswordInput.getText().toString();
                 Intent intent = new Intent(startEventActivity,ServiceHome.class);
-                intent.putExtra("event-uuid", event.uuid.toString());
+                intent.putExtra("event-uuid", event.getUuid().toString());
                 intent.putExtra("userName",userName);
                 intent.putExtra("eventPassword",eventPassword);
                 startActivity(intent);
@@ -76,7 +76,7 @@ public class StartEventActivity extends AppCompatActivity {
                 String userNameLocal = userNameLocalInput.getText().toString();
                 String eventPassword = "";
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
-                intent.putExtra("event-uuid", event.uuid.toString());
+                intent.putExtra("event-uuid", event.getUuid().toString());
                 intent.putExtra("userName",userNameLocal);
                 intent.putExtra("eventPassword",eventPassword);
                 startActivity(intent);

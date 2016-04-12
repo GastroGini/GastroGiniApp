@@ -49,7 +49,7 @@ public class Person extends UUIDModel{
     }
 
     public static Person get(UUID uuid){
-        return new Select().from(Person.class).where("uuid = ?", uuid).executeSingle();
+        return new Select().from(Person.class).where("uuid = ?", uuid.toString()).executeSingle();
     }
 
 }

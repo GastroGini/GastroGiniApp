@@ -90,7 +90,7 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
     @Override
     public void onClick(ProductDescription productList) {
         Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
-        intent.putExtra("productDescription-uuid", productList.uuid.toString());
+        intent.putExtra("productDescription-uuid", productList.getUuid().toString());
         startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
     }
 }

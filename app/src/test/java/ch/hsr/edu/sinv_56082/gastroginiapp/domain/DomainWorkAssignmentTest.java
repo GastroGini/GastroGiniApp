@@ -75,4 +75,10 @@ public class DomainWorkAssignmentTest {
         assertEquals(test2, query);
     }
 
+    @Test
+    public void testGet(){
+        WorkAssignment query = WorkAssignment.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

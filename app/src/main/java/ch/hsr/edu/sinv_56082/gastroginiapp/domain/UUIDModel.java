@@ -9,15 +9,23 @@ import java.util.UUID;
 
 public class UUIDModel extends Model {
 
-    @Column(unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public UUID uuid;
+    public UUID getUuid() {
+        return UUID.fromString(uuid_column);
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid_column = uuid.toString();
+    }
+
+    @Column(name = "uuid",unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    public String uuid_column;
 
     public UUIDModel(){
-        this.uuid = UUID.randomUUID();
+        setUuid(UUID.randomUUID());
     }
 
     public UUIDModel(UUID uuid){
-        this.uuid = uuid;
+        setUuid(uuid);
     }
 
 }

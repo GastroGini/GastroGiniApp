@@ -40,7 +40,7 @@ public class LocalData extends Application {
         }else{
             Person localUserPerson = new Person("local", "user");
             localUserPerson.save();
-            setLocalUser(localUserPerson.uuid);
+            setLocalUser(localUserPerson.getUuid());
         }
     }
 

@@ -84,4 +84,10 @@ public class DomainEventTableTest {
         assertEquals(test2, query);
     }
 
+    @Test
+    public void testGet(){
+        EventTable query = EventTable.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

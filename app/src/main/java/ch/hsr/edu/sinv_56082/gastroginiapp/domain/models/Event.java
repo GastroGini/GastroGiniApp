@@ -68,7 +68,7 @@ public class Event extends UUIDModel{
     }
 
     public static Event get(UUID uuid){
-        return new Select().from(Event.class).where("uuid = ?", uuid).executeSingle();
+        return new Select().from(Event.class).where("uuid = ?", uuid.toString()).executeSingle();
     }
 
 }

@@ -145,7 +145,7 @@ public class EventViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(eventViewActivity, StartEventActivity.class);
-                intent.putExtra("event-uuid",event.uuid.toString());
+                intent.putExtra("event-uuid",event.getUuid().toString());
                 startActivity(intent);
             }
         });

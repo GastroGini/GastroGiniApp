@@ -43,4 +43,10 @@ public class DomainOrderStateTest {
         assertEquals(orderState, query);
     }
 
+    @Test
+    public void testGet(){
+        OrderState query = OrderState.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

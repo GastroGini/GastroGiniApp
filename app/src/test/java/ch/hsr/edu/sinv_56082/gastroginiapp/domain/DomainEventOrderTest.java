@@ -76,4 +76,10 @@ public class DomainEventOrderTest {
         assertEquals(test2, query);
     }
 
+    @Test
+    public void testGet(){
+        EventOrder query = EventOrder.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

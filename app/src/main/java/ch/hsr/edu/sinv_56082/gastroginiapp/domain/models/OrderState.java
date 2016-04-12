@@ -3,8 +3,10 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import java.util.List;
+import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -28,4 +30,7 @@ public class OrderState extends UUIDModel{
         return getMany(OrderPosition.class, "orderState");
     }
 
+    public static OrderState get(UUID uuid) {
+        return new Select().from(OrderState.class).where("uuid=?", uuid.toString()).executeSingle();
+    }
 }

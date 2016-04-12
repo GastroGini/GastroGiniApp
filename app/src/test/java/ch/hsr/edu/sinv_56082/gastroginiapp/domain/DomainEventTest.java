@@ -76,4 +76,10 @@ public class DomainEventTest {
         Event query = Event.load(Event.class, test2.getId());
         assertEquals(test2, query);
     }
+
+    @Test
+    public void testGet(){
+        Event query = Event.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
 }
