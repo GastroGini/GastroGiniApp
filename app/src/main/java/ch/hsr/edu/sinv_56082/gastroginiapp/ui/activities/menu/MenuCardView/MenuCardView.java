@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.activeandroid.Model;
 import com.activeandroid.query.Select;
@@ -21,10 +22,12 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuCardAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductListAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductListClickListener;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
-public class MenuCardView extends AppCompatActivity implements MenuCardAdapter.OnClickListener {
-
+public class MenuCardView extends AppCompatActivity implements MenuProductListClickListener {
+    boolean isMenuCardListEditable;
+    List<ProductList> productLists;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -38,6 +41,7 @@ public class MenuCardView extends AppCompatActivity implements MenuCardAdapter.O
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isMenuCardListEditable = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menucard_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -51,28 +55,70 @@ public class MenuCardView extends AppCompatActivity implements MenuCardAdapter.O
         }
 
 
+        ImageView editButton = (ImageView) findViewById(R.id.editMenuItem);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addMenuItem);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        productLists = new Select().from(ProductList.class).execute();
+
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                isMenuCardListEditable = !isMenuCardListEditable;
+                runRecyclerView(isMenuCardListEditable);
+            }
+        });
+        runRecyclerView(isMenuCardListEditable);
+
+
+
+        FloatingActionButton addNew = (FloatingActionButton) findViewById(R.id.addMenuItem);
+
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(),EditMenuEntity.class);
+                intent.putExtra("comingFrom", "addNewMenuItem" );
+                intent.putExtra("page-name", "add-new-menu-item");
+                startActivity(intent);
             }
         });
 
 
+
+    }
+
+    public void runRecyclerView (boolean isMenuCardListEditable){
         RecyclerView eventTablesRecyclerView = (RecyclerView)findViewById(R.id.menuCardItemReciclerView);
 
-        List<ProductList> productLists = new Select().from(ProductList.class).execute();
-
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventTablesRecyclerView.setAdapter(new MenuCardAdapter(this, productLists));
+        eventTablesRecyclerView.setAdapter(new MenuCardAdapter(this, productLists,isMenuCardListEditable));
         eventTablesRecyclerView.setHasFixedSize(true);
     }
 
     @Override
     public void onClick(ProductList productListNumber) {
-        Log.e("menu card view","productlist"+productListNumber.toString());
+        Intent intent = new Intent(getBaseContext(),EditMenuEntity.class);
+        intent.putExtra("product-list-number", productListNumber.toString());
+        intent.putExtra("page-name", "edit-new-menu-item");
+
+        startActivity(intent);
+        Log.e("menu card onclick view","productlist"+productListNumber.toString());
+    }
+
+    @Override
+    public void editItem(ProductList productListNumber) {
+        Intent intent = new Intent(getBaseContext(),EditMenuEntity.class);
+        intent.putExtra("product-list-number", productListNumber.toString());
+        intent.putExtra("page-name", "edit-new-menu-item");
+        startActivity(intent);
+        Log.e("menu card edit view","productlist"+productListNumber.toString());
+    }
+
+    @Override
+    public void deleteItem(ProductList name) {
+        int index = productLists.indexOf(name);
+        productLists.remove(index);
+        runRecyclerView(isMenuCardListEditable);
+        Log.e("menu card delete view","productlist"+name.toString());
     }
 }

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,31 +20,67 @@ public class MenuCardAdapter extends RecyclerView.Adapter<MenuCardAdapter.ViewHo
         void onClick(ProductList productList);
     }
 
-    OnClickListener listener;
+    MenuProductListClickListener listener;
     List<ProductList> productLists = new ArrayList<>();
+    boolean isMenuCardListEditable;
 
-    public MenuCardAdapter(OnClickListener view, List<ProductList> productLists){
+    public MenuCardAdapter(MenuProductListClickListener view, List<ProductList> productLists, boolean isMenuCardListEditable){
         this.productLists = productLists;
         this.listener = view;
+        this.isMenuCardListEditable = isMenuCardListEditable;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_menucard, parent, false);
+        ImageView edit = (ImageView) view.findViewById(R.id.columnRowEventEditIcon) ;
+        ImageView delete = (ImageView) view.findViewById(R.id.columnRowEventDeleteIcon) ;
         TextView textView = (TextView) view.findViewById(R.id.menucardRowItem);
-        return new ViewHolder(view, textView);
+
+
+
+        return new ViewHolder(view, textView,edit, delete);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.getTextView().setText(productLists.get(position).name);
+
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClick(productLists.get(position));
             }
         });
+
+        holder.getDeleteImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.deleteItem(productLists.get(position));
+            }
+        });
+
+
+        holder.getEditImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.editItem(productLists.get(position));
+            }
+        });
+
+
+        if(this.isMenuCardListEditable == false){
+
+            holder.getEditImageView().setVisibility(View.GONE);
+            holder.getDeleteImageView().setVisibility(View.GONE);
+        }
+        else{
+            holder.getEditImageView().setVisibility(View.VISIBLE);
+            holder.getDeleteImageView().setVisibility(View.VISIBLE);
+
+        }
+
     }
 
     @Override
@@ -55,16 +92,27 @@ public class MenuCardAdapter extends RecyclerView.Adapter<MenuCardAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         View view;
         TextView textView;
-        public ViewHolder(View view, TextView textView) {
+        ImageView delete;
+        ImageView edit;
+
+        public ViewHolder(View view, TextView textView, ImageView edit, ImageView delete) {
             super(view);
             this.view = view;
             this.textView = textView;
+            this.edit = edit;
+            this.delete = delete;
         }
         public View getView(){
             return view;
         }
         public TextView getTextView(){
             return textView;
+        }
+        public ImageView getDeleteImageView(){
+            return delete;
+        }
+        public ImageView getEditImageView(){
+            return edit;
         }
     }
 

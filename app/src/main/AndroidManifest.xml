@@ -94,6 +94,12 @@
             android:label="@string/title_activity_event_static_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity
+            android:name=".ui.activities.menu.MenuCardView.EditMenuEntity"
+            android:label="@string/title_activity_editMenuItem"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
     </application>
 
 </manifest>
