@@ -1,17 +1,14 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
+import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 
 import static org.junit.Assert.assertEquals;

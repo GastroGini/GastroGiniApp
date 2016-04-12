@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp;
+package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
 import com.activeandroid.query.Select;
 
@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;

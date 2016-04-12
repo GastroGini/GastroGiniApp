@@ -13,6 +13,13 @@ public class WorkAssignment extends UUIDModel{
 
     public WorkAssignment(){}
 
+    public WorkAssignment(Date startTime, Date endTime, Person person, Event event) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.person = person;
+        this.event = event;
+    }
+
     @Column
     public Date startTime;
 
