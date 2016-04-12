@@ -51,4 +51,10 @@ public class DomainPersonTest {
         Person query = Person.load(Person.class, test2.getId());
         assertEquals(test2, query);
     }
+
+    @Test
+    public void testGet(){
+        Person query = Person.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
 }

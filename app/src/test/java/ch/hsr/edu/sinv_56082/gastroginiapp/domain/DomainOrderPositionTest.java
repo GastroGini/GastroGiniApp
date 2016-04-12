@@ -90,4 +90,10 @@ public class DomainOrderPositionTest {
         assertEquals(test2, query);
     }
 
+    @Test
+    public void testGet(){
+        OrderPosition query = OrderPosition.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

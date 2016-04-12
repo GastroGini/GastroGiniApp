@@ -2,8 +2,10 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 
 import com.activeandroid.annotation.*;
+import com.activeandroid.query.Select;
 
 import java.util.List;
+import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -29,5 +31,9 @@ public class EventTable extends UUIDModel{
 
     public List<EventOrder> orders(){
         return getMany(EventOrder.class, "eventTable");
+    }
+
+    public static EventTable get(UUID uuid) {
+        return new Select().from(EventTable.class).where("uuid=?", uuid.toString()).executeSingle();
     }
 }

@@ -67,4 +67,10 @@ public class DomainProductTest {
         assertEquals(test1,query);
     }
 
+    @Test
+    public void testGet(){
+        Product query = Product.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
+
 }

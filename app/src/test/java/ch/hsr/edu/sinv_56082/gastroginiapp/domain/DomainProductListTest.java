@@ -49,4 +49,10 @@ public class DomainProductListTest {
         ProductList query = ProductList.load(ProductList.class, test2.getId());
         assertEquals(test2, query);
     }
+
+    @Test
+    public void testGet(){
+        ProductList query = ProductList.get(test1.getUuid());
+        assertEquals(test1, query);
+    }
 }
