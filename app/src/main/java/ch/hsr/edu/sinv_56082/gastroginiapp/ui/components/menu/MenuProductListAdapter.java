@@ -44,6 +44,8 @@ public class MenuProductListAdapter extends RecyclerView.Adapter<MenuProductList
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.getTextView().setText(productLists.get(position).name);
+
+
         holder.getDeleteImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +61,13 @@ public class MenuProductListAdapter extends RecyclerView.Adapter<MenuProductList
             }
         });
 
+        holder.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(productLists.get(position));
+
+            }
+        });
 
         if(this.isMenuCardListEditable == false){
 
@@ -73,13 +82,7 @@ public class MenuProductListAdapter extends RecyclerView.Adapter<MenuProductList
 
 
 
-        holder.getView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClick(productLists.get(position));
 
-            }
-        });
     }
 
     @Override

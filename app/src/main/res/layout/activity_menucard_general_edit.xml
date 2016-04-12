@@ -21,15 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_menucard_list_view" />
+    <include layout="@layout/content_menu_general_edit" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add"
-        android:tint="@color/colorIconLight" />
 
 </android.support.design.widget.CoordinatorLayout>
