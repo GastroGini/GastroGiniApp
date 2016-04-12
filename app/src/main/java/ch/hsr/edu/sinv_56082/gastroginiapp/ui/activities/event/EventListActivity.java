@@ -31,8 +31,8 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     private List<Event> foreignEventList = new ArrayList<>();
 
 
-    private static int MYEVENTLIST_IDENTIFIER = 1;
-    private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
+    private final static int MYEVENTLIST_IDENTIFIER = 1;
+    private final static int FOREIGNEVENTLIST_IDENTIFIER = 2;
 
 
     private boolean myEventsCollapsedState = true;
@@ -97,7 +97,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
                 startActivityForResult(intent,MYEVENTLIST_IDENTIFIER);
             }
         });
-
+//TODO: Refactor: extract method
         myEventsRecyclerView = (RecyclerView)findViewById(R.id.eventListMyEventsRecyclerView);
         foreignEventsRecyclerView = (RecyclerView) findViewById(R.id.eventListForeignEventsRecyclerView);
 
