@@ -66,8 +66,6 @@ public class EventViewActivity extends AppCompatActivity {
 
         eventViewActivity = this;
 
-
-
         Bundle args = getIntent().getExtras();
         if(args != null){
             isNewEvent = false;
@@ -79,18 +77,12 @@ public class EventViewActivity extends AppCompatActivity {
         }
         setTitle(event.name);
 
-
         eventTitle = (EditText) findViewById(R.id.eventViewTitleInput);
         amountOfTables = (EditText) findViewById(R.id.eventViewAnzahlTischeInput);
         executionDate = (EditText) findViewById(R.id.eventViewDatumInput);
         productList = (Spinner) findViewById(R.id.eventViewProduktListeSpinner);
         eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
         eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
-
-
-
-
-
 
         List<ProductList> productLists = new Select().from(ProductList.class).execute();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
