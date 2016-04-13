@@ -9,6 +9,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.Date;
+import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -58,6 +59,15 @@ public class DomainEventTest {
     @Test
     public void testCreate() {
         Event event = new Event(list, "testit", new Date(), new Date(), person);
+        event.save();
+
+        Event query = Event.load(Event.class, event.getId());
+        assertEquals(event, query);
+    }
+
+    @Test
+    public void testCreateWithID() {
+        Event event = new Event(UUID.randomUUID(), "testit", new Date(), new Date(), person, list);
         event.save();
 
         Event query = Event.load(Event.class, event.getId());

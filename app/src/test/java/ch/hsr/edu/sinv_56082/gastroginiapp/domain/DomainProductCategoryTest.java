@@ -49,4 +49,8 @@ public class DomainProductCategoryTest {
     }
 
 
+    @Test
+    public void testToString(){
+        assertEquals(test1.toString(), test1.name);
+    }
 }

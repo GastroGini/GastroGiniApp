@@ -26,7 +26,7 @@ public class EventTable extends UUIDModel{
     @Column
     public String name;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Event event;
 
     public List<EventOrder> orders(){

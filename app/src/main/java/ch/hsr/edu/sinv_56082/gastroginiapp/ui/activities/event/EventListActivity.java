@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,10 +51,11 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == MYEVENTLIST_IDENTIFIER) {
+        if(requestCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
             myEventList.addAll(new Select().from(Event.class).<Event>execute());
             myEventsAdapter.notifyDataSetChanged();
+            Log.d("hj", "onActivityResult: reloaded list");
         }
         checkIfEventListEmpty();
     }

@@ -9,6 +9,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 
 import static org.junit.Assert.assertEquals;
@@ -53,6 +54,13 @@ public class DomainProductListTest {
     @Test
     public void testGet(){
         ProductList query = ProductList.get(test1.getUuid());
+        ProductList query2 = ProductList.get(test1.getUuid().toString());
         assertEquals(test1, query);
+        assertEquals(test1, query2);
+    }
+
+    @Test
+    public void testToString(){
+        assertEquals(test2.toString(), test2.name);
     }
 }

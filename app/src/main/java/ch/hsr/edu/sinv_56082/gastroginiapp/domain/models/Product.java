@@ -41,18 +41,6 @@ public class Product extends UUIDModel{
     }
 
 
-    public double getPrice() {
-        return price;
-    }
-
-    public String getVolume() {
-        return volume;
-    }
-
-    public ProductDescription getProductDescription() {
-        return productDescription;
-    }
-
     public ProductList getProductList() {
         return productList;
     }
