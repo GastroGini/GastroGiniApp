@@ -32,7 +32,7 @@ public class OrderPosition extends UUIDModel{
     @Column
     public Product product;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public EventOrder eventOrder;
 
     public static OrderPosition get(UUID uuid) {

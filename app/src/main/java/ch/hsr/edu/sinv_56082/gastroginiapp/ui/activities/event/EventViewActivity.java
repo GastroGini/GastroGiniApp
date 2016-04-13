@@ -28,6 +28,7 @@ import java.util.UUID;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
@@ -45,6 +46,7 @@ public class EventViewActivity extends AppCompatActivity {
     private Button eventViewSaveButton;
     private Button eventViewStartButton;
     private EventViewActivity eventViewActivity;
+    private int oldTableCount;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -97,8 +99,11 @@ public class EventViewActivity extends AppCompatActivity {
 
         if(!isNewEvent) {
             amountOfTables.setText(String.valueOf(event.eventTables().size()));
+            oldTableCount = event.eventTables().size();
         } else {
             amountOfTables.setText("0");
+            oldTableCount = 0;
+
         }
         executionDate.setText(DateHelpers.dateToString(this,event.startTime));
 
@@ -114,6 +119,9 @@ public class EventViewActivity extends AppCompatActivity {
         }
         */
 
+        if(isNewEvent){
+            eventViewStartButton.setVisibility(View.INVISIBLE);
+        }
 
         executionDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +143,16 @@ public class EventViewActivity extends AppCompatActivity {
 
                 event.name = eventTitle.getText().toString();
                 event.productList = (ProductList)productList.getSelectedItem();
+                int newTableCount = Integer.parseInt(amountOfTables.getText().toString());
+
                 event.save();
+
+                if(newTableCount > oldTableCount){
+                    for (int i = oldTableCount + 1; i <= newTableCount; i++){
+                        new EventTable(i, "Tisch "+i, event).save();
+                        Log.d("aaaaaaaaa", "onClick: new table");
+                    }
+                }
                 setResult(RESULT_OK);
                 finish();
             }

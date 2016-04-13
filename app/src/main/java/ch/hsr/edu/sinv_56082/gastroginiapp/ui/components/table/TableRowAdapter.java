@@ -50,9 +50,9 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     @Override
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
-        holder.getNameTextView().setText(orderItems.get(position).getProductDescription().getName());
-        holder.getSizeTextView().setText(orderItems.get(position).getVolume());
-        holder.getPriceTextView().setText(orderItems.get(position).getPrice()+"");
+        holder.getNameTextView().setText(orderItems.get(position).productDescription.name);
+        holder.getSizeTextView().setText(orderItems.get(position).volume);
+        holder.getPriceTextView().setText(orderItems.get(position).price+"");
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

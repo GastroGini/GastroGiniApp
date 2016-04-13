@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.UUID;
+
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 
@@ -50,6 +52,20 @@ public class DomainPersonTest {
 
         Person query = Person.load(Person.class, test2.getId());
         assertEquals(test2, query);
+    }
+
+    @Test
+    public void testFullName(){
+        assertEquals(test2.getFullName(), "Test2 Test2ü");
+    }
+
+    @Test
+    public void testCreateWithUUID() {
+        Person person = new Person(UUID.randomUUID(), "John", "Silver");
+        person.save();
+
+        Person query = Person.load(Person.class, person.getId());
+        assertEquals(person, query);
     }
 
     @Test

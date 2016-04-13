@@ -56,6 +56,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
             holder.getDeleteIconView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Event event = eventList.get(pos);
+                    event.delete();
                     eventList.remove(pos);
                     ((EventListActivity)mListener).checkIfEventListEmpty();
                     notifyDataSetChanged();
