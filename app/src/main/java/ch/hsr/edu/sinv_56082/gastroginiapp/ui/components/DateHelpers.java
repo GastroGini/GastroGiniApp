@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 
 public class DateHelpers {
     public interface Callback {
@@ -65,8 +66,8 @@ public class DateHelpers {
         }
     }
 
-    public static String dateToString(Context context, Date date){
-        return new SimpleDateFormat(context.getString(R.string.date_format)).format(date);
+    public static String dateToString(Date date){
+        return new SimpleDateFormat(App.getApp().getString(R.string.date_format)).format(date);
     }
 
 }

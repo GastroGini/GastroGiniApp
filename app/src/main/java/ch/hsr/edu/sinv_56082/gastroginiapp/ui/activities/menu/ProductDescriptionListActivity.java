@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 
@@ -20,10 +21,11 @@ import java.util.List;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductDescriptionAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductListAdapter;
 
-public class ProductDescriptionListActivity extends AppCompatActivity implements MenuProductDescriptionAdapter.OnClickListener {
+public class ProductDescriptionListActivity extends AppCompatActivity implements MenuProductDescriptionAdapter.OnClickListener, TestAdapter.Listener<ProductDescription> {
 
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private List<ProductDescription> productDescriptions = new ArrayList<>();
@@ -41,6 +43,8 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +67,20 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
         eventTablesRecyclerView = (RecyclerView)findViewById(R.id.productDescriptionReciclerView);
 
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventTablesRecyclerView.setAdapter(new MenuProductDescriptionAdapter(this, productDescriptions));
-        eventTablesRecyclerView.setHasFixedSize(true);
+        eventTablesRecyclerView.setAdapter(new TestAdapter<ProductDescription, DescViewHolder>(R.layout.column_row_product_description, productDescriptions, this) {
+            @Override
+            public DescViewHolder createItemViewHolder(View view) {
+                return new DescViewHolder(view);
+            }
+
+            @Override
+            public void bindViewHolder(DescViewHolder holder, ProductDescription item) {
+                holder.name.setText(item.name);
+                holder.desc.setText(item.description);
+            }
+        }); //new MenuProductDescriptionAdapter(this, productDescriptions));
+        ((TestAdapter)eventTablesRecyclerView.getAdapter()).setEditMode(true);
+                eventTablesRecyclerView.setHasFixedSize(true);
 
         loadProductDescriptions();
 
@@ -92,5 +108,17 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
         intent.putExtra("productDescription-uuid", productList.getUuid().toString());
         startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
+    }
+
+    @Override
+    public void onItemClick(ProductDescription item) {
+        Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
+        intent.putExtra("productDescription-uuid", item.getUuid().toString());
+        startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
+    }
+
+    @Override
+    public void onDelete(ProductDescription item) {
+
     }
 }

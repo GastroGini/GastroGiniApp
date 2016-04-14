@@ -2,8 +2,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -11,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 
 public class MenuMain extends AppCompatActivity {
 
@@ -64,6 +60,6 @@ public class MenuMain extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //((LocalData)getApplication()).p2p.removeLocalServie();
+        //((App)getApplication()).p2p.removeLocalServie();
     }
 }

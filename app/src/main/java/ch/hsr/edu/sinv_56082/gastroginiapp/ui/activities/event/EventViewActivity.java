@@ -1,9 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,22 +9,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.activeandroid.query.Select;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
@@ -77,7 +70,7 @@ public class EventViewActivity extends AppCompatActivity {
             event = Event.get(UUID.fromString(args.getString("event-uuid")));
         }else{
             isNewEvent = true;
-            UUID localUser = ((LocalData) getApplication()).getLocalUser();
+            UUID localUser = ((App) getApplication()).getLocalUser();
             event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), Person.get(localUser));
         }
         setTitle(event.name);
@@ -105,7 +98,7 @@ public class EventViewActivity extends AppCompatActivity {
             oldTableCount = 0;
 
         }
-        executionDate.setText(DateHelpers.dateToString(this,event.startTime));
+        executionDate.setText(DateHelpers.dateToString(event.startTime));
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
@@ -130,7 +123,7 @@ public class EventViewActivity extends AppCompatActivity {
                     @Override
                     public void onSet(Date date) {
                         event.startTime = date;
-                        executionDate.setText(DateHelpers.dateToString(eventViewActivity, date));
+                        executionDate.setText(DateHelpers.dateToString(date));
                     }
                 });
             }

@@ -45,7 +45,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
     public void onBindViewHolder(EventsViewHolder holder, int position) {
         final int pos = position;
         holder.getAmountOfTablesView().setText(eventList.get(pos).eventTables().size() + "");
-        holder.getStartDateView().setText(DateHelpers.dateToString(context,eventList.get(pos).startTime));
+        holder.getStartDateView().setText(DateHelpers.dateToString(eventList.get(pos).startTime));
         holder.getTitleTextView().setText(eventList.get(position).name);
         if(getEditMode()){
             holder.getDeleteIconView().setVisibility(View.VISIBLE);

@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.app;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
 
 
 import android.content.BroadcastReceiver;
@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+
 public class P2pHandler {
 
     private static final String SERVICE_INSTANCE = "_wifi_p2p_gastrogini_";
@@ -35,24 +37,26 @@ public class P2pHandler {
 
 
     BroadcastReceiver wifiBroadcatsReciver;
-    LocalData application;
+    Context application;
 
 
-    public P2pHandler(LocalData application){
+    public P2pHandler(App application){
         this.application = application;
-        registerWifiP2pManager(application);
+        registerWifiP2pManager();
         if(isWifiP2pEnabled()) {
             registerServiceDiscovery();
             registerConnectionInfoListener();
             registerWifiBroadcastReciver();
             registerMessageHandler();
+
+            startBroadcastReciever();
         }
     }
 
 
-    public void startBroadcastReciever(Context context){
+    public void startBroadcastReciever(){
         if (isWifiP2pEnabled())
-            context.registerReceiver(wifiBroadcatsReciver, intentFilter);
+            application.registerReceiver(wifiBroadcatsReciver, intentFilter);
     }
 
 
@@ -255,7 +259,7 @@ public class P2pHandler {
         };
     }
 
-    private void registerWifiP2pManager(Context application) {
+    private void registerWifiP2pManager() {
         wifiP2pManager = (WifiP2pManager) application.getSystemService(application.WIFI_P2P_SERVICE);
         setIsWifiP2pEnabled(wifiP2pManager != null);
         if(isWifiP2pEnabled()) {

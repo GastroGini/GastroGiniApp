@@ -1,25 +1,17 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-
-import com.activeandroid.query.Select;
 
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
 public class ServiceHome extends AppCompatActivity implements EventTablesAdapter.EventTableClickListener {
@@ -36,6 +28,7 @@ public class ServiceHome extends AppCompatActivity implements EventTablesAdapter
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle args = getIntent().getExtras();
+        //TODO Extract to controller
         Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
         String userName = args.get("userName").toString();
         String eventPassword = args.get("eventPassword").toString();
@@ -43,7 +36,8 @@ public class ServiceHome extends AppCompatActivity implements EventTablesAdapter
         setTitle("GastroGini - Event: " + event.name);
 
 
-        ((LocalData)getApplication()).p2p.setLocalService(event.name + " " + userName);
+        //TODO p2p handling should not be in activity (ApplicationController)
+        ((App)getApplication()).p2p.setLocalService(event.name + " " + userName);
 
 
         //TODO: Remove password display, just for showcase

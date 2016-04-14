@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
@@ -118,7 +118,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         foreignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((LocalData)getApplication()).p2p.connectTo(foreignEventList.get(position));
+                ((App)getApplication()).p2p.connectTo(foreignEventList.get(position));
             }
         });
 
@@ -177,11 +177,13 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        ((LocalData)getApplication()).p2p.startBroadcastReciever(activity);
 
-        ((LocalData)getApplication()).p2p.removeLocalServie();
+        //TODO p2p handling should not be in activity
+        ((App)getApplication()).p2p.startBroadcastReciever();
 
-        ((LocalData)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+        ((App)getApplication()).p2p.removeLocalServie();
+
+        ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
                 for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
@@ -196,7 +198,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
             }
         });
 
-        ((LocalData)getApplication()).p2p.discoverServices();
+        ((App)getApplication()).p2p.discoverServices();
 
 
     }
