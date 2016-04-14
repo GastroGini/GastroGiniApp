@@ -65,7 +65,7 @@
             android:label="@string/title_activity_product_description_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.menu.MenucardListView"
+            android:name=".ui.activities.menu.ProductListListView"
             android:label="@string/title_activity_menucard_list_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

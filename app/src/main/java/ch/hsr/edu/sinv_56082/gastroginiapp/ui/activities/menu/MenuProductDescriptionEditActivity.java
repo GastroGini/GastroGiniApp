@@ -15,30 +15,35 @@ import com.activeandroid.query.Select;
 
 import java.util.UUID;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 
-public class MenuProductDescriptionEditActivity extends AppCompatActivity {
+public class MenuProductDescriptionEditActivity extends TestActivity {
 
-    TextView productName;
-    TextView productDesc;
-    Spinner productCategory;
-    Button saveButton;
+    @Bind(R.id.productDescriptionEditName)TextView productName;
+    @Bind(R.id.productDescriptionEditDesc)TextView productDesc;
+    @Bind(R.id.productDescriptionCategorySelect)Spinner productCategory;
+    @Bind(R.id.productDescriptionSaveButton)Button saveButton;
 
     ProductDescription productDescription;
     boolean isNewProductDescription = false;
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_product_description_edit);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         initializeProductDescription();
-        loadViews();
 
         productName.setText(productDescription.name);
         productDesc.setText(productDescription.description);
@@ -63,12 +68,6 @@ public class MenuProductDescriptionEditActivity extends AppCompatActivity {
 
     }
 
-    private void loadViews() {
-        productDesc = (TextView)findViewById(R.id.productDescriptionEditDesc);
-        productName = (TextView)findViewById(R.id.productDescriptionEditName);
-        productCategory = (Spinner)findViewById(R.id.productDescriptionCategorySelect);
-        saveButton = (Button)findViewById(R.id.productDescriptionSaveButton);
-    }
 
     private void initializeProductDescription() {
         Bundle extras = getIntent().getExtras();

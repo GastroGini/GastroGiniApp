@@ -33,9 +33,9 @@ public class MenuCardAdapter extends RecyclerView.Adapter<MenuCardAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_menucard, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_product_list, parent, false);
         ImageView edit = (ImageView) view.findViewById(R.id.columnRowEventEditIcon) ;
-        ImageView delete = (ImageView) view.findViewById(R.id.columnRowEventDeleteIcon) ;
+        ImageView delete = (ImageView) view.findViewById(R.id.delete_button) ;
         TextView textView = (TextView) view.findViewById(R.id.menucardRowItem);
 
 

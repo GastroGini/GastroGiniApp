@@ -8,44 +8,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 
-public class MenuMain extends AppCompatActivity {
+public class MenuMain extends TestActivity {
 
     AppCompatActivity activity;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.menuMapButton) Button menucardButton;
+    @Bind(R.id.productsButton) Button productsButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         setContentView(R.layout.activity_menu_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
+
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button menucardButton = (Button) findViewById(R.id.menuMapButton);
 
         menucardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, MenucardListView.class);
+                Intent intent = new Intent(activity, ProductListListView.class);
                 startActivity(intent);
             }
         });
 
-
-        Button productsButton = (Button) findViewById(R.id.productsButton);
 
         productsButton.setOnClickListener(new View.OnClickListener() {
             @Override

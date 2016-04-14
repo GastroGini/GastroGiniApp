@@ -35,7 +35,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> implem
         return new EventsViewHolder(
                 columnViewFeste,
                 (TextView) columnViewFeste.findViewById(R.id.columnRowEventTitle),
-                (ImageView) columnViewFeste.findViewById(R.id.columnRowEventDeleteIcon),
+                (ImageView) columnViewFeste.findViewById(R.id.delete_button),
                 (TextView) columnViewFeste.findViewById(R.id.columnRowAmountOfTables),
                 (TextView) columnViewFeste.findViewById(R.id.columnRowStartDate)
         );

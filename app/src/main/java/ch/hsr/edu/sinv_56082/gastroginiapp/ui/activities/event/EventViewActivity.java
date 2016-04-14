@@ -18,47 +18,45 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
-public class EventViewActivity extends AppCompatActivity {
+public class EventViewActivity extends TestActivity {
 
     private Event event;
     private boolean isNewEvent = false;
+    
 
-    private EditText eventTitle;
-    private EditText amountOfTables;
-    private Button executionDate ;
-    private Spinner productList;
-    private Button eventViewSaveButton;
-    private Button eventViewStartButton;
+    @Bind(R.id.eventViewTitleInput) EditText eventTitle;
+    @Bind(R.id.eventViewAnzahlTischeInput) EditText amountOfTables;
+    @Bind(R.id.eventViewDatumInput) Button executionDate ;
+    @Bind(R.id.eventViewProduktListeSpinner) Spinner productList;
+    @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
+    @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
+
+
     private EventViewActivity eventViewActivity;
     private int oldTableCount;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         eventViewActivity = this;
 
@@ -76,12 +74,7 @@ public class EventViewActivity extends AppCompatActivity {
         setTitle(event.name);
 
 
-        eventTitle = (EditText) findViewById(R.id.eventViewTitleInput);
-        amountOfTables = (EditText) findViewById(R.id.eventViewAnzahlTischeInput);
-        executionDate = (Button) findViewById(R.id.eventViewDatumInput);
-        productList = (Spinner) findViewById(R.id.eventViewProduktListeSpinner);
-        eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
-        eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
+
 
 
         List<ProductList> productLists = new Select().from(ProductList.class).execute();

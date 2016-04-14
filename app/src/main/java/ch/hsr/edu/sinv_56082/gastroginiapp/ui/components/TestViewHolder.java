@@ -4,15 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 
 public class TestViewHolder extends RecyclerView.ViewHolder {
     public View itemView;
-    public ImageView deleter;
+    @Bind(R.id.delete_button) ImageView deleter;
     public TestViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;
-        deleter = (ImageView)itemView.findViewById(R.id.delete_button);
+        ButterKnife.bind(this, itemView);
     }
 }

@@ -15,27 +15,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 
-public class TableOrderView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
+public class TableOrderView extends TestActivity implements TableRowAdapter.TableItemClickListener {
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecycleView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_order_table);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //setContentView(R.layout.activity_service_home);
-        setContentView(R.layout.activity_order_table);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
         Bundle args = getIntent().getExtras();
         //Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
         //String userName = args.get("userName").toString();
@@ -53,11 +61,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         temp.add(new Product(new ProductDescription("tea",null, null),null,3,"5dl"));
 
 
-
-        RecyclerView tableOrderRecycleView = (RecyclerView)findViewById(R.id.tableOrderRecyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         TableRowAdapter adapter = new TableRowAdapter(this,temp);
-        tableOrderRecycleView.setLayoutManager(linearLayoutManager);
+        tableOrderRecycleView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecycleView.setAdapter(adapter);
         tableOrderRecycleView.setHasFixedSize(true);
 

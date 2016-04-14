@@ -4,10 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-/**
- * Created by Dogan on 08.04.16.
- */
-
 
 public class TableRowViewHolder extends RecyclerView.ViewHolder {
     View tableOrderItemView;
