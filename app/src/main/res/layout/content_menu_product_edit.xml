@@ -35,7 +35,8 @@
                 android:id="@+id/productEditPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/string_name" />
+                android:inputType="numberDecimal"
+                android:hint="@string/string_price" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -53,7 +54,7 @@
                 android:id="@+id/productEditVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/description" />
+                android:hint="@string/string_volume" />
 
         </android.support.design.widget.TextInputLayout>
 

@@ -41,9 +41,6 @@
     <string name="title_activity_editMenuItem">Edit</string>
 
 
-
-
-
     <string name="title_activity_service_home">ServiceHome</string>
     <string name="title_activity_table_order_view">TableOrderView</string>
     <string name="title_activity_order_pay_view">OrderPayView</string>
@@ -62,4 +59,7 @@
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
     <string name="title_activity_event_static_view">EventStaticViewActivity</string>
+    <string name="title_activity_product_list">ProductListActivity</string>
+    <string name="string_volume">Menge</string>
+    <string name="string_price">Preis</string>
 </resources>

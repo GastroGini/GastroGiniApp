@@ -12,7 +12,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesViewHolder;
 
 /**
  * Created by Dogan on 08.04.16.   EventTable???

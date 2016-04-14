@@ -3,12 +3,10 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.activeandroid.query.Select;
@@ -22,7 +20,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductDescriptionAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductDescriptionViewHolder;
 
 public class ProductDescriptionListActivity extends TestActivity implements TestAdapter.Listener<ProductDescription> {

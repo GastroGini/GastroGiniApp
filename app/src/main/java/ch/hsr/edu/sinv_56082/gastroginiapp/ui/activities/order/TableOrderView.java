@@ -4,27 +4,21 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
  * Created by Dogan on 08.04.16.
  */
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 

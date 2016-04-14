@@ -31,8 +31,6 @@
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorTextLight" />
 
-
-
         <Space
             android:layout_width="20px"
             android:layout_height="match_parent"

@@ -12,15 +12,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:textSize="16dp"/>
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:layout_weight="1"
-        android:id="@+id/columnRowEventEditIcon"
-        android:src="@android:drawable/ic_menu_edit"
-        android:tint="@color/colorAlert" />
 
     <include layout="@layout/column_row_delete"/>
 

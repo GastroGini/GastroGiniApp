@@ -72,7 +72,7 @@ public class MenuProductEditActivity extends TestActivity {
 
     private void initializeProductDescription() {
         Bundle extras = getIntent().getExtras();
-        if(extras.getString("product")==null) isNewProduct = true;
+        if(extras.getString("product-uuid")==null) isNewProduct = true;
         ProductList productList = ProductList.get(extras.getString("productList-uuid"));
         product = new Product(null, productList, 0.0,"");
         if(!isNewProduct){

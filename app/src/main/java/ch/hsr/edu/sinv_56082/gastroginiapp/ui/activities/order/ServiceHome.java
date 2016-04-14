@@ -18,9 +18,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
 
 public class ServiceHome extends AppCompatActivity implements TestAdapter.Listener<EventTable> {
 

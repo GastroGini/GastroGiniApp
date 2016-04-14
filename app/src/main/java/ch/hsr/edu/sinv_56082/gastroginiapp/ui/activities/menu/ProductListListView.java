@@ -20,25 +20,24 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuCardView.EditMenuEntity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuCardView.MenuCardView;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductListViewHolder;
 
 public class ProductListListView extends TestActivity implements TestAdapter.Listener<ProductList> {
 
     List<ProductList> productLists;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.EditMenuCardList)ImageView EditMenuCardList;
     @Bind(R.id.fab)FloatingActionButton fab;
     @Bind(R.id.menuCardRecyclerView)RecyclerView menuCardRecyclerView;
+    private ProductListListView activity;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list_list_view);
+        this.activity = this;
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -49,10 +48,8 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), EditMenuEntity.class);
-                intent.putExtra("comingFrom", "addNewMenuList");
-                intent.putExtra("page-name", "add-menu-list");
-                startActivity(intent);
+                //Intent intent = new Intent(activity, ProductListActivity.class);
+                //startActivity(intent);
             }
         });
 
@@ -75,6 +72,8 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
         EditMenuCardList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TestAdapter adap = ((TestAdapter) menuCardRecyclerView.getAdapter());
+                adap.setEditMode(!adap.isEditMode());
                 //    isMenuCardListEditable = !isMenuCardListEditable;
                 //      runRecyclerView(isMenuCardListEditable);
             }
@@ -85,43 +84,18 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
 
     }
 
-
-
-
-/*
-    @Override
-    public void onClick(ProductList productListNumber) {
-
-    }
-
-    @Override
-    public void editItem(ProductList productListNumber) {
-        Log.e("menu list edit", "goto menu card view" + productListNumber.toString());
-        Intent intent = new Intent(getBaseContext(),EditMenuEntity.class);
-        intent.putExtra("product-list-number", productListNumber.toString());
-        intent.putExtra("page-name", "edit-menu-list");
-        startActivity(intent);
-    }
-
-    @Override
-    public void deleteItem(ProductList name) {
-
-    }
-*/
-
     @Override
     public void onItemClick(ProductList item) {
         Log.e("menu card list view", "goto menu card view" + item); // Erro
-        Intent intent = new Intent(getBaseContext(),MenuCardView.class);
-        intent.putExtra("product-list-number", item.toString());
-        intent.putExtra("page-name", "edit-menu-list");
+        Intent intent = new Intent(this,ProductListActivity.class);
+        intent.putExtra("productList-uuid", item.getUuid());
         startActivity(intent);
     }
 
     @Override
     public void onDelete(ProductList item) {
-        int index = productLists.indexOf(item);
-        productLists.remove(index);
+        item.delete();
+        productLists.remove(item);
         //runRecyclerView(isMenuCardListEditable);
         Log.e("menu list delete", "goto menu card view" + item.toString());
     }

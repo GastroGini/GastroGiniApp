@@ -31,10 +31,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
 
 public class EventListActivity extends TestActivity implements Serializable, TestAdapter.Listener<Event> {
 
@@ -118,8 +115,6 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
         myEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //foreignEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         myEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
             @Override
             public EventViewHolder createItemViewHolder(View view) {
@@ -143,7 +138,6 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
                 ((App) getApplication()).p2p.connectTo(foreignEventList.get(position));
             }
         });
-
         myEventsRecyclerView.setHasFixedSize(true);
         //foreignEventsRecyclerView.setHasFixedSize(true);
 
