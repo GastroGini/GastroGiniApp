@@ -47,6 +47,18 @@ android {
         }
     }
 
+    jacocoAndroidUnitTestReport {
+        excludes += ['**/*$ViewBinder*.*']
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
 }
 
 dependencies {
@@ -74,3 +86,4 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
 
 }
+
