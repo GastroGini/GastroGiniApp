@@ -1,5 +1,5 @@
 
-package ch.hsr.edu.sinv_56082.gastroginiapp.app;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
 
 import android.os.Handler;
 import android.util.Log;

@@ -10,8 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenucardListView"
-    tools:showIn="@layout/activity_menucard_list_view">
+    tools:context=".ui.activities.menu.ProductListListView"
+    tools:showIn="@layout/activity_product_list_list_view">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -30,8 +30,6 @@
             android:padding="16dp"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorTextLight" />
-
-
 
         <Space
             android:layout_width="20px"

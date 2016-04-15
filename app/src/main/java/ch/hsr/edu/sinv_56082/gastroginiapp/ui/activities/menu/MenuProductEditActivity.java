@@ -13,33 +13,39 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 
-public class MenuProductEditActivity extends AppCompatActivity {
+public class MenuProductEditActivity extends TestActivity {
 
 
-    TextView price;
-    TextView volume;
-    Spinner productDescription;
-    Button saveButton;
+
+    @Bind(R.id.productEditPrice)TextView price;
+    @Bind(R.id.productEditVolume)TextView volume;
+    @Bind(R.id.productDescriptionSelect)Spinner productDescription;
+    @Bind(R.id.productEditSaveButton)Button saveButton;
 
     Product product;
     boolean isNewProduct = false;
 
+    @Bind(R.id.toolbar) Toolbar toolbar;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_product_edit);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         initializeProductDescription();
-        loadViews();
 
         price.setText(String.valueOf(product.price));
         volume.setText(product.volume);
@@ -64,16 +70,9 @@ public class MenuProductEditActivity extends AppCompatActivity {
 
     }
 
-    private void loadViews() {
-        price = (TextView)findViewById(R.id.productEditPrice);
-        volume = (TextView)findViewById(R.id.productEditVolume);
-        productDescription = (Spinner)findViewById(R.id.productDescriptionSelect);
-        saveButton = (Button)findViewById(R.id.productEditSaveButton);
-    }
-
     private void initializeProductDescription() {
         Bundle extras = getIntent().getExtras();
-        if(extras.getString("product")==null) isNewProduct = true;
+        if(extras.getString("product-uuid")==null) isNewProduct = true;
         ProductList productList = ProductList.get(extras.getString("productList-uuid"));
         product = new Product(null, productList, 0.0,"");
         if(!isNewProduct){

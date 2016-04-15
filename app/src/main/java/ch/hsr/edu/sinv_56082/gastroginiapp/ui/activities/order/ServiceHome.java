@@ -2,8 +2,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,31 +9,34 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.activeandroid.query.Select;
-
 import java.util.UUID;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTablesAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
 
-public class ServiceHome extends AppCompatActivity implements EventTablesAdapter.EventTableClickListener {
+public class ServiceHome extends AppCompatActivity implements TestAdapter.Listener<EventTable> {
 
+
+    @Bind(R.id.toolbar)Toolbar toolbar;
+    @Bind(R.id.eventTablesRecyclerView)RecyclerView eventTablesRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_service_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
+
+
         Bundle args = getIntent().getExtras();
+        //TODO Extract to controller
         Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
         String userName = args.get("userName").toString();
         String eventPassword = args.get("eventPassword").toString();
@@ -43,17 +44,26 @@ public class ServiceHome extends AppCompatActivity implements EventTablesAdapter
         setTitle("GastroGini - Event: " + event.name);
 
 
-        ((LocalData)getApplication()).p2p.setLocalService(event.name + " " + userName);
+        //TODO p2p handling should not be in activity (ApplicationController)
+        ((App)getApplication()).p2p.setLocalService(event.name + " " + userName);
 
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle( "User: " + userName + " | Event Password: " + eventPassword);
 
-        RecyclerView eventTablesRecyclerView = (RecyclerView)findViewById(R.id.eventTablesRecyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
-        eventTablesRecyclerView.setLayoutManager(linearLayoutManager);
-        eventTablesRecyclerView.setAdapter(adapter);
+        //EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
+        eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventTablesRecyclerView.setAdapter(new TestAdapter<EventTable, EventTableViewHolder>(R.layout.column_row_event_tables, event.eventTables(), this) {
+            @Override
+            public EventTableViewHolder createItemViewHolder(View view) {
+                return new EventTableViewHolder(view);
+            }
+
+            @Override
+            public void bindViewHolder(EventTableViewHolder holder, EventTable item) {
+                holder.eventTableTitleText.setText(item.name);
+            }
+        });
         eventTablesRecyclerView.setHasFixedSize(true);
 
 
@@ -69,8 +79,16 @@ public class ServiceHome extends AppCompatActivity implements EventTablesAdapter
         */
     }
 
+
     @Override
-    public void onClick(EventTable eventTable) {
+    public void onItemClick(EventTable item) {
+        Log.e("MyTagGoesHere", "Hacim buraya geldim");
+        Intent intent = new Intent(this, TableOrderView.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDelete(EventTable item) {
 
     }
 }

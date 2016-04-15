@@ -1,9 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,61 +9,54 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.activeandroid.query.Select;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
-public class EventViewActivity extends AppCompatActivity {
+public class EventViewActivity extends TestActivity {
 
     private Event event;
     private boolean isNewEvent = false;
+    
 
-    private EditText eventTitle;
-    private EditText amountOfTables;
-    private Button executionDate ;
-    private Spinner productList;
-    private Button eventViewSaveButton;
-    private Button eventViewStartButton;
+    @Bind(R.id.eventViewTitleInput) EditText eventTitle;
+    @Bind(R.id.eventViewAnzahlTischeInput) EditText amountOfTables;
+    @Bind(R.id.eventViewDatumInput) Button executionDate ;
+    @Bind(R.id.eventViewProduktListeSpinner) Spinner productList;
+    @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
+    @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
+
+
     private EventViewActivity eventViewActivity;
     private int oldTableCount;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         eventViewActivity = this;
 
@@ -77,18 +68,13 @@ public class EventViewActivity extends AppCompatActivity {
             event = Event.get(UUID.fromString(args.getString("event-uuid")));
         }else{
             isNewEvent = true;
-            UUID localUser = ((LocalData) getApplication()).getLocalUser();
+            UUID localUser = ((App) getApplication()).getLocalUser();
             event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), Person.get(localUser));
         }
         setTitle(event.name);
 
 
-        eventTitle = (EditText) findViewById(R.id.eventViewTitleInput);
-        amountOfTables = (EditText) findViewById(R.id.eventViewAnzahlTischeInput);
-        executionDate = (Button) findViewById(R.id.eventViewDatumInput);
-        productList = (Spinner) findViewById(R.id.eventViewProduktListeSpinner);
-        eventViewSaveButton = (Button) findViewById(R.id.eventViewSaveButton);
-        eventViewStartButton = (Button) findViewById(R.id.eventViewStartButton);
+
 
 
         List<ProductList> productLists = new Select().from(ProductList.class).execute();
@@ -105,7 +91,7 @@ public class EventViewActivity extends AppCompatActivity {
             oldTableCount = 0;
 
         }
-        executionDate.setText(DateHelpers.dateToString(this,event.startTime));
+        executionDate.setText(DateHelpers.dateToString(event.startTime));
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
@@ -130,7 +116,7 @@ public class EventViewActivity extends AppCompatActivity {
                     @Override
                     public void onSet(Date date) {
                         event.startTime = date;
-                        executionDate.setText(DateHelpers.dateToString(eventViewActivity, date));
+                        executionDate.setText(DateHelpers.dateToString(date));
                     }
                 });
             }

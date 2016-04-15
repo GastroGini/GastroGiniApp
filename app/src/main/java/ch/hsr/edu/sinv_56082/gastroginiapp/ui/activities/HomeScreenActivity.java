@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.DummyData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
@@ -14,24 +16,26 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuMain;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+    @Bind(R.id.toolbar)Toolbar toolbar;
+    private AppCompatActivity activity;
+    @Bind(R.id.eventButton) Button eventButton;
+    @Bind(R.id.menuButton) Button menuButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        ButterKnife.bind(this);
 
         new DummyData();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final AppCompatActivity activity = this;
-
-        Button eventButton = (Button) findViewById(R.id.eventButton);
-        Button menuButton = (Button) findViewById(R.id.menuButton);
+        activity = this;
 
         eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Intent intent = new Intent(activity,EventListActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, EventListActivity.class);
                 startActivity(intent);
             }
         });

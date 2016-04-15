@@ -13,7 +13,7 @@
         android:required="true" />
 
     <application
-        android:name=".app.LocalData"
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -65,7 +65,7 @@
             android:label="@string/title_activity_product_description_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.menu.MenucardListView"
+            android:name=".ui.activities.menu.ProductListListView"
             android:label="@string/title_activity_menucard_list_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -80,26 +80,22 @@
             android:name=".ui.activities.order.TableOrderView"
             android:label="@string/title_activity_table_order_view"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".ui.activities.menu.MenuCardView.MenuCardView"
             android:label="@string/title_activity_menucard_view"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-         
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.event.EventStaticViewActivity"
             android:label="@string/title_activity_event_static_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuCardView.EditMenuEntity"
             android:label="@string/title_activity_editMenuItem"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.menu.ProductListActivity"
+            android:label="@string/title_activity_product_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
     </application>
 
 </manifest>

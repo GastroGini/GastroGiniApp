@@ -3,13 +3,10 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.activeandroid.query.Select;
@@ -17,42 +14,36 @@ import com.activeandroid.query.Select;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductDescriptionAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.MenuProductListAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductDescriptionViewHolder;
 
-public class ProductDescriptionListActivity extends AppCompatActivity implements MenuProductDescriptionAdapter.OnClickListener {
+public class ProductDescriptionListActivity extends TestActivity implements TestAdapter.Listener<ProductDescription> {
 
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private List<ProductDescription> productDescriptions = new ArrayList<>();
-    private RecyclerView eventTablesRecyclerView;
+    @Bind(R.id.productDescriptionReciclerView) RecyclerView eventTablesRecyclerView;
 
     ProductDescriptionListActivity activity;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.fab) FloatingActionButton fab;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_description_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         activity = this;
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,10 +51,23 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
             }
         });
 
-        eventTablesRecyclerView = (RecyclerView)findViewById(R.id.productDescriptionReciclerView);
-
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventTablesRecyclerView.setAdapter(new MenuProductDescriptionAdapter(this, productDescriptions));
+
+
+        eventTablesRecyclerView.setAdapter(new TestAdapter<ProductDescription, ProductDescriptionViewHolder>(R.layout.column_row_product_description, productDescriptions, this) {
+            @Override
+            public ProductDescriptionViewHolder createItemViewHolder(View view) {
+                return new ProductDescriptionViewHolder(view);
+            }
+
+            @Override
+            public void bindViewHolder(ProductDescriptionViewHolder holder, ProductDescription item) {
+                holder.name.setText(item.name);
+                holder.desc.setText(item.description);
+            }
+        });
+
+
         eventTablesRecyclerView.setHasFixedSize(true);
 
         loadProductDescriptions();
@@ -87,10 +91,22 @@ public class ProductDescriptionListActivity extends AppCompatActivity implements
         eventTablesRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
-    @Override
+    /*@Override
     public void onClick(ProductDescription productList) {
         Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
         intent.putExtra("productDescription-uuid", productList.getUuid().toString());
         startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
+    }*/
+
+    @Override
+    public void onItemClick(ProductDescription item) {
+        Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
+        intent.putExtra("productDescription-uuid", item.getUuid().toString());
+        startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
+    }
+
+    @Override
+    public void onDelete(ProductDescription item) {
+
     }
 }

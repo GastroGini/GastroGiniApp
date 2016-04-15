@@ -10,13 +10,16 @@ import android.view.View;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public class EventStaticViewActivity extends AppCompatActivity {
-
+    //TODO which one is that?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_event_static_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

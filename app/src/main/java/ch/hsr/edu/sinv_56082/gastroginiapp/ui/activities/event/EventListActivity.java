@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,14 +22,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.LocalData;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventsAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventClickListener;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
-public class EventListActivity extends AppCompatActivity implements EventClickListener, Serializable{
+public class EventListActivity extends TestActivity implements Serializable, TestAdapter.Listener<Event> {
 
     private List<Event> myEventList = new ArrayList<>();
     private List<P2pHandler.ServiceResponseHolder> foreignEventList = new ArrayList<>();
@@ -41,12 +44,24 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
 
 
     private boolean myEventsCollapsedState = true;
-    private EventsAdapter myEventsAdapter;
-    private EventsAdapter foreignEventsAdapter;
-    private TextView infoText;
-    private RecyclerView myEventsRecyclerView;
+
+
+    //private EventsAdapter myEventsAdapter;
+    //private EventsAdapter foreignEventsAdapter;
+
+
+    @Bind(R.id.noAvailableEventsText) TextView noAvailableEventsText;
+    @Bind(R.id.eventListMyEventsRecyclerView) RecyclerView myEventsRecyclerView;
+    @Bind(R.id.eventListForeignEventsRecyclerView) ListView foreignEventsRecyclerView;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.fab) FloatingActionButton fab;
+    @Bind(R.id.myEventsExpandCollapseIcon) ImageView myEventExpandCollapseIcon;
+    @Bind(R.id.foreignEventsExpandCollapseIcon) ImageView foreignEventExpandCollapseIcon;
+    @Bind(R.id.myEventsEditModeIcon) ImageView myEventEditModeIcon;
+
+
     private AppCompatActivity activity;
-    private ListView foreignEventsRecyclerView;
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -54,11 +69,13 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         if(requestCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
             myEventList.addAll(new Select().from(Event.class).<Event>execute());
-            myEventsAdapter.notifyDataSetChanged();
+            myEventsRecyclerView.getAdapter().notifyDataSetChanged();
             Log.d("hj", "onActivityResult: reloaded list");
         }
         checkIfEventListEmpty();
     }
+
+    /*
 
     @Override
     public void onClick(Event event, int identifier) {
@@ -69,82 +86,77 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
         }catch(ClassCastException ex){
             ex.printStackTrace();
         }
-    }
+    }*/
+
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         activity = this;
 
         myEventList.addAll(new Select().from(Event.class).<Event>execute());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myEventsAdapter.changeEditMode();
                 Intent intent = new Intent(activity, EventViewActivity.class);
-                startActivityForResult(intent,MYEVENTLIST_IDENTIFIER);
+                startActivityForResult(intent, MYEVENTLIST_IDENTIFIER);
             }
         });
 
-        myEventsRecyclerView = (RecyclerView)findViewById(R.id.eventListMyEventsRecyclerView);
-        foreignEventsRecyclerView = (ListView) findViewById(R.id.eventListForeignEventsRecyclerView);
 
-        myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
+        //myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
         myEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //foreignEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        myEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+            @Override
+            public EventViewHolder createItemViewHolder(View view) {
+                return new EventViewHolder(view);
+            }
 
-        myEventsRecyclerView.setAdapter(myEventsAdapter);
+            @Override
+            public void bindViewHolder(EventViewHolder holder, Event item) {
+                holder.eventTitle.setText(item.name);
+                holder.startDate.setText(DateHelpers.dateToString(item.startTime));
+                holder.tableCount.setText(String.valueOf(item.eventTables().size()));
+            }
+        });
+
+
         foreignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
         foreignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((LocalData)getApplication()).p2p.connectTo(foreignEventList.get(position));
+                //TODO p2p not in activity
+                ((App) getApplication()).p2p.connectTo(foreignEventList.get(position));
             }
         });
-
         myEventsRecyclerView.setHasFixedSize(true);
         //foreignEventsRecyclerView.setHasFixedSize(true);
 
-        final ImageView myEventExpandCollapseIcon = (ImageView) findViewById(R.id.myEventsExpandCollapseIcon);
-        ImageView foreignEventExpandCollapseIcon = (ImageView) findViewById(R.id.foreignEventsExpandCollapseIcon);
-        ImageView myEventEditModeIcon = (ImageView) findViewById(R.id.myEventsEditModeIcon);
-        infoText = (TextView) findViewById(R.id.noAvailableEventsText);
 
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myEventsAdapter.changeEditMode();
-                myEventsAdapter.notifyDataSetChanged();
+                TestAdapter adapter = ((TestAdapter) myEventsRecyclerView.getAdapter());
+                adapter.setEditMode(!adapter.isEditMode());
             }
         });
 
         myEventExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!myEventsCollapsedState){
+                if (!myEventsCollapsedState) {
                     myEventsRecyclerView.setVisibility(View.GONE);
-                    infoText.setVisibility(View.GONE);
-                }else{
+                    noAvailableEventsText.setVisibility(View.GONE);
+                } else {
                     myEventsRecyclerView.setVisibility(View.VISIBLE);
                     checkIfEventListEmpty();
                 }
@@ -167,21 +179,23 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
     public void checkIfEventListEmpty(){
         if(myEventList.isEmpty()){
             myEventsRecyclerView.setVisibility(View.GONE);
-            infoText.setVisibility(View.VISIBLE);
+            noAvailableEventsText.setVisibility(View.VISIBLE);
         }else{
             myEventsRecyclerView.setVisibility(View.VISIBLE);
-            infoText.setVisibility(View.GONE);
+            noAvailableEventsText.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ((LocalData)getApplication()).p2p.startBroadcastReciever(activity);
 
-        ((LocalData)getApplication()).p2p.removeLocalServie();
+        //TODO p2p handling should not be in activity
+        ((App)getApplication()).p2p.startBroadcastReciever();
 
-        ((LocalData)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+        ((App)getApplication()).p2p.removeLocalServie();
+
+        ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
                 for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
@@ -196,7 +210,7 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
             }
         });
 
-        ((LocalData)getApplication()).p2p.discoverServices();
+        ((App)getApplication()).p2p.discoverServices();
 
 
     }
@@ -207,5 +221,23 @@ public class EventListActivity extends AppCompatActivity implements EventClickLi
 
     public static int getForeigneventlistIdentifier(){
         return FOREIGNEVENTLIST_IDENTIFIER;
+    }
+
+    @Override
+    public void onItemClick(Event ownEvent) {
+        try {
+            Intent intent = new Intent(this, EventViewActivity.class);
+            intent.putExtra("event-uuid", ownEvent.getUuid().toString());
+            startActivityForResult(intent, MYEVENTLIST_IDENTIFIER);
+        }catch(ClassCastException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDelete(Event ownEvent) {
+        ownEvent.delete();
+        myEventList.remove(ownEvent);
+        myEventsRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }
