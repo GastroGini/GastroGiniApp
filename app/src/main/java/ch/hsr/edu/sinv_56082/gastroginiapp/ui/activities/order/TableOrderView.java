@@ -25,7 +25,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 public class TableOrderView extends TestActivity implements TableRowAdapter.TableItemClickListener {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecycleView;
+    @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,9 @@ public class TableOrderView extends TestActivity implements TableRowAdapter.Tabl
 
 
         TableRowAdapter adapter = new TableRowAdapter(this,temp);
-        tableOrderRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        tableOrderRecycleView.setAdapter(adapter);
-        tableOrderRecycleView.setHasFixedSize(true);
+        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tableOrderRecyclerView.setAdapter(adapter);
+        tableOrderRecyclerView.setHasFixedSize(true);
 
 
 

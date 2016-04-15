@@ -24,8 +24,7 @@ public class StartEventActivity extends TestActivity {
     @Bind(R.id.hostButton) Button hostButton;
     @Bind(R.id.localHostButton) Button localHostButton;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Bind(R.id.toolbar) Toolbar toolbar;
 
     private Event event;
     private StartEventActivity startEventActivity;

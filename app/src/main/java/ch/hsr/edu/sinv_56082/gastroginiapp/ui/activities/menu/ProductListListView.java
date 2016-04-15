@@ -63,7 +63,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
 
             @Override
             public void bindViewHolder(ProductListViewHolder holder, ProductList item) {
-                holder.productList.setText(item.name);
+                holder.menucardRowItem.setText(item.name);
             }
         });
         menuCardRecyclerView.setHasFixedSize(true);
@@ -88,7 +88,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
     public void onItemClick(ProductList item) {
         Log.e("menu card list view", "goto menu card view" + item); // Erro
         Intent intent = new Intent(this,ProductListActivity.class);
-        intent.putExtra("productList-uuid", item.getUuid());
+        intent.putExtra("menucardRowItem-uuid", item.getUuid());
         startActivity(intent);
     }
 

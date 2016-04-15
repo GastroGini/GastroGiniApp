@@ -26,7 +26,7 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
 
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private List<ProductDescription> productDescriptions = new ArrayList<>();
-    @Bind(R.id.productDescriptionReciclerView) RecyclerView eventTablesRecyclerView;
+    @Bind(R.id.productDescriptionRecyclerView) RecyclerView productDescriptionRecyclerView;
 
     ProductDescriptionListActivity activity;
 
@@ -51,10 +51,10 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
             }
         });
 
-        eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productDescriptionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        eventTablesRecyclerView.setAdapter(new TestAdapter<ProductDescription, ProductDescriptionViewHolder>(R.layout.column_row_product_description, productDescriptions, this) {
+        productDescriptionRecyclerView.setAdapter(new TestAdapter<ProductDescription, ProductDescriptionViewHolder>(R.layout.column_row_product_description, productDescriptions, this) {
             @Override
             public ProductDescriptionViewHolder createItemViewHolder(View view) {
                 return new ProductDescriptionViewHolder(view);
@@ -62,13 +62,13 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
 
             @Override
             public void bindViewHolder(ProductDescriptionViewHolder holder, ProductDescription item) {
-                holder.name.setText(item.name);
-                holder.desc.setText(item.description);
+                holder.productDescriptionName.setText(item.name);
+                holder.productDescriptionDesc.setText(item.description);
             }
         });
 
 
-        eventTablesRecyclerView.setHasFixedSize(true);
+        productDescriptionRecyclerView.setHasFixedSize(true);
 
         loadProductDescriptions();
 
@@ -88,20 +88,20 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
     private void loadProductDescriptions() {
         productDescriptions.clear();
         productDescriptions.addAll(new Select().from(ProductDescription.class).<ProductDescription>execute());
-        eventTablesRecyclerView.getAdapter().notifyDataSetChanged();
+        productDescriptionRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     /*@Override
-    public void onClick(ProductDescription productList) {
+    public void onClick(ProductDescription menucardRowItem) {
         Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
-        intent.putExtra("productDescription-uuid", productList.getUuid().toString());
+        intent.putExtra("productDescriptionSelect-uuid", menucardRowItem.getUuid().toString());
         startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
     }*/
 
     @Override
     public void onItemClick(ProductDescription item) {
         Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
-        intent.putExtra("productDescription-uuid", item.getUuid().toString());
+        intent.putExtra("productDescriptionSelect-uuid", item.getUuid().toString());
         startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
     }
 

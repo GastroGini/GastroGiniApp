@@ -2,10 +2,8 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,10 +34,10 @@ public class EventViewActivity extends TestActivity {
     private boolean isNewEvent = false;
     
 
-    @Bind(R.id.eventViewTitleInput) EditText eventTitle;
-    @Bind(R.id.eventViewAnzahlTischeInput) EditText amountOfTables;
-    @Bind(R.id.eventViewDatumInput) Button executionDate ;
-    @Bind(R.id.eventViewProduktListeSpinner) Spinner productList;
+    @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
+    @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
+    @Bind(R.id.eventViewDateInput) Button eventViewDateInput;
+    @Bind(R.id.eventViewProductListSpinner) Spinner eventViewProductListSpinner;
     @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
     @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
 
@@ -79,23 +77,23 @@ public class EventViewActivity extends TestActivity {
 
         List<ProductList> productLists = new Select().from(ProductList.class).execute();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
-        productList.setAdapter(spinnerAdapter);
+        eventViewProductListSpinner.setAdapter(spinnerAdapter);
 
-        eventTitle.setText(event.name);
+        eventViewTitleInput.setText(event.name);
 
         if(!isNewEvent) {
-            amountOfTables.setText(String.valueOf(event.eventTables().size()));
+            eventViewTableNumberInput.setText(String.valueOf(event.eventTables().size()));
             oldTableCount = event.eventTables().size();
         } else {
-            amountOfTables.setText("0");
+            eventViewTableNumberInput.setText("0");
             oldTableCount = 0;
 
         }
-        executionDate.setText(DateHelpers.dateToString(event.startTime));
+        eventViewDateInput.setText(DateHelpers.dateToString(event.startTime));
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
-                productList.setSelection(i);
+                eventViewProductListSpinner.setSelection(i);
             }
         }
 
@@ -109,14 +107,14 @@ public class EventViewActivity extends TestActivity {
             eventViewStartButton.setVisibility(View.INVISIBLE);
         }
 
-        executionDate.setOnClickListener(new View.OnClickListener() {
+        eventViewDateInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DateHelpers.Picker(eventViewActivity, new DateHelpers.Callback() {
                     @Override
                     public void onSet(Date date) {
                         event.startTime = date;
-                        executionDate.setText(DateHelpers.dateToString(date));
+                        eventViewDateInput.setText(DateHelpers.dateToString(date));
                     }
                 });
             }
@@ -127,9 +125,9 @@ public class EventViewActivity extends TestActivity {
             @Override
             public void onClick(View v) {
 
-                event.name = eventTitle.getText().toString();
-                event.productList = (ProductList)productList.getSelectedItem();
-                int newTableCount = Integer.parseInt(amountOfTables.getText().toString());
+                event.name = eventViewTitleInput.getText().toString();
+                event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
 
                 event.save();
 

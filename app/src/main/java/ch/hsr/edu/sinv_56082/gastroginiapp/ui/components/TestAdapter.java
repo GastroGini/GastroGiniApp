@@ -4,11 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import java.util.List;
-
-import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public abstract class TestAdapter<ET,VH extends TestViewHolder> extends RecyclerView.Adapter<VH> {
 
@@ -40,9 +37,9 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
         final ET item = items.get(position);
 
         if(isEditMode()){
-            holder.deleter.setVisibility(View.VISIBLE);
+            holder.delete_button.setVisibility(View.VISIBLE);
         }else{
-            holder.deleter.setVisibility(View.INVISIBLE);
+            holder.delete_button.setVisibility(View.INVISIBLE);
         }
 
         if (listener != null){
@@ -53,7 +50,7 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
                 }
             });
 
-            holder.deleter.setOnClickListener(new View.OnClickListener() {
+            holder.delete_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onDelete(item);

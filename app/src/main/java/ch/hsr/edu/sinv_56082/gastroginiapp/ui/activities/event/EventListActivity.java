@@ -51,12 +51,12 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
 
     @Bind(R.id.noAvailableEventsText) TextView noAvailableEventsText;
-    @Bind(R.id.eventListMyEventsRecyclerView) RecyclerView myEventsRecyclerView;
-    @Bind(R.id.eventListForeignEventsRecyclerView) ListView foreignEventsRecyclerView;
+    @Bind(R.id.eventListMyEventsRecyclerView) RecyclerView eventListMyEventsRecyclerView;
+    @Bind(R.id.eventListForeignEventsRecyclerView) ListView eventListForeignEventsRecyclerView;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
-    @Bind(R.id.myEventsExpandCollapseIcon) ImageView myEventExpandCollapseIcon;
-    @Bind(R.id.foreignEventsExpandCollapseIcon) ImageView foreignEventExpandCollapseIcon;
+    @Bind(R.id.myEventsExpandCollapseIcon) ImageView myEventsExpandCollapseIcon;
+    @Bind(R.id.foreignEventsExpandCollapseIcon) ImageView foreignEventsExpandCollapseIcon;
     @Bind(R.id.myEventsEditModeIcon) ImageView myEventEditModeIcon;
 
 
@@ -69,7 +69,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         if(requestCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
             myEventList.addAll(new Select().from(Event.class).<Event>execute());
-            myEventsRecyclerView.getAdapter().notifyDataSetChanged();
+            eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
             Log.d("hj", "onActivityResult: reloaded list");
         }
         checkIfEventListEmpty();
@@ -114,8 +114,8 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         //myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
-        myEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        myEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+        eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventListMyEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
             @Override
             public EventViewHolder createItemViewHolder(View view) {
                 return new EventViewHolder(view);
@@ -123,54 +123,54 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
             @Override
             public void bindViewHolder(EventViewHolder holder, Event item) {
-                holder.eventTitle.setText(item.name);
-                holder.startDate.setText(DateHelpers.dateToString(item.startTime));
-                holder.tableCount.setText(String.valueOf(item.eventTables().size()));
+                holder.columnRowEventTitle.setText(item.name);
+                holder.columnRowStartDate.setText(DateHelpers.dateToString(item.startTime));
+                holder.columnRowAmountOfTables.setText(String.valueOf(item.eventTables().size()));
             }
         });
 
 
-        foreignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
-        foreignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
+        eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO p2p not in activity
                 ((App) getApplication()).p2p.connectTo(foreignEventList.get(position));
             }
         });
-        myEventsRecyclerView.setHasFixedSize(true);
-        //foreignEventsRecyclerView.setHasFixedSize(true);
+        eventListMyEventsRecyclerView.setHasFixedSize(true);
+        //eventListForeignEventsRecyclerView.setHasFixedSize(true);
 
 
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestAdapter adapter = ((TestAdapter) myEventsRecyclerView.getAdapter());
+                TestAdapter adapter = ((TestAdapter) eventListMyEventsRecyclerView.getAdapter());
                 adapter.setEditMode(!adapter.isEditMode());
             }
         });
 
-        myEventExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
+        myEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!myEventsCollapsedState) {
-                    myEventsRecyclerView.setVisibility(View.GONE);
+                    eventListMyEventsRecyclerView.setVisibility(View.GONE);
                     noAvailableEventsText.setVisibility(View.GONE);
                 } else {
-                    myEventsRecyclerView.setVisibility(View.VISIBLE);
+                    eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
                     checkIfEventListEmpty();
                 }
                 myEventsCollapsedState = !myEventsCollapsedState;
             }
         });
 
-        foreignEventExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
+        foreignEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (foreignEventsRecyclerView.getVisibility() == View.VISIBLE) {
-                    foreignEventsRecyclerView.setVisibility(View.GONE);
+                if (eventListForeignEventsRecyclerView.getVisibility() == View.VISIBLE) {
+                    eventListForeignEventsRecyclerView.setVisibility(View.GONE);
                 } else {
-                    foreignEventsRecyclerView.setVisibility(View.VISIBLE);
+                    eventListForeignEventsRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -178,10 +178,10 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
     public void checkIfEventListEmpty(){
         if(myEventList.isEmpty()){
-            myEventsRecyclerView.setVisibility(View.GONE);
+            eventListMyEventsRecyclerView.setVisibility(View.GONE);
             noAvailableEventsText.setVisibility(View.VISIBLE);
         }else{
-            myEventsRecyclerView.setVisibility(View.VISIBLE);
+            eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
             noAvailableEventsText.setVisibility(View.GONE);
         }
     }
@@ -206,7 +206,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
                 }
 
                 foreignEventList.add(service);
-                ((BaseAdapter) foreignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
+                ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
         });
 
@@ -238,6 +238,6 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
     public void onDelete(Event ownEvent) {
         ownEvent.delete();
         myEventList.remove(ownEvent);
-        myEventsRecyclerView.getAdapter().notifyDataSetChanged();
+        eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
     }
 }

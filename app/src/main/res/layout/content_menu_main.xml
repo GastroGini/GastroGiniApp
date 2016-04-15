@@ -18,7 +18,7 @@
         android:text="@string/menu_main_menuMapButtonText"
         android:layout_margin="16dp"
         android:layout_height="wrap_content"
-        android:id="@+id/menuMapButton" />
+        android:id="@+id/menuCardButton" />
     <Button
         android:layout_width="match_parent"
         android:layout_margin="16dp"

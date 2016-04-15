@@ -3,7 +3,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +16,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductViewHolder;
 
 public class ProductListActivity extends AppCompatActivity implements TestAdapter.Listener<Product> {
@@ -44,13 +41,13 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
 
         Bundle extras = getIntent().getExtras();
         if(extras==null) finish();
-        productList = ProductList.get((UUID)extras.get("productList-uuid"));
+        productList = ProductList.get((UUID)extras.get("menucardRowItem-uuid"));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, MenuProductEditActivity.class);
-                intent.putExtra("productList-uuid", productList.getUuid().toString());
+                intent.putExtra("menucardRowItem-uuid", productList.getUuid().toString());
                 startActivity(intent);
             }
         });
@@ -65,9 +62,9 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
 
             @Override
             public void bindViewHolder(ProductViewHolder holder, Product item) {
-                holder.productDescription.setText(item.productDescription.name);
-                holder.productPrice.setText(String.valueOf(item.price));
-                holder.productVolume.setText(item.volume);
+                holder.columnRowProductDescription.setText(item.productDescription.name);
+                holder.columnRowProductPrice.setText(String.valueOf(item.price));
+                holder.columnRowProductVolume.setText(item.volume);
             }
         });
         productRecyclerView.setHasFixedSize(true);
@@ -88,7 +85,7 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
     public void onItemClick(Product item) {
         Intent intent = new Intent(this, MenuProductEditActivity.class);
         intent.putExtra("product-uuid", item.getUuid().toString());
-        intent.putExtra("productList-uuid", item.productList.getUuid().toString());
+        intent.putExtra("menucardRowItem-uuid", item.productList.getUuid().toString());
         startActivity(intent);
     }
 

@@ -10,9 +10,9 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 
 
 public class ProductViewHolder extends TestViewHolder {
-    @Bind(R.id.columnRowProductDescription) public TextView productDescription;
-    @Bind(R.id.columRowProductVolume) public TextView productVolume;
-    @Bind(R.id.columnRowProductPrice) public TextView productPrice;
+    @Bind(R.id.columnRowProductDescription) public TextView columnRowProductDescription;
+    @Bind(R.id.columnRowProductVolume) public TextView columnRowProductVolume;
+    @Bind(R.id.columnRowProductPrice) public TextView columnRowProductPrice;
 
     public ProductViewHolder(View itemView) {
         super(itemView);

@@ -11,7 +11,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public class TestViewHolder extends RecyclerView.ViewHolder {
     public View itemView;
-    @Bind(R.id.delete_button) ImageView deleter;
+    @Bind(R.id.delete_button) ImageView delete_button;
     public TestViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;

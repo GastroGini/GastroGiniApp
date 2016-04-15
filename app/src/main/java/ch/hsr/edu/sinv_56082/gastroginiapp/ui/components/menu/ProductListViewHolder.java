@@ -9,7 +9,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 
 public class ProductListViewHolder extends TestViewHolder {
-    @Bind(R.id.menucardRowItem) public TextView productList;
+    @Bind(R.id.menucardRowItem) public TextView menucardRowItem;
     public ProductListViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

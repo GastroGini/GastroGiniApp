@@ -10,9 +10,9 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 
 
 public class EventViewHolder extends TestViewHolder {
-    @Bind(R.id.columnRowEventTitle) public TextView eventTitle;
-    @Bind(R.id.columnRowStartDate) public TextView startDate;
-    @Bind(R.id.columnRowAmountOfTables) public TextView tableCount;
+    @Bind(R.id.columnRowEventTitle) public TextView columnRowEventTitle;
+    @Bind(R.id.columnRowStartDate) public TextView columnRowStartDate;
+    @Bind(R.id.columnRowAmountOfTables) public TextView columnRowAmountOfTables;
 
     public EventViewHolder(View itemView) {
         super(itemView);

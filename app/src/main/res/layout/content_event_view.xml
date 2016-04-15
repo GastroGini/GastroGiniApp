@@ -50,7 +50,7 @@
             android:inputType="number">
 
             <EditText
-                android:id="@+id/eventViewAnzahlTischeInput"
+                android:id="@+id/eventViewTableNumberInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/number_of_tables" />
@@ -73,7 +73,7 @@
                 android:text="@string/eventDate"/>
 
             <Button
-                android:id="@+id/eventViewDatumInput"
+                android:id="@+id/eventViewDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -97,7 +97,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventViewProduktListeSpinner"
+                android:id="@+id/eventViewProductListSpinner"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
                 android:entries="@array/produktList_array"
