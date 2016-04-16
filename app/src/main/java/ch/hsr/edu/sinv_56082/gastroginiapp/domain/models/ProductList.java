@@ -24,11 +24,11 @@ public class ProductList extends UUIDModel{
     public String name;
 
     public List<Product> products(){
-        return getMany(Product.class, "menucardRowItem");
+        return getMany(Product.class, "productList");
     }
 
     public List<Event> events(){
-        return getMany(Event.class, "menucardRowItem");
+        return getMany(Event.class, "productList");
     }
 
     public String toString(){
