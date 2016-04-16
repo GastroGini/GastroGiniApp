@@ -41,7 +41,7 @@ public class ProductDescription extends UUIDModel{
     }
 
     public List<Product> products(){
-        return getMany(Product.class, "columnRowProductDescription");
+        return getMany(Product.class, "productDescription");
     }
 
 }

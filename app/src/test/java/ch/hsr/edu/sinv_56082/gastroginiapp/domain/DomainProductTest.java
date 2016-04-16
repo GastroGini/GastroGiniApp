@@ -29,7 +29,7 @@ public class DomainProductTest {
     @Before
     public void setUp(){
         cat = new ProductCategory("cat");
-        description = new ProductDescription("productDescriptionName", "productDescriptionDesc", cat);
+        description = new ProductDescription("name", "desc", cat);
         list = new ProductList("list");
         cat.save();description.save();list.save();
 

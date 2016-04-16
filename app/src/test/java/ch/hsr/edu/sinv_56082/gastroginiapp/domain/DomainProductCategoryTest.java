@@ -29,7 +29,7 @@ public class DomainProductCategoryTest {
 
     @Test
     public void testQueryWithSelectByName(){
-        ProductCategory query = new Select().from(ProductCategory.class).where("productDescriptionName=?", test1.name).executeSingle();
+        ProductCategory query = new Select().from(ProductCategory.class).where("name=?", test1.name).executeSingle();
         assertEquals(query, test1);
     }
 
