@@ -26,20 +26,20 @@ public class DomainProductDescriptionTest {
     public void setUp(){
         cat = new ProductCategory("category");
         cat.save();
-        test1 = new ProductDescription("productDescriptionName", "description", cat);
+        test1 = new ProductDescription("name", "description", cat);
         test1.save();
     }
 
     @Test
     public void testQueryWithSelectByName(){
-        ProductDescription desc = new Select().from(ProductDescription.class).where("productDescriptionName = ?", test1.name).executeSingle();
+        ProductDescription desc = new Select().from(ProductDescription.class).where("name = ?", test1.name).executeSingle();
 
         assertEquals(test1, desc);
     }
 
     @Test
     public void testCreate() {
-        ProductDescription desc = new ProductDescription("productDescriptionName", "productDescriptionDesc", cat);
+        ProductDescription desc = new ProductDescription("name", "desc", cat);
         desc.save();
 
         ProductDescription query = ProductDescription.load(ProductDescription.class, desc.getId());
@@ -49,7 +49,7 @@ public class DomainProductDescriptionTest {
 
     @Test
     public void testUpdate() {
-        test1.description = "new productDescriptionDesc";
+        test1.description = "new desc";
         test1.name = "kja";
         test1.save();
 
