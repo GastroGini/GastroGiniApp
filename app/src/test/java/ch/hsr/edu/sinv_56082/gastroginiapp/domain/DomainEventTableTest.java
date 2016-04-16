@@ -38,7 +38,7 @@ public class DomainEventTableTest {
     @Before
     public void setUp(){
         cat = new ProductCategory("cat");
-        description = new ProductDescription("productDescriptionName", "productDescriptionDesc", cat);
+        description = new ProductDescription("name", "desc", cat);
         list = new ProductList("list");
         product = new Product(description,list,2.0,"2dl");
         person = new Person("John", "Silver");
@@ -59,7 +59,7 @@ public class DomainEventTableTest {
 
     @Test
     public void testQueryWithSelectByName(){
-        EventTable query = new Select().from(EventTable.class).where("productDescriptionName=?", test1.name).executeSingle();
+        EventTable query = new Select().from(EventTable.class).where("name=?", test1.name).executeSingle();
         assertEquals(query, test1);
     }
 

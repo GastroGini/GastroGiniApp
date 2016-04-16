@@ -30,7 +30,7 @@ public class DomainOrderStateTest {
 
     @Test
     public void testQueryWithSelectByName(){
-        OrderState query = new Select().from(OrderState.class).where("productDescriptionName=?", test1.name).executeSingle();
+        OrderState query = new Select().from(OrderState.class).where("name=?", test1.name).executeSingle();
         assertEquals(query, test1);
     }
 
