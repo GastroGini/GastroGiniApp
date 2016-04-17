@@ -7,7 +7,17 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+
 public abstract class TestAdapter<ET,VH extends TestViewHolder> extends RecyclerView.Adapter<VH> {
+
+    public void setList(List<ET> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+    public List<ET> getList(){
+        return items;
+    }
 
     public interface Listener<ET>{
         void onItemClick(ET item);
@@ -39,7 +49,7 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
         if(isEditMode()){
             holder.delete_button.setVisibility(View.VISIBLE);
         }else{
-            holder.delete_button.setVisibility(View.INVISIBLE);
+            holder.delete_button.setVisibility(View.GONE);
         }
 
         if (listener != null){

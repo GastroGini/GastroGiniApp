@@ -19,7 +19,7 @@ public class ProductDescription extends UUIDModel{
     @Column
     public String description;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public ProductCategory productCategory;
 
 
@@ -42,6 +42,11 @@ public class ProductDescription extends UUIDModel{
 
     public List<Product> products(){
         return getMany(Product.class, "productDescription");
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 
 }

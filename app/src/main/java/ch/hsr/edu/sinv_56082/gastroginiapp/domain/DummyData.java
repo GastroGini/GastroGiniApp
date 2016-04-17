@@ -22,11 +22,17 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 
 public class DummyData {
     public DummyData(){
-
         if (new Select().from(ProductList.class).execute().size() == 0) {
-
-            ProductCategory cat = new ProductCategory("Kategorie 1");
+            ProductCategory cat = new ProductCategory("Kalte Getränke");
             cat.save();
+            new ProductCategory("Warme Getränke").save();
+            new ProductCategory("Aloholische Getränke").save();
+            new ProductCategory("Biere").save();
+            new ProductCategory("Weine").save();
+            new ProductCategory("Speisen").save();
+            new ProductCategory("Vorspeisen").save();
+            new ProductCategory("Salate").save();
+            new ProductCategory("Dessert").save();
 
             Person pers = new Person("Tom", "What");
             pers.save();
@@ -34,9 +40,9 @@ public class DummyData {
             new Person("Marry", "Sims").save();
             new Person("Joanne", "Filde").save();
 
-            ProductList pList = new ProductList("ProductList 1");
+            new ProductList("ProductList 1").save();
+            ProductList pList = new ProductList("ProductList 2");
             pList.save();
-            new ProductList("ProductList 2").save();
             new ProductList("ProductList 3").save();
             new ProductList("ProductList 4").save();
             new ProductList("ProductList 5").save();
@@ -44,10 +50,15 @@ public class DummyData {
 
             ProductDescription pDesc = new ProductDescription("Cola", "Getränk", cat);
             pDesc.save();
+            new ProductDescription("Ice Tea","Gezuckerter schwarzer Tee mit Limonade.",cat).save();
+            new ProductDescription("Fanta","Erfrischungsgetränk aus Limonade und Orange mit Mineralwasser",cat).save();
+            new ProductDescription("Sprite","Gezuckertes Etwas, das Menschen trinken",cat).save();
+            new ProductDescription("Coca Cola Zero","Wie Coca Cola, einfach ohne Zucker.",cat).save();
+            new ProductDescription("Red Bull","Süsse Bullenpisse, auch Taurin genannt, mit sehr viel Koffein.",cat).save();
+            new ProductDescription("Cuke","Eine neue Variante von Coca Cola, definitiv geniessbar.",cat).save();
 
-            Product prod = new Product(pDesc, pList, 3.5, "3dl");
+            Product prod = new Product(pDesc, pList, 4.5, "4dl");
             prod.save();
-            new Product(pDesc, pList, 4.5, "4dl").save();
             new Product(pDesc, pList, 5.5, "5dl").save();
             new Product(pDesc, pList, 6.5, "6dl").save();
 

@@ -31,6 +31,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
     @Bind(R.id.fab)FloatingActionButton fab;
     @Bind(R.id.menuCardRecyclerView)RecyclerView menuCardRecyclerView;
     private ProductListListView activity;
+    private TestAdapter<ProductList,ProductListViewHolder> adapter;
 
 
     @Override
@@ -48,14 +49,13 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(activity, ProductListActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(activity, ProductListListEditView.class);
+                startActivityForResult(intent, 1);
             }
         });
 
-
-        menuCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        menuCardRecyclerView.setAdapter(new TestAdapter<ProductList, ProductListViewHolder>(R.layout.column_row_product_list,productLists, this) {
+        adapter = new TestAdapter<ProductList, ProductListViewHolder>(
+                R.layout.column_row_product_description,productLists, this) {
             @Override
             public ProductListViewHolder createItemViewHolder(View view) {
                 return new ProductListViewHolder(view);
@@ -63,9 +63,16 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
 
             @Override
             public void bindViewHolder(ProductListViewHolder holder, ProductList item) {
-                holder.menucardRowItem.setText(item.name);
+                holder.menucardRowItemDescriptionTitle.setText(item.name);
+                /* Because we use the same Layout file, we need to adjust the invisible
+                 * containers textSize, for proper display of in-between spaces*/
+                holder.menucardRowItemDescription.setVisibility(View.INVISIBLE);
+                holder.menucardRowItemDescription.setTextSize(1.00f);
             }
-        });
+        };
+
+        menuCardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        menuCardRecyclerView.setAdapter(adapter);
         menuCardRecyclerView.setHasFixedSize(true);
 
 
@@ -84,6 +91,16 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
 
     }
 
+    public void loadDataSet(){
+        productLists = new Select().from(ProductList.class).execute();
+    }
+
+    public void refreshList(){
+        if(adapter != null){
+            adapter.setList(productLists);
+        }
+    }
+
     @Override
     public void onItemClick(ProductList item) {
         Log.e("menu card list view", "goto menu card view" + item); // Erro
@@ -96,7 +113,18 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
     public void onDelete(ProductList item) {
         item.delete();
         productLists.remove(item);
+        adapter.notifyDataSetChanged();
         //runRecyclerView(isMenuCardListEditable);
         Log.e("menu list delete", "goto menu card view" + item.toString());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                loadDataSet();
+                refreshList();
+            }
+        }
     }
 }

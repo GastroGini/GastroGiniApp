@@ -10,8 +10,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
 
 
 public class ProductDescriptionViewHolder extends TestViewHolder{
-    @Bind(R.id.productDescriptionName)public TextView productDescriptionName;
-    @Bind(R.id.productDescriptionDesc)public TextView productDescriptionDesc;
+    @Bind(R.id.productDescriptionTitle) public TextView productDescriptionName;
+    @Bind(R.id.productDescriptionDescription) public TextView productDescriptionDesc;
 
     public ProductDescriptionViewHolder(View itemView) {
         super(itemView);

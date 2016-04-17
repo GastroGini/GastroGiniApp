@@ -32,7 +32,6 @@ public class EventViewActivity extends TestActivity {
 
     private Event event;
     private boolean isNewEvent = false;
-    
 
     @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
     @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
@@ -40,7 +39,6 @@ public class EventViewActivity extends TestActivity {
     @Bind(R.id.eventViewProductListSpinner) Spinner eventViewProductListSpinner;
     @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
     @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
-
 
     private EventViewActivity eventViewActivity;
     private int oldTableCount;

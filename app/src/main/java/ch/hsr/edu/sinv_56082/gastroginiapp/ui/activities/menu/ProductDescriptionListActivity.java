@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.activeandroid.query.Select;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
@@ -27,6 +29,7 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private List<ProductDescription> productDescriptions = new ArrayList<>();
     @Bind(R.id.productDescriptionRecyclerView) RecyclerView productDescriptionRecyclerView;
+    @Bind(R.id.menuCardProductListHeaderEditMenuIcon) ImageView editIcon;
 
     ProductDescriptionListActivity activity;
 
@@ -41,7 +44,6 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         activity = this;
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +55,9 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
 
         productDescriptionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        productDescriptionRecyclerView.setAdapter(new TestAdapter<ProductDescription, ProductDescriptionViewHolder>(R.layout.column_row_product_description, productDescriptions, this) {
+        final TestAdapter<ProductDescription, ProductDescriptionViewHolder> adapter =
+                new TestAdapter<ProductDescription, ProductDescriptionViewHolder>(
+                        R.layout.column_row_product_description, productDescriptions, this) {
             @Override
             public ProductDescriptionViewHolder createItemViewHolder(View view) {
                 return new ProductDescriptionViewHolder(view);
@@ -65,10 +68,18 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
                 holder.productDescriptionName.setText(item.name);
                 holder.productDescriptionDesc.setText(item.description);
             }
-        });
+        };
 
+        productDescriptionRecyclerView.setAdapter(adapter);
 
         productDescriptionRecyclerView.setHasFixedSize(true);
+
+        editIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.setEditMode(!adapter.isEditMode());
+            }
+        });
 
         loadProductDescriptions();
 
@@ -107,6 +118,7 @@ public class ProductDescriptionListActivity extends TestActivity implements Test
 
     @Override
     public void onDelete(ProductDescription item) {
-
+        item.delete();
+        loadProductDescriptions();
     }
 }

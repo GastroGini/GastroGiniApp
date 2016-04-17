@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
@@ -40,16 +42,18 @@ public class MenuProductEditActivity extends TestActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         initializeProductDescription();
 
         productEditPrice.setText(String.valueOf(product.price));
         productEditVolume.setText(product.volume);
+        final ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<ProductDescription>(
+                this, android.R.layout.simple_spinner_dropdown_item,
+                new Select().from(ProductDescription.class).<ProductDescription>execute());
+        productDescriptionSelect.setAdapter(adapter);
 
-        productDescriptionSelect.setAdapter(new ArrayAdapter<>(
-                        this, android.R.layout.simple_spinner_dropdown_item,
-                        new Select().from(ProductDescription.class).<ProductDescription>execute())
-        );
+        int position = adapter.getPosition(product.productDescription);
+        productDescriptionSelect.setSelection(position);
+        adapter.notifyDataSetChanged();
 
         productEditSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +62,7 @@ public class MenuProductEditActivity extends TestActivity {
                 product.volume = productEditVolume.getText().toString();
                 product.productDescription = (ProductDescription) productDescriptionSelect.getSelectedItem();
                 product.save();
-
+                adapter.notifyDataSetChanged();
                 setResult(RESULT_OK);
                 finish();
             }
@@ -75,6 +79,5 @@ public class MenuProductEditActivity extends TestActivity {
             product = Product.get(extras.getString("product-uuid"));
         }
     }
-
 
 }

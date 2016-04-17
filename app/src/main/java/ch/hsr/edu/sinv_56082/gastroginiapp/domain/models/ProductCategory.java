@@ -15,6 +15,7 @@ public class ProductCategory extends UUIDModel{
     public ProductCategory(){}
 
     public ProductCategory(String name){
+        super();
         this.name = name;
     }
 

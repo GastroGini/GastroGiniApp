@@ -15,15 +15,13 @@ public class Product extends UUIDModel{
     @Column
     public double price;
 
-
-
     @Column
     public String volume;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public ProductDescription productDescription;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public ProductList productList;
 
 
@@ -40,13 +38,9 @@ public class Product extends UUIDModel{
         this.volume = volume;
     }
 
-
     public ProductList getProductList() {
         return productList;
     }
-
-
-
 
     public static Product get(UUID uuid){
         return new Select().from(Product.class).where("uuid = ?", uuid.toString()).executeSingle();
@@ -55,9 +49,6 @@ public class Product extends UUIDModel{
     public static Product get(String uuid){
         return get(UUID.fromString(uuid));
     }
-
-
-
 
     public List<OrderPosition> orderPositions(){
         return getMany(OrderPosition.class, "product");

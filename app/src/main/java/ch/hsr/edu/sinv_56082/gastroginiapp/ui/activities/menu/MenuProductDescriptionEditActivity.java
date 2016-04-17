@@ -2,6 +2,8 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,14 +41,17 @@ public class MenuProductDescriptionEditActivity extends TestActivity {
 
 
         initializeProductDescription();
-
         productDescriptionEditName.setText(productDescription.name);
         productDescriptionEditDesc.setText(productDescription.description);
+        ArrayAdapter<ProductCategory> arrayAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_dropdown_item,
+                new Select().from(ProductCategory.class).<ProductCategory>execute());
 
-        productDescriptionCategorySelect.setAdapter(new ArrayAdapter<ProductCategory>(
-                        this, android.R.layout.simple_spinner_dropdown_item,
-                        new Select().from(ProductCategory.class).<ProductCategory>execute())
-        );
+        productDescriptionCategorySelect.setAdapter(arrayAdapter);
+
+        int position = arrayAdapter.getPosition(productDescription.productCategory);
+        productDescriptionCategorySelect.setSelection(position);
+        arrayAdapter.notifyDataSetChanged();
 
         productDescriptionSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override

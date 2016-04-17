@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.activeandroid.query.Delete;
 
 import java.util.UUID;
 
@@ -27,6 +30,16 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
     @Bind(R.id.productRecyclerView) public RecyclerView productRecyclerView;
     private ProductList productList;
     private ProductListActivity activity;
+    private UUID menucardRowItem;
+    private TestAdapter<Product,ProductViewHolder> adapter;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +49,26 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
         Bundle extras = getIntent().getExtras();
         if(extras==null) finish();
-        productList = ProductList.get((UUID)extras.get("menucardRowItem-uuid"));
+        menucardRowItem = (UUID)extras.get("menucardRowItem-uuid");
+        loadDataSet();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, MenuProductEditActivity.class);
                 intent.putExtra("menucardRowItem-uuid", productList.getUuid().toString());
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
 
-
-        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productRecyclerView.setAdapter(new TestAdapter<Product, ProductViewHolder>(R.layout.column_row_product, productList.products(), this) {
+        adapter = new TestAdapter<Product, ProductViewHolder>(
+                R.layout.column_row_product_list, productList.products(), this) {
             @Override
             public ProductViewHolder createItemViewHolder(View view) {
                 return new ProductViewHolder(view);
@@ -62,23 +76,32 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
 
             @Override
             public void bindViewHolder(ProductViewHolder holder, Product item) {
-                holder.columnRowProductDescription.setText(item.productDescription.name);
-                holder.columnRowProductPrice.setText(String.valueOf(item.price));
-                holder.columnRowProductVolume.setText(item.volume);
+                holder.productTitle.setText(item.productDescription.name);
+                holder.productDescription.setText(item.productDescription.description);
+                holder.productVolume.setText(item.volume);
+                holder.productPrice.setText(item.price+".-");
             }
-        });
+        };
+        productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productRecyclerView.setAdapter(adapter);
         productRecyclerView.setHasFixedSize(true);
 
 
         editProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                adapter.setEditMode(!adapter.isEditMode());
             }
         });
 
+    }
 
+    public void loadDataSet(){
+       productList = ProductList.get(menucardRowItem);
+    }
 
+    public void refreshList(){
+        adapter.setList(productList.products());
     }
 
     @Override
@@ -86,11 +109,23 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
         Intent intent = new Intent(this, MenuProductEditActivity.class);
         intent.putExtra("product-uuid", item.getUuid().toString());
         intent.putExtra("menucardRowItem-uuid", item.productList.getUuid().toString());
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public void onDelete(Product item) {
+        item.delete();
+        adapter.getList().remove(item);
+        adapter.notifyDataSetChanged();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                loadDataSet();
+                refreshList();
+            }
+        }
     }
 }

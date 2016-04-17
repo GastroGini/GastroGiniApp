@@ -1,30 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="test"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/productDescriptionName"
-        android:padding="16dp"
-        android:paddingBottom="4dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:textSize="16dp" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="test"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/productDescriptionDesc"
-        android:padding="16dp"
-        android:paddingTop="0dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:textSize="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Title"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/productDescriptionTitle"
+            android:textSize="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"/>
 
-    <include layout="@layout/column_row_delete" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Description"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/productDescriptionDescription"
+            android:textSize="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorGreyText"
+            android:gravity="fill_vertical" />
+
+    </LinearLayout>
+
+    <include
+        android:layout_gravity="fill_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        layout="@layout/column_row_delete" />
+
 
 </LinearLayout>

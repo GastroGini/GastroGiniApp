@@ -62,4 +62,7 @@
     <string name="title_activity_product_list">ProductListActivity</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>
+    <string name="string_product_name">Name</string>
+    <string name="title_activity_product_list_list_edit_view">ProductListListEditViewActivity
+    </string>
 </resources>
