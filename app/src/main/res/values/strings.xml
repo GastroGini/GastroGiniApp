@@ -65,4 +65,5 @@
     <string name="string_product_name">Name</string>
     <string name="title_activity_product_list_list_edit_view">ProductListListEditViewActivity
     </string>
+    <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
 </resources>

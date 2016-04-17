@@ -18,10 +18,10 @@ public class Product extends UUIDModel{
     @Column
     public String volume;
 
-    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public ProductDescription productDescription;
 
-    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public ProductList productList;
 
 

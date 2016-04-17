@@ -48,6 +48,10 @@ public class Person extends UUIDModel{
         return getMany(Event.class, "host");
     }
 
+    public List<EventOrder> ordersCreated() {
+        return getMany(EventOrder.class, "createdBy");
+    }
+
     public static Person get(UUID uuid){
         return new Select().from(Person.class).where("uuid = ?", uuid.toString()).executeSingle();
     }

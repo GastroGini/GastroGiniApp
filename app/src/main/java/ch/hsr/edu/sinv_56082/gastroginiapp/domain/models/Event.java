@@ -33,10 +33,10 @@ public class Event extends UUIDModel{
     @Column
     public Date endTime;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.RESTRICT)
     public Person host;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.RESTRICT)
     public ProductList productList;
 
 

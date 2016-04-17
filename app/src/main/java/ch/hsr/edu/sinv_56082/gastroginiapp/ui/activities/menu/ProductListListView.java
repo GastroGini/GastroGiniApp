@@ -1,8 +1,11 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -111,9 +114,25 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
 
     @Override
     public void onDelete(ProductList item) {
-        item.delete();
-        productLists.remove(item);
-        adapter.notifyDataSetChanged();
+        try {
+            item.delete();
+            productLists.remove(item);
+            adapter.notifyDataSetChanged();
+        }catch (SQLiteConstraintException e){
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+            builder1.setMessage(activity.getResources().getString(R.string.cannot_delete_productList));
+            builder1.setCancelable(true);
+            builder1.setNegativeButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+
         //runRecyclerView(isMenuCardListEditable);
         Log.e("menu list delete", "goto menu card view" + item.toString());
     }

@@ -28,10 +28,10 @@ public class WorkAssignment extends UUIDModel{
     @Column
     public Date endTime;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Person person;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Event event;
 
     public static WorkAssignment get(UUID uuid) {

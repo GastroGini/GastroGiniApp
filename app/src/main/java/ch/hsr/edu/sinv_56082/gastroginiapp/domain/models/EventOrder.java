@@ -22,6 +22,9 @@ public class EventOrder extends UUIDModel{
     }
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
+    public Person createdBy;
+
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public EventTable eventTable;
 
     @Column

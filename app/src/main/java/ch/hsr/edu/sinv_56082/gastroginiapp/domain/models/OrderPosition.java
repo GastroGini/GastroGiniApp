@@ -26,10 +26,10 @@ public class OrderPosition extends UUIDModel{
     @Column
     public Date payTime;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public OrderState orderState;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Product product;
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)

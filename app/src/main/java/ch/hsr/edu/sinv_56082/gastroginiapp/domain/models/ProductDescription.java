@@ -19,7 +19,7 @@ public class ProductDescription extends UUIDModel{
     @Column
     public String description;
 
-    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
+    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public ProductCategory productCategory;
 
 
