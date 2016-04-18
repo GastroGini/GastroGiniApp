@@ -11,11 +11,15 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
@@ -26,6 +30,10 @@ public class TableOrderView extends TestActivity implements TableRowAdapter.Tabl
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
+
+    EventTable eventTable;
+    List<EventOrder> tableOrderList = new ArrayList<>();
+    List<OrderPosition> tableOrderPositions = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,11 @@ public class TableOrderView extends TestActivity implements TableRowAdapter.Tabl
         temp.add(new Product(new ProductDescription("redbull",null, null),null,5,"5dl"));
         temp.add(new Product(new ProductDescription("tea",null, null),null,3,"5dl"));
 
+        eventTable = EventTable.get(UUID.fromString(args.getString("eventTable-uuid")));
+        tableOrderList = eventTable.orders();
+        for(EventOrder order : tableOrderList){
+            tableOrderPositions.addAll(order.orderPositions());
+        }
 
         TableRowAdapter adapter = new TableRowAdapter(this,temp);
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
