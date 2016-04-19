@@ -40,9 +40,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     EventTable eventTable;
     List<EventOrder> tableOrderList = new ArrayList<>();
     static List<OrderPosition> tableOrderPositions = new ArrayList<>();
-    private TableOrderView activity;
-
-    List<OrderPosition> tableOrderPositions = new ArrayList<>();
     ArrayList<String> OrderPositionsUUID = new ArrayList<>();
     private AppCompatActivity activity;
 
@@ -81,7 +78,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
             OrderPositionsUUID.add(op.getUuid().toString());
         }
 
-        TableRowAdapter adapter = new TableRowAdapter(tableOrderPositions, this);
+        final TableRowAdapter adapter = new TableRowAdapter(tableOrderPositions, this);
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);

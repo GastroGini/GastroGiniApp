@@ -19,7 +19,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-<<<<<<< Updated upstream
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
@@ -57,9 +56,9 @@ public class OrderPayView extends AppCompatActivity {
 
         Log.d("ADSF", "onCreate: "+test);
 
-        TableRowAdapter adapter = new TableRowAdapter(this,OrderPositionsUUID);
+        //TableRowAdapter adapter = new TableRowAdapter(this,OrderPositionsUUID);
         orderPayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        orderPayRecyclerView.setAdapter(adapter);
+        //orderPayRecyclerView.setAdapter(adapter);
         orderPayRecyclerView.setHasFixedSize(true);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
