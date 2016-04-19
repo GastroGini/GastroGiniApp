@@ -8,42 +8,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
-public class OrderPayView extends AppCompatActivity {
+public class OrderPayView extends TestActivity {
 
     @Bind(R.id.cancelButton) Button cancelButton;
     @Bind(R.id.proceedButton) Button proceedButton;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderPayRecyclerView) RecyclerView orderPayRecyclerView;
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_pay_view);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TableRowAdapter adapter = new TableRowAdapter(this,tableOrderPositions);
+        Bundle args = getIntent().getExtras();
+
+        ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
+
+        Log.d("ADSF", "onCreate: "+test);
+
+        //TableRowAdapter adapter = new TableRowAdapter(this,tableOrderPositions);
         orderPayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        orderPayRecyclerView.setAdapter(adapter);
+        //orderPayRecyclerView.setAdapter(adapter);
         orderPayRecyclerView.setHasFixedSize(true);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
