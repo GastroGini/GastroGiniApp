@@ -34,7 +34,6 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
 
         setSupportActionBar(toolbar);
 
-
         Bundle args = getIntent().getExtras();
         //TODO Extract to controller
         Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
@@ -43,10 +42,8 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
 
         setTitle("GastroGini - Event: " + event.name);
 
-
         //TODO p2p handling should not be in activity (ApplicationController)
         ((App)getApplication()).p2p.setLocalService(event.name + " " + userName);
-
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle( "User: " + userName + " | Event Password: " + eventPassword);
@@ -65,25 +62,13 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
             }
         });
         eventTablesRecyclerView.setHasFixedSize(true);
-
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
     }
-
 
     @Override
     public void onItemClick(EventTable item) {
         Log.e("MyTagGoesHere", "Hacim buraya geldim");
         Intent intent = new Intent(this, TableOrderView.class);
+        intent.putExtra("eventTable-uuid", item.getUuid().toString());
         startActivity(intent);
     }
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView;
 
@@ -24,9 +25,9 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         void onClick(EventTable tableItem);
     }
 
-    private List<Product> orderItems;
+    private List<OrderPosition> orderItems;
     private TableOrderView activity;
-    public TableRowAdapter(TableOrderView activity,List<Product> orderItems){
+    public TableRowAdapter(TableOrderView activity,List<OrderPosition> orderItems){
         this.orderItems = orderItems;
         this.activity = activity;
     }
@@ -34,9 +35,6 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
     @Override
     public TableRowViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View tableOrderItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.column_row_order_item, parent, false);
-
-
-
 
         TextView name = (TextView) tableOrderItemView.findViewById(R.id.product_item_name);
         TextView size = (TextView) tableOrderItemView.findViewById(R.id.product_item_size);
@@ -49,9 +47,9 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     @Override
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
-        holder.getNameTextView().setText(orderItems.get(position).productDescription.name);
-        holder.getSizeTextView().setText(orderItems.get(position).volume);
-        holder.getPriceTextView().setText(orderItems.get(position).price+"");
+        holder.getNameTextView().setText(orderItems.get(position).product.productDescription.name);
+        holder.getSizeTextView().setText(orderItems.get(position).product.volume);
+        holder.getPriceTextView().setText(orderItems.get(position).product.price+"");
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

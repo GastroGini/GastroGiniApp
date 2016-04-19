@@ -99,7 +99,16 @@
         <activity
             android:name=".ui.activities.menu.ProductListListEditView"
             android:label="@string/title_activity_product_list_list_edit_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.order.OrderPayView"
+            android:label="@string/title_activity_order_pay_view"
+            android:parentActivityName=".ui.activities.order.TableOrderView"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
+        </activity>
     </application>
 
 </manifest>
