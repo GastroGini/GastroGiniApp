@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 
 public class NewOrderView extends AppCompatActivity {
 
@@ -48,6 +49,11 @@ public class NewOrderView extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    protected void onItemClicked (OrderPosition orderPosition){
+        newOrderPositionUUID.contains(orderPosition.getUuid().toString());
+
     }
 
 }
