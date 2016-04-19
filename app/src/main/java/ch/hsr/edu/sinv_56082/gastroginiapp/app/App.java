@@ -38,6 +38,13 @@ public class App extends Application {
         p2p = new P2pHandler(context);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        p2p.disconnect();
+    }
+
     private void initLocalUser() {
         preferences = getSharedPreferences("LocalUserData", MODE_PRIVATE);
         if (preferences.getString("local-user-uuid", null) != null){

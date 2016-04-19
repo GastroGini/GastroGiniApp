@@ -191,7 +191,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         super.onResume();
 
         //TODO p2p handling should not be in activity
-        ((App)getApplication()).p2p.startBroadcastReciever();
 
         ((App)getApplication()).p2p.removeLocalServie();
 

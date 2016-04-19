@@ -36,7 +36,6 @@ public class P2pHandler {
     public static final int SET_MESSAGE_HANDLER = 14533;
 
 
-    BroadcastReceiver wifiBroadcatsReciver;
     Context application;
 
 
@@ -44,28 +43,23 @@ public class P2pHandler {
         this.application = application;
         registerWifiP2pManager();
         if(isWifiP2pEnabled()) {
+            Log.d(TAG, "P2pHandler: Disconnect all running connections from previous runs");
+            disconnect();
             registerServiceDiscovery();
             registerConnectionInfoListener();
-            registerWifiBroadcastReciver();
             registerMessageHandler();
-
-            startBroadcastReciever();
+            new WifiBroadcastReciever(application, this);
         }
     }
 
 
-    public void startBroadcastReciever(){
-        if (isWifiP2pEnabled())
-            application.registerReceiver(wifiBroadcatsReciver, intentFilter);
-    }
 
 
     boolean isWifiP2pEnabled=false;
 
-    private final IntentFilter intentFilter = new IntentFilter();
-    private WifiP2pManager wifiP2pManager;
-    private WifiP2pManager.Channel wifiP2pChannel;
-    private WifiP2pManager.ConnectionInfoListener connectionInfoListener;
+    WifiP2pManager wifiP2pManager;
+    WifiP2pManager.Channel wifiP2pChannel;
+    WifiP2pManager.ConnectionInfoListener connectionInfoListener;
     private WifiP2pDnsSdServiceRequest wifiP2pServiceRequest;
     private WifiP2pDnsSdServiceInfo wifiP2pService;
 
@@ -78,6 +72,19 @@ public class P2pHandler {
     private Handler handler;
     private List<ServiceResponseCallback> serviceResponseCallbacks = new ArrayList<>();
 
+    public void disconnect() {
+        wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: Disconnected from P2P network");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG, "onFailure: Failed to disconnect from P2p network! ReasonCode: "+reason);
+            }
+        });
+    }
 
 
     public interface MessageReciever{
@@ -108,6 +115,7 @@ public class P2pHandler {
             wifiP2pManager.clearLocalServices(wifiP2pChannel, null);
     }
 
+    //TODO extract to server
     public void setLocalService(final String eventName) {
         if (isWifiP2pEnabled()) {
             Map<String, String> record = new HashMap<>();
@@ -158,6 +166,7 @@ public class P2pHandler {
     }
 
 
+    //TODO extract to client
     public void discoverServices(){
         wifiP2pServiceRequest = WifiP2pDnsSdServiceRequest.newInstance();
         wifiP2pManager.addServiceRequest(wifiP2pChannel, wifiP2pServiceRequest, new WifiP2pManager.ActionListener() {
@@ -185,6 +194,7 @@ public class P2pHandler {
     }
 
 
+    //TODO extract to client
     private void registerServiceDiscovery() {
 
         wifiP2pManager.setDnsSdResponseListeners(wifiP2pChannel,
@@ -248,11 +258,13 @@ public class P2pHandler {
 
                 if (info.isGroupOwner) {
                     try {
+                        Log.d(TAG, "onConnectionInfoAvailable: Starting Server");
                         new ServerSocketHandler(handler).start();
                     } catch (IOException e) {
                         Log.e(TAG, "onConnectionInfoAvailable: ", e);
                     }
                 } else {
+                    Log.d(TAG, "onConnectionInfoAvailable: starting Client");
                     new ClientSocketHandler(handler, info.groupOwnerAddress).start();
                 }
             }
@@ -272,39 +284,7 @@ public class P2pHandler {
         }
     }
 
-    private void registerWifiBroadcastReciver() {
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-        final String TAG ="WIFI_BroadcastReciever";
-        wifiBroadcatsReciver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                Log.d(TAG, "onReceive: "+action);
-                if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
-                    int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
-                    if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                        setIsWifiP2pEnabled(true);
-                    } else {
-                        setIsWifiP2pEnabled(false);
-                    }
-                } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-
-                } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-                    if (wifiP2pManager == null) return;
-
-                    NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
-
-                    if (networkInfo.isConnected()) {
-                        wifiP2pManager.requestConnectionInfo(wifiP2pChannel, connectionInfoListener);
-                    }
-                } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {}
-            }
-        };
-    }
 
 
     public boolean isWifiP2pEnabled() {
