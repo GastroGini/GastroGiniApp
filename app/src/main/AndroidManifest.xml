@@ -109,6 +109,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
         </activity>
+        <activity
+            android:name=".ui.activities.order.NewOrderView"
+            android:label="@string/title_activity_new_order_view"
+            android:parentActivityName=".ui.activities.order.TableOrderView"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
+        </activity>
     </application>
 
 </manifest>
