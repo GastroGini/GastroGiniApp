@@ -2,8 +2,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +17,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 public class OrderPayView extends AppCompatActivity {
 
@@ -31,6 +27,7 @@ public class OrderPayView extends AppCompatActivity {
     @Bind(R.id.orderPayRecyclerView) RecyclerView orderPayRecyclerView;
 
     List<OrderPosition> tableOrderPositions = new ArrayList<>();
+    List<OrderPosition> opToPayList = new ArrayList<>();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -52,8 +49,11 @@ public class OrderPayView extends AppCompatActivity {
 
         Bundle args = getIntent().getExtras();
 
-        ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
-
+        final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
+        for(String opUUID : test){
+            //TODO: make type UUID from type string
+            //opToPayList.add(OrderPosition.get(opUUID));
+        }
         Log.d("ADSF", "onCreate: "+test);
 
         //TableRowAdapter adapter = new TableRowAdapter(this,OrderPositionsUUID);
@@ -71,7 +71,11 @@ public class OrderPayView extends AppCompatActivity {
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: clear table order view list
+                Log.d("Bezahlen", "onClick: payment done");
+                for(OrderPosition op : opToPayList){
+                    //TODO:set orderState to payed
+                }
+                onBackPressed();
             }
         });
     }

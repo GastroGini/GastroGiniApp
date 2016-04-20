@@ -9,8 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome">
-
+    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView"
+    tools:showIn="@layout/activity_order_table">
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp">
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -111,14 +111,19 @@
                 android:layout_margin="16dp" />
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            app:layout_anchorGravity="bottom|right|end"/>
-
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:layout_anchorGravity="bottom|right|end"
+        android:src="@drawable/ic_add"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

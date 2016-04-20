@@ -4,11 +4,11 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +40,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     EventTable eventTable;
     List<EventOrder> tableOrderList = new ArrayList<>();
     static List<OrderPosition> tableOrderPositions = new ArrayList<>();
+    List<OrderPosition> selectedOrderPositionList = new ArrayList<>();
     ArrayList<String> OrderPositionsUUID = new ArrayList<>();
     private AppCompatActivity activity;
 
@@ -71,9 +72,11 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
 
         tableOrderList = eventTable.orders();
+        tableOrderPositions.clear();
         for(EventOrder order : tableOrderList){
             tableOrderPositions.addAll(order.orderPositions());
         }
+        OrderPositionsUUID.clear();
         for(OrderPosition op : tableOrderPositions){
             OrderPositionsUUID.add(op.getUuid().toString());
         }
@@ -87,8 +90,10 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, ServiceHome.class);
+                Log.d("fab_add_order", "onClick: button pressed");
+                Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid());
+                startActivity(intent);
             }
         });
 
@@ -105,11 +110,22 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: delete orderPosition and refresh list
+                Log.d("delete order positions", "onClick: button pressed");
+                for(OrderPosition op : selectedOrderPositionList){
+                    if(tableOrderPositions.contains(op)){
+                        deleteOrderPosition(op);
+                    }else{
+                        Log.d("delete order position", "onClick: element to delete not in orderPositionList");
+                    }
+                }
             }
         });
     }
 
+    public void deleteOrderPosition (OrderPosition op){
+        tableOrderPositions.remove(op);
+        selectedOrderPositionList.remove(op);
+    }
     //@Override
     public void onClick(OrderPosition orderPosition) {
         //TODO: select object and add UUID to OrderPositionUUID
