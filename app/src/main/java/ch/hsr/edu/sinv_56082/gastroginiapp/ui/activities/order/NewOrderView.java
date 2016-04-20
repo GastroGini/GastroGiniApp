@@ -45,7 +45,7 @@ public class NewOrderView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, OrderPayView.class);
-                //intent.putExtra("OrderPositionsUUID", OrderPositionsUUID);
+                intent.putExtra("newOrderPositionsUUID", newOrderPositionUUID);
                 startActivity(intent);
             }
         });
