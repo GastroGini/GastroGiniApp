@@ -26,6 +26,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
@@ -73,8 +74,13 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
         tableOrderList = eventTable.orders();
         tableOrderPositions.clear();
+
         for(EventOrder order : tableOrderList){
-            tableOrderPositions.addAll(order.orderPositions());
+            for (OrderPosition pos: order.orderPositions()){
+                if(pos.orderState== OrderState.STATE_OPEN){
+                    tableOrderPositions.add(pos);
+                }
+            }
         }
         OrderPositionsUUID.clear();
         for(OrderPosition op : tableOrderPositions){

@@ -76,10 +76,7 @@ public class DummyData {
             EventOrder order = new EventOrder(table, new Date());
             order.save();
 
-            OrderState state = new OrderState("Unbezahlt", "");
-            state.save();
-
-            OrderPosition orderPos = new OrderPosition(new Date(), state, prod, order);
+            OrderPosition orderPos = new OrderPosition(new Date(), OrderState.STATE_OPEN, prod, order);
             orderPos.save();
         }
     }

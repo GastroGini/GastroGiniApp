@@ -13,11 +13,13 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 
 public class OrderPayView extends AppCompatActivity {
 
@@ -51,8 +53,7 @@ public class OrderPayView extends AppCompatActivity {
 
         final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
         for(String opUUID : test){
-            //TODO: make type UUID from type string
-            //opToPayList.add(OrderPosition.get(opUUID));
+            opToPayList.add(OrderPosition.get(UUID.fromString(opUUID)));
         }
         Log.d("ADSF", "onCreate: "+test);
 
@@ -73,7 +74,7 @@ public class OrderPayView extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("Bezahlen", "onClick: payment done");
                 for(OrderPosition op : opToPayList){
-                    //TODO:set orderState to payed
+                    op.orderState= OrderState.STATE_PAYED;
                 }
                 onBackPressed();
             }
