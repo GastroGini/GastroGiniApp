@@ -81,22 +81,28 @@
             android:textColor="@color/colorIconLight" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/orderPayRecyclerView"
-        android:layout_alignParentStart="true"/>
+        android:layout_height="200dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/orderPayRecyclerView"
+            android:layout_alignParentStart="true"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
-
+<!--
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5" />
+        -->
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"

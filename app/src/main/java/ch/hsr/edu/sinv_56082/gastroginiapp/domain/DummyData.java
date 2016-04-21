@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
-
 import com.activeandroid.query.Select;
 
 import java.util.Date;
@@ -17,8 +16,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.WorkAssignment;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
-
-
 
 public class DummyData {
     public DummyData(){
@@ -46,7 +43,6 @@ public class DummyData {
             new ProductList("ProductList 3").save();
             new ProductList("ProductList 4").save();
             new ProductList("ProductList 5").save();
-
 
             ProductDescription pDesc = new ProductDescription("Cola", "Getränk", cat);
             pDesc.save();

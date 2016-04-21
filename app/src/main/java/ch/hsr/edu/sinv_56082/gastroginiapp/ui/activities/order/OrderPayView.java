@@ -20,13 +20,15 @@ import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
-public class OrderPayView extends AppCompatActivity {
+public class OrderPayView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
 
     @Bind(R.id.cancelButton) Button cancelButton;
     @Bind(R.id.proceedButton) Button proceedButton;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderPayRecyclerView) RecyclerView orderPayRecyclerView;
+    AppCompatActivity activity;
 
     List<OrderPosition> tableOrderPositions = new ArrayList<>();
     List<OrderPosition> opToPayList = new ArrayList<>();
@@ -46,6 +48,8 @@ public class OrderPayView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_pay_view);
+        ButterKnife.bind(this);
+        activity=this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -57,9 +61,9 @@ public class OrderPayView extends AppCompatActivity {
         }
         Log.d("ADSF", "onCreate: "+test);
 
-        //TableRowAdapter adapter = new TableRowAdapter(this,OrderPositionsUUID);
+        TableRowAdapter adapter = new TableRowAdapter(opToPayList, this);
         orderPayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //orderPayRecyclerView.setAdapter(adapter);
+        orderPayRecyclerView.setAdapter(adapter);
         orderPayRecyclerView.setHasFixedSize(true);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -81,4 +85,8 @@ public class OrderPayView extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onClick(OrderPosition orderPosition) {
+        
+    }
 }

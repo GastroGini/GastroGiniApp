@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,7 +29,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
-
 public class TableOrderView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -44,17 +42,9 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     List<OrderPosition> selectedOrderPositionList = new ArrayList<>();
     ArrayList<String> OrderPositionsUUID = new ArrayList<>();
     private AppCompatActivity activity;
+    TableRowAdapter adapter;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,34 +53,12 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Bundle args = getIntent().getExtras();
-
-
         setTitle("GastroGini - Table order view");
 
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
-
-        tableOrderList = eventTable.orders();
-        tableOrderPositions.clear();
-
-        for(EventOrder order : tableOrderList){
-            for (OrderPosition pos: order.orderPositions()){
-                if(pos.orderState== OrderState.STATE_OPEN){
-                    tableOrderPositions.add(pos);
-                }
-            }
-        }
-        OrderPositionsUUID.clear();
-        for(OrderPosition op : tableOrderPositions){
-            OrderPositionsUUID.add(op.getUuid().toString());
-        }
-
-        final TableRowAdapter adapter = new TableRowAdapter(tableOrderPositions, this);
-        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tableOrderRecyclerView.setAdapter(adapter);
-        tableOrderRecyclerView.setHasFixedSize(true);
+        eventTable=getEventTableFromUUID(args);
+        loadOrderPositions(eventTable);
+        updateRecyclerView();
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
         fab_add_order.setOnClickListener(new View.OnClickListener() {
@@ -127,13 +95,69 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
             }
         });
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        updateRecyclerView();
+    }
 
     public void deleteOrderPosition (OrderPosition op){
         tableOrderPositions.remove(op);
         selectedOrderPositionList.remove(op);
+        updateRecyclerView();
+    }
+    public void updateRecyclerView(){
+        tableOrderPositions=loadOrderPositions(eventTable);
+        OrderPositionsUUID=loadOrderPositionsUUID(tableOrderPositions);
+        adapter=createAdapter(tableOrderPositions);
+        startRecyclerView(adapter);
     }
     //@Override
     public void onClick(OrderPosition orderPosition) {
         //TODO: select object and add UUID to OrderPositionUUID
+    }
+    public List<OrderPosition> loadOrderPositions (EventTable eventTable){
+        tableOrderList = eventTable.orders();
+        tableOrderPositions.clear();
+
+        for(EventOrder order : tableOrderList){
+            for (OrderPosition pos: order.orderPositions()){
+                if(pos.orderState== OrderState.STATE_OPEN){
+                    tableOrderPositions.add(pos);
+                }
+            }
+        }
+        return tableOrderPositions;
+    }
+    public ArrayList<String> loadOrderPositionsUUID(List<OrderPosition> tableOrderPositions){
+        OrderPositionsUUID.clear();
+        for(OrderPosition op : tableOrderPositions){
+            OrderPositionsUUID.add(op.getUuid().toString());
+        }
+        return OrderPositionsUUID;
+    }
+    public EventTable getEventTableFromUUID (Bundle args){
+        eventTable = new Select().from(EventTable.class).where
+                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        return eventTable;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void startRecyclerView(TableRowAdapter adapter){
+        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tableOrderRecyclerView.setAdapter(adapter);
+        tableOrderRecyclerView.setHasFixedSize(true);
+    }
+    public TableRowAdapter createAdapter(List<OrderPosition> tableOrderPositions){
+        adapter = new TableRowAdapter(tableOrderPositions, this);
+        return adapter;
     }
 }
