@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,8 +80,10 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
                 Log.d("Bezahlen", "onClick: payment done");
                 for(OrderPosition op : opToPayList){
                     op.orderState= OrderState.STATE_PAYED;
+                    op.payTime=new Date(System.currentTimeMillis());
                 }
                 onBackPressed();
+                //TODO: Recyclerview aktualisieren
             }
         });
     }

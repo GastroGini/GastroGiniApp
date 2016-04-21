@@ -1,28 +1,26 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table;
+package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 
-public class TableRowViewHolder extends RecyclerView.ViewHolder {
-    View tableOrderItemView;
-
+public class ProductViewHolder extends RecyclerView.ViewHolder {
+    View productItemView;
 
     TextView name;
     TextView size;
     TextView price;
 
-    public TableRowViewHolder(View tableOrderItemView, TextView name,TextView size,TextView price) {
-        super(tableOrderItemView);
-        this.tableOrderItemView = tableOrderItemView;
+    public ProductViewHolder(View productItemView, TextView name,TextView size,TextView price) {
+        super(productItemView);
+        this.productItemView = productItemView;
         this.name = name;
         this.size = size;
         this.price = price;
     }
-
     public View getEventTablesView(){
-        return tableOrderItemView;
+        return productItemView;
     }
     public TextView getNameTextView(){  return name; }
     public TextView getSizeTextView(){

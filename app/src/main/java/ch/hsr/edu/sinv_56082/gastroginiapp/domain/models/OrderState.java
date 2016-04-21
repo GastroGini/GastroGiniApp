@@ -18,7 +18,7 @@ public class OrderState extends UUIDModel{
 
     {
         STATE_OPEN = new OrderState("Open", "unpayed");
-        STATE_OPEN = new OrderState("Payed", "Payed");//TODO String rescources
+        STATE_PAYED = new OrderState("Payed", "Payed");
         STATE_OPEN.save();
         STATE_PAYED.save();
     }

@@ -1,17 +1,17 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
-
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Products")
-public class Product extends UUIDModel{
+public class Product extends UUIDModel implements Serializable{
     @Column
     public double price;
 

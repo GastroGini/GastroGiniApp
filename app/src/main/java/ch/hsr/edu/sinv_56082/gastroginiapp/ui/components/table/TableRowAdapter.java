@@ -1,7 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestSelectable;
 
 

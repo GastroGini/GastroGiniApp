@@ -1,8 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
-
-import android.os.Parcelable;
-
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
@@ -12,7 +9,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
-
 
 @Table(name = "OrderPositions")
 public class OrderPosition extends UUIDModel implements Serializable{

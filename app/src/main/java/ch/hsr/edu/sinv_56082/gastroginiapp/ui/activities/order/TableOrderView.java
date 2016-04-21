@@ -26,7 +26,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 public class TableOrderView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
@@ -66,7 +65,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
             public void onClick(View view) {
                 Log.d("fab_add_order", "onClick: button pressed");
                 Intent intent = new Intent(activity, NewOrderView.class);
-                intent.putExtra("eventTable-uuid", eventTable.getUuid());
+                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
             }
         });
@@ -76,7 +75,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
             public void onClick(View v) {
                 Intent intent = new Intent(activity, OrderPayView.class);
                 intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
-                intent.putExtra("OrderPositionsUUID", OrderPositionsUUID);
+                //alle elemente bezahlen: intent.putExtra("OrderPositionsUUID", OrderPositionsUUID);
                 startActivity(intent);
             }
         });
@@ -88,6 +87,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 for(OrderPosition op : selectedOrderPositionList){
                     if(tableOrderPositions.contains(op)){
                         deleteOrderPosition(op);
+                        updateRecyclerView();
                     }else{
                         Log.d("delete order position", "onClick: element to delete not in orderPositionList");
                     }
