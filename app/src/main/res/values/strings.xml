@@ -31,6 +31,8 @@
     <string name="title_activity_start_event">StartEventActivity</string>
     <string name="title_activity_join_event">JoinEventActivity</string>
     <string name="title_activity_menu_main">MenuMain</string>
+    <string name="STATE_OPEN">Open</string>
+    <string name="STATE_PAYED">Payed</string>
 
 
     <!-- MenuMain -->
