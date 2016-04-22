@@ -8,9 +8,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
-/**
- * Created by tobias on 18.04.2016.
- */
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+
+
 public class WifiBroadcastReciever {
 
     BroadcastReceiver wifiBroadcatsReciver;
@@ -19,8 +19,8 @@ public class WifiBroadcastReciever {
     IntentFilter intentFilter;
 
 
-    WifiBroadcastReciever(Context context, P2pHandler p2pHandler){
-        application = context;
+    WifiBroadcastReciever(P2pHandler p2pHandler, Context application){
+        this.application = application;
         this.p2pHandler = p2pHandler;
         intentFilter = new IntentFilter();
         registerWifiBroadcastReciver();
@@ -48,9 +48,9 @@ public class WifiBroadcastReciever {
                 if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
                     int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
                     if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                        p2pHandler.setIsWifiP2pEnabled(true);
+                        //p2pHandler.setIsWifiP2pEnabled(true);
                     } else {
-                        p2pHandler.setIsWifiP2pEnabled(false);
+                        //p2pHandler.setIsWifiP2pEnabled(false);
                     }
                 } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 

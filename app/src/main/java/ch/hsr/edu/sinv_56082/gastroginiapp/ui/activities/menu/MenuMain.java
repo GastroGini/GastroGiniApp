@@ -55,6 +55,6 @@ public class MenuMain extends CommonActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //((App)getApplication()).p2p.removeLocalServie();
+        //((App)getApplication()).p2p.removeLocalService();
     }
 }
