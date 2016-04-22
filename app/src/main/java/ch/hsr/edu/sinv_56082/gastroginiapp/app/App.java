@@ -10,6 +10,7 @@ import com.activeandroid.app.Application;
 
 import java.util.UUID;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 
@@ -31,6 +32,7 @@ public class App extends Application {
         super.onCreate();
         context = this;
         ActiveAndroid.initialize(this);
+        OrderState.loadOrderStates();
         initLocalUser();
 
         p2p = new P2pHandler(context);

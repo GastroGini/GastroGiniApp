@@ -9,22 +9,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome">
-
+    tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView"
+    tools:showIn="@layout/activity_order_table">
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:weightSum="1">
 
         <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="40dp">
 
-            >
             <TextView
                 android:id="@+id/order_table_subtitel"
                 android:layout_width="match_parent"
@@ -32,15 +30,16 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Open orders"
+                android:text="Offene Bestellungen"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight"/>
         </LinearLayout>
+
         <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="3dp"
-            >
+            android:layout_marginTop="3dp">
+
             <TextView
                 android:id="@+id/product_item_name_name"
                 android:layout_width="150dp"
@@ -48,10 +47,10 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Product"
+                android:text="Produkt"
                 android:background="@color/colorSubTitleDark"
-                android:textColor="@color/colorIconLight"
-                />
+                android:textColor="@color/colorIconLight" />
+
             <TextView
                 android:id="@+id/product_item_name_size"
                 android:layout_width="150dp"
@@ -59,10 +58,10 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Size"
+                android:text="Grösse"
                 android:background="@color/colorSubTitleDark"
-                android:textColor="@color/colorIconLight"
-                />
+                android:textColor="@color/colorIconLight" />
+
             <TextView
                 android:id="@+id/product_item_name_price"
                 android:layout_width="150dp"
@@ -70,36 +69,61 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Price"
+                android:text="Preis"
                 android:background="@color/colorSubTitleDark"
-                android:textColor="@color/colorIconLight"
-                />
-
+                android:textColor="@color/colorIconLight" />
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="200dp">
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tableOrderRecyclerView"
+                android:layout_alignParentStart="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_below="@id/tableOrderRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tableOrderRecyclerView"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
 
+            <Button
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Stornieren"
+                android:id="@+id/deleteButton"
+                android:layout_gravity="left"
+                android:layout_margin="16dp"/>
 
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/show_order_end_options"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            app:layout_anchorGravity="bottom|right|end"
-            />
-
-
-
-
+            <Button
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Bezahlen"
+                android:id="@+id/payButton"
+                android:layout_gravity="right"
+                android:layout_margin="16dp" />
+        </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:layout_anchorGravity="bottom|right|end"
+        android:src="@drawable/ic_add"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
