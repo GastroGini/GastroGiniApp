@@ -16,7 +16,7 @@ public class OrderState extends UUIDModel{
     public static OrderState STATE_OPEN;
     public static OrderState STATE_PAYED;
 
-    {
+    public static void loadOrderStates(){
         STATE_OPEN = new OrderState("Open", "unpayed");
         STATE_PAYED = new OrderState("Payed", "Payed");
         STATE_OPEN.save();

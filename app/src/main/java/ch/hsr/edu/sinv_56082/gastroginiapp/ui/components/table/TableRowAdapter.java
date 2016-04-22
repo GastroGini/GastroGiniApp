@@ -56,6 +56,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         holder.getNameTextView().setText(selectable.getItem().product.productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().product.volume);
         holder.getPriceTextView().setText(selectable.getItem().product.price + "");
+        Log.d("TableRowAdapter", selectable.getItem().orderState.name);
 
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +89,16 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         for (TestSelectable<OrderPosition> sel: orderItems){
             if (sel.isSelected()){
                 list.add(sel.getItem().getUuid().toString());
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<OrderPosition> getSelectedOrderPositions(){
+        ArrayList<OrderPosition> list = new ArrayList<>();
+        for (TestSelectable<OrderPosition> sel: orderItems){
+            if (sel.isSelected()){
+                list.add(sel.getItem());
             }
         }
         return list;

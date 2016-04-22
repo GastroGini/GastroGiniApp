@@ -76,12 +76,11 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
                     op.orderState= OrderState.STATE_PAYED;
                     op.payTime=new Date(System.currentTimeMillis());
                     op.save();
+                    Log.d("asdfasdgojad", "onClick: ");
                 }
-                Intent intent = new Intent(activity, TableOrderView.class);
-                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
+                setResult(RESULT_OK);
                 Log.d("OrderPayView", "payment done");
-                //TODO: persistenz???
+                finish();
             }
         });
     }

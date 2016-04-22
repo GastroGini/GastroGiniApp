@@ -71,6 +71,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
             public void onClick(View v) {
                 Log.d("OrderControlView", "Create new orders");
                 EventOrder eventOrder=new EventOrder(eventTable, new Date(System.currentTimeMillis()));
+                eventOrder.save();
                 for(Product product : productList){
                     OrderPosition op = new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
                     op.save();

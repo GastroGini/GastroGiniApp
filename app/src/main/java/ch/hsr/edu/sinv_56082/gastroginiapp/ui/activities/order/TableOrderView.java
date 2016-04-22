@@ -1,8 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +23,6 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -36,8 +37,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     @Bind(R.id.deleteButton) Button deleteButton;
 
     EventTable eventTable;
-    List<EventOrder> tableOrderList = new ArrayList<>();
-    static List<OrderPosition> tableOrderPositions = new ArrayList<>();
+    List<OrderPosition> tableOrderPositions = new ArrayList<>();
     List<OrderPosition> selectedOrderPositionList = new ArrayList<>();
     ArrayList<String> OrderPositionsUUID = new ArrayList<>();
     private AppCompatActivity activity;
@@ -55,9 +55,13 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         Bundle args = getIntent().getExtras();
         setTitle("GastroGini - Table order view");
 
-        eventTable=getEventTableFromUUID(args);
-        loadOrderPositions(eventTable);
-        updateRecyclerView();
+        loadEventTableFromUUID(args);
+        loadOrderPositions();
+
+        adapter = new TableRowAdapter(tableOrderPositions, this);
+        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tableOrderRecyclerView.setAdapter(adapter);
+        tableOrderRecyclerView.setHasFixedSize(true);
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
         fab_add_order.setOnClickListener(new View.OnClickListener() {
@@ -77,24 +81,49 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 Intent intent = new Intent(activity, OrderPayView.class);
                 intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TableOrderView", "delete Order");
-                for(OrderPosition op : selectedOrderPositionList){
-                    if(tableOrderPositions.contains(op)){
-                        deleteOrderPosition(op);
-                        updateRecyclerView();
-                    }else{
-                        Log.d("delete order position", "onClick: element to delete not in orderPositionList");
-                    }
-                }
+                new AlertDialog.Builder(activity)
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setTitle("Warnung")
+                        .setMessage("Wollen sie diese Position(en) wirklich löschen?")
+                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("TableOrderView", "delete Order");
+                                for(OrderPosition op : adapter.getSelectedOrderPositions()){
+                                    if(tableOrderPositions.contains(op)){
+                                        Log.d("TEST", "onClick: deleting order pos");
+                                        deleteOrderPosition(op);
+                                        updateRecyclerView();
+                                    }else{
+                                        Log.d("delete order position", "onClick: element to delete not in orderPositionList");
+                                    }
+                                }
+                            }
+
+                        })
+                        .setNegativeButton("Abbrechen", null)
+                        .show();
+
             }
         });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1) {
+            loadOrderPositions();
+            tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
+            updateRecyclerView();
+            Log.d("TableOrderView", "onActivityResult: reloaded list");
+        }
     }
     @Override
     public void onResume(){
@@ -103,45 +132,34 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void deleteOrderPosition (OrderPosition op){
-        eventTable.orders().remove(op);
+        //eventTable.orders().remove(op);
         op.delete();
         tableOrderPositions.remove(op);
-        selectedOrderPositionList.remove(op);
+        //selectedOrderPositionList.remove(op);
         updateRecyclerView();
     }
     public void updateRecyclerView(){
-        tableOrderPositions=loadOrderPositions(eventTable);
-        OrderPositionsUUID=loadOrderPositionsUUID(tableOrderPositions);
-        adapter=createAdapter(tableOrderPositions);
-        startRecyclerView(adapter);
+        loadOrderPositions();
+        adapter.notifyDataSetChanged();
     }
     public void onClick(OrderPosition orderPosition) {
         //onLongClick defined in ViewHolder
     }
-    public List<OrderPosition> loadOrderPositions (EventTable eventTable){
-        tableOrderList = eventTable.orders();
+    public void loadOrderPositions (){
         tableOrderPositions.clear();
-
-        for(EventOrder order : tableOrderList){
+        Log.d("sdafisadif", "loadOrderPositions: Updating list!!");
+        for(EventOrder order : eventTable.orders()){
             for (OrderPosition pos: order.orderPositions()){
-                if(pos.orderState== OrderState.STATE_OPEN){
+                if(pos.orderState.name.equals(OrderState.STATE_OPEN.name)){
                     tableOrderPositions.add(pos);
                 }
             }
         }
-        return tableOrderPositions;
     }
-    public ArrayList<String> loadOrderPositionsUUID(List<OrderPosition> tableOrderPositions){
-        OrderPositionsUUID.clear();
-        for(OrderPosition op : tableOrderPositions){
-            OrderPositionsUUID.add(op.getUuid().toString());
-        }
-        return OrderPositionsUUID;
-    }
-    public EventTable getEventTableFromUUID (Bundle args){
+
+    public void loadEventTableFromUUID(Bundle args){
         eventTable = new Select().from(EventTable.class).where
                 ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
-        return eventTable;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -153,13 +171,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         }
         return super.onOptionsItemSelected(item);
     }
-    public void startRecyclerView(TableRowAdapter adapter){
-        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tableOrderRecyclerView.setAdapter(adapter);
-        tableOrderRecyclerView.setHasFixedSize(true);
-    }
-    public TableRowAdapter createAdapter(List<OrderPosition> tableOrderPositions){
-        adapter = new TableRowAdapter(tableOrderPositions, this);
-        return adapter;
-    }
+
+
 }
