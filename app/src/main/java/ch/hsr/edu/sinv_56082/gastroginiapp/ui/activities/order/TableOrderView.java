@@ -63,7 +63,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("fab_add_order", "onClick: button pressed");
+                Log.d("TableOrderView:", "NewOrder");
                 Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
@@ -73,9 +73,10 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TableOrderView", "Paybutton");
                 Intent intent = new Intent(activity, OrderPayView.class);
                 intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
-                //alle elemente bezahlen: intent.putExtra("OrderPositionsUUID", OrderPositionsUUID);
+                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
             }
         });
@@ -83,7 +84,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("delete order positions", "onClick: button pressed");
+                Log.d("TableOrderView", "delete Order");
                 for(OrderPosition op : selectedOrderPositionList){
                     if(tableOrderPositions.contains(op)){
                         deleteOrderPosition(op);
@@ -102,6 +103,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void deleteOrderPosition (OrderPosition op){
+        eventTable.orders().remove(op);
+        op.delete();
         tableOrderPositions.remove(op);
         selectedOrderPositionList.remove(op);
         updateRecyclerView();
@@ -112,9 +115,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         adapter=createAdapter(tableOrderPositions);
         startRecyclerView(adapter);
     }
-    //@Override
     public void onClick(OrderPosition orderPosition) {
-        //TODO: select object and add UUID to OrderPositionUUID
+        //onLongClick defined in ViewHolder
     }
     public List<OrderPosition> loadOrderPositions (EventTable eventTable){
         tableOrderList = eventTable.orders();

@@ -46,6 +46,7 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         setSupportActionBar(toolbar);
         Bundle args = getIntent().getExtras();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(eventTable);
         adapter=createAdapter(productList);
@@ -62,6 +63,7 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("NewOrderView", "go to orderControlView");
                 Intent intent = new Intent(activity, OrderControlView.class);
                 intent.putStringArrayListExtra("newOrderPositionsUUID", newOrderPositionUUID);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
@@ -101,7 +103,7 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
 
     @Override
     public void onClick(Product product) {
-        Log.d("Product", "onClick: added!");
+        Log.d("NewOrderView", "product added to new order");
         newOrderPositionUUID.add(product.getUuid().toString());
     }
 }

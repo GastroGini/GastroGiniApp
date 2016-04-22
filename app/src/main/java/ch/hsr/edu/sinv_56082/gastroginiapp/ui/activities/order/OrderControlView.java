@@ -49,9 +49,10 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         ButterKnife.bind(this);
         activity = this;
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Bundle args = getIntent().getExtras();
         newOrderPositionUUID=getIntent().getStringArrayListExtra("newOrderPositionsUUID");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(newOrderPositionUUID);
@@ -68,17 +69,19 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("OrderControlView", "Create new orders");
                 EventOrder eventOrder=new EventOrder(eventTable, new Date(System.currentTimeMillis()));
                 for(Product product : productList){
-                    new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
+                    OrderPosition op = new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
+                    op.save();
                 }
                 eventTable.orders().add(eventOrder);
+                Log.d("OrderControlView", "new Orders created");
                 //TODO: persistenz???
-                /*
-                Intent intent = new Intent(activity, OrderControlView.class);
-                intent.putExtra("newOrderPositionsUUID", newOrderPositionUUID);
+                Intent intent = new Intent(activity, TableOrderView.class);
+                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
-                */
+
             }
         });
     }
@@ -117,5 +120,5 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     public void onClick(Product product) {
 
     }
-
+    //No functionality
 }

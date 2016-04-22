@@ -66,7 +66,7 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
 
     @Override
     public void onItemClick(EventTable item) {
-        Log.e("MyTagGoesHere", "Hacim buraya geldim");
+        Log.e("ServiceHome:", "Table selected");
         Intent intent = new Intent(this, TableOrderView.class);
         intent.putExtra("eventTable-uuid", item.getUuid().toString());
         startActivity(intent);

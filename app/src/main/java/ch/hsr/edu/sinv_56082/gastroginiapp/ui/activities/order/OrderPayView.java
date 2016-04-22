@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.activeandroid.query.Select;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
@@ -31,19 +34,9 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
     @Bind(R.id.orderPayRecyclerView) RecyclerView orderPayRecyclerView;
     AppCompatActivity activity;
 
+    EventTable eventTable;
     List<OrderPosition> tableOrderPositions = new ArrayList<>();
     List<OrderPosition> opToPayList = new ArrayList<>();
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +48,9 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle args = getIntent().getExtras();
-
+        eventTable=getEventTableFromUUID(args);
         final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
+
         for(String opUUID : test){
             opToPayList.add(OrderPosition.get(UUID.fromString(opUUID)));
         }
@@ -77,19 +71,37 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Bezahlen", "onClick: payment done");
+                Log.d("OrderPayView", "payment started");
                 for(OrderPosition op : opToPayList){
                     op.orderState= OrderState.STATE_PAYED;
                     op.payTime=new Date(System.currentTimeMillis());
+                    op.save();
                 }
-                onBackPressed();
-                //TODO: Recyclerview aktualisieren
+                Intent intent = new Intent(activity, TableOrderView.class);
+                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
+                startActivity(intent);
+                Log.d("OrderPayView", "payment done");
+                //TODO: persistenz???
             }
         });
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onClick(OrderPosition orderPosition) {
-        
+        //No functionality
+    }
+    public EventTable getEventTableFromUUID (Bundle args){
+        eventTable = new Select().from(EventTable.class).where
+                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        return eventTable;
     }
 }
