@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-
-public abstract class TestAdapter<ET,VH extends TestViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends RecyclerView.Adapter<VH> {
 
     public void setList(List<ET> items) {
         this.items = items;
@@ -25,12 +23,12 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
     }
 
     private int resourceFile;
-    Listener<ET> listener;
+    public Listener<ET> listener;
     List<ET> items;
 
     private boolean editMode = false;
 
-    public TestAdapter(int resourceFile, List<ET> items, Listener<ET> listener){
+    public CommonAdapter(int resourceFile, List<ET> items, Listener<ET> listener){
         this.resourceFile = resourceFile;
         this.listener = listener;
         this.items = items;

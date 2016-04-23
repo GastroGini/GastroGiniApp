@@ -10,9 +10,9 @@ import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 
-public class MenuMain extends TestActivity {
+public class MenuMain extends CommonActivity {
 
     AppCompatActivity activity;
 

@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.activeandroid.query.Delete;
-
 import java.util.UUID;
 
 import butterknife.Bind;
@@ -20,10 +18,10 @@ import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductViewHolder;
 
-public class ProductListActivity extends AppCompatActivity implements TestAdapter.Listener<Product> {
+public class ProductListActivity extends AppCompatActivity implements CommonAdapter.Listener<Product> {
 
     @Bind(R.id.fab) FloatingActionButton fab;
     @Bind(R.id.editProduct) public ImageView editProduct;
@@ -31,7 +29,7 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
     private ProductList productList;
     private ProductListActivity activity;
     private UUID menucardRowItem;
-    private TestAdapter<Product,ProductViewHolder> adapter;
+    private CommonAdapter<Product,ProductViewHolder> adapter;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -67,7 +65,7 @@ public class ProductListActivity extends AppCompatActivity implements TestAdapte
             }
         });
 
-        adapter = new TestAdapter<Product, ProductViewHolder>(
+        adapter = new CommonAdapter<Product, ProductViewHolder>(
                 R.layout.column_row_product_list, productList.products(), this) {
             @Override
             public ProductViewHolder createItemViewHolder(View view) {

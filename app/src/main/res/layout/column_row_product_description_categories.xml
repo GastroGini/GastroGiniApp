@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.activities.menu.ProductListListView"
-    tools:showIn="@layout/activity_product_list_list_view">
+    android:paddingTop="@dimen/activity_vertical_margin">
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -21,8 +19,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Cards List"
-            android:id="@+id/menuCardList"
+            android:text="Menu Product List"
+            android:id="@+id/menuCardProductListHeaderTitle"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -35,24 +33,29 @@
             android:layout_width="20px"
             android:layout_height="match_parent"
             android:layout_weight="1" />
+        <include
+            android:layout_gravity="fill_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            layout="@layout/column_row_delete" />
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:id="@+id/EditMenuCardList"
+            android:id="@+id/menuCardProductListHeaderEditMenuIcon"
             android:src="@android:drawable/ic_menu_edit"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
             android:tint="@color/colorIconLight"
             android:tintMode="multiply" />
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/menuCardRecyclerView"
+        android:id="@+id/productDescriptionRecyclerView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="?android:attr/selectableItemBackground" />
+        android:layout_alignParentStart="true" />
 
 </LinearLayout>

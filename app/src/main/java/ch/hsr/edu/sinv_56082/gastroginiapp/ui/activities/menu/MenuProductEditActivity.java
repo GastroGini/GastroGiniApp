@@ -10,17 +10,15 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 
-public class MenuProductEditActivity extends TestActivity {
+public class MenuProductEditActivity extends CommonActivity {
 
 
 

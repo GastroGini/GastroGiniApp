@@ -24,11 +24,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
-public class EventViewActivity extends TestActivity {
+public class EventViewActivity extends CommonActivity {
 
     private Event event;
     private boolean isNewEvent = false;

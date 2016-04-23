@@ -28,12 +28,12 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
-public class EventListActivity extends TestActivity implements Serializable, TestAdapter.Listener<Event> {
+public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
 
     private List<Event> myEventList = new ArrayList<>();
     private List<P2pHandler.ServiceResponseHolder> foreignEventList = new ArrayList<>();
@@ -115,7 +115,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
         eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventListMyEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+        eventListMyEventsRecyclerView.setAdapter(new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
             @Override
             public EventViewHolder createItemViewHolder(View view) {
                 return new EventViewHolder(view);
@@ -145,7 +145,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestAdapter adapter = ((TestAdapter) eventListMyEventsRecyclerView.getAdapter());
+                CommonAdapter adapter = ((CommonAdapter) eventListMyEventsRecyclerView.getAdapter());
                 adapter.setEditMode(!adapter.isEditMode());
             }
         });

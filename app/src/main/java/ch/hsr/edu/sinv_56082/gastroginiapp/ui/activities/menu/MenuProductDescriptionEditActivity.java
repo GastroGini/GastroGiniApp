@@ -2,8 +2,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,9 +15,9 @@ import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 
-public class MenuProductDescriptionEditActivity extends TestActivity {
+public class MenuProductDescriptionEditActivity extends CommonActivity {
 
     @Bind(R.id.productDescriptionEditName)TextView productDescriptionEditName;
     @Bind(R.id.productDescriptionEditDesc)TextView productDescriptionEditDesc;

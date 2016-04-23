@@ -21,11 +21,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductListViewHolder;
 
-public class ProductListListView extends TestActivity implements TestAdapter.Listener<ProductList> {
+public class ProductListListView extends CommonActivity implements CommonAdapter.Listener<ProductList> {
 
     List<ProductList> productLists;
 
@@ -34,7 +34,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
     @Bind(R.id.fab)FloatingActionButton fab;
     @Bind(R.id.menuCardRecyclerView)RecyclerView menuCardRecyclerView;
     private ProductListListView activity;
-    private TestAdapter<ProductList,ProductListViewHolder> adapter;
+    private CommonAdapter<ProductList,ProductListViewHolder> adapter;
 
 
     @Override
@@ -57,7 +57,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
             }
         });
 
-        adapter = new TestAdapter<ProductList, ProductListViewHolder>(
+        adapter = new CommonAdapter<ProductList, ProductListViewHolder>(
                 R.layout.column_row_product_description,productLists, this) {
             @Override
             public ProductListViewHolder createItemViewHolder(View view) {
@@ -82,7 +82,7 @@ public class ProductListListView extends TestActivity implements TestAdapter.Lis
         EditMenuCardList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestAdapter adap = ((TestAdapter) menuCardRecyclerView.getAdapter());
+                CommonAdapter adap = ((CommonAdapter) menuCardRecyclerView.getAdapter());
                 adap.setEditMode(!adap.isEditMode());
                 //    isMenuCardListEditable = !isMenuCardListEditable;
                 //      runRecyclerView(isMenuCardListEditable);

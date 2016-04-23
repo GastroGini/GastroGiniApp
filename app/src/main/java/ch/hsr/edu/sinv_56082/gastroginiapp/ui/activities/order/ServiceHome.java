@@ -20,10 +20,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
 
-public class ServiceHome extends AppCompatActivity implements TestAdapter.Listener<EventTable> {
+public class ServiceHome extends AppCompatActivity implements CommonAdapter.Listener<EventTable> {
 
 
     @Bind(R.id.toolbar)Toolbar toolbar;
@@ -53,7 +53,7 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
 
         //EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventTablesRecyclerView.setAdapter(new TestAdapter<EventTable, EventTableViewHolder>(R.layout.column_row_event_tables, event.eventTables(), this) {
+        eventTablesRecyclerView.setAdapter(new CommonAdapter<EventTable, EventTableViewHolder>(R.layout.column_row_event_tables, event.eventTables(), this) {
             @Override
             public EventTableViewHolder createItemViewHolder(View view) {
                 return new EventTableViewHolder(view);

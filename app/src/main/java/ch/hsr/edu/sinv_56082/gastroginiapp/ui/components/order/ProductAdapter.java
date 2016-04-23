@@ -12,7 +12,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestSelectable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonSelectable;
 
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
@@ -22,7 +22,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     public interface ProductItemClickListener {
         void onClick(Product product);
     }
-    private List<TestSelectable<Product>> orderItems;
+    private List<CommonSelectable<Product>> orderItems;
 
     ProductAdapter adapter;
 
@@ -31,7 +31,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
         this.orderItems = new ArrayList<>();
         this.listener = listener;
         for (Product pos: orderItems){
-            this.orderItems.add(new TestSelectable<Product>(pos));
+            this.orderItems.add(new CommonSelectable<Product>(pos));
         }
     }
 
@@ -50,7 +50,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
-        final TestSelectable<Product> selectable = orderItems.get(position);
+        final CommonSelectable<Product> selectable = orderItems.get(position);
 
         holder.getNameTextView().setText(selectable.getItem().productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().volume);

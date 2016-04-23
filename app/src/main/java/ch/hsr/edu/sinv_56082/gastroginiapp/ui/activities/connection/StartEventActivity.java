@@ -13,10 +13,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 
-public class StartEventActivity extends TestActivity {
+public class StartEventActivity extends CommonActivity {
 
     @Bind(R.id.startEventUserNameLocalInput) EditText startEventUserNameLocalInput;
     @Bind(R.id.startEventUserNameInput) EditText startEventUserNameInput;
