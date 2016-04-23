@@ -24,10 +24,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ProductDescriptionAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductDescriptionViewHolder;
 
-public class ProductDescriptionListActivity extends CommonActivity
-implements CommonAdapter.Listener<ProductCategory>{
+public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     ProductDescriptionListActivity activity;
     List<ProductCategory> productCategories = new ArrayList<>();
@@ -56,7 +54,7 @@ implements CommonAdapter.Listener<ProductCategory>{
 
         final CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter =
                 new CommonAdapter<ProductCategory, ProductCategoryViewHolder>(
-                        R.layout.column_row_product_description_categories,productCategories,this
+                        R.layout.column_row_product_description_categories,productCategories
                 ) {
                     @Override
                     public ProductCategoryViewHolder createItemViewHolder(View view) {
@@ -67,46 +65,54 @@ implements CommonAdapter.Listener<ProductCategory>{
                     public void bindViewHolder(ProductCategoryViewHolder holder, ProductCategory item) {
                         List<ProductDescription> productDescriptions = new Select().from(ProductDescription.class)
                                 .where("productCategory = ?", item.getId()).execute();
-                        final ProductDescriptionAdapter i_adapter = new ProductDescriptionAdapter(productDescriptions);
+                        final ProductDescriptionAdapter i_adapter = new ProductDescriptionAdapter(activity,productDescriptions);
                         holder.menuTitle.setText(item.name);
                         holder.editIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 i_adapter.setEditMode(!isEditMode());
-                                i_adapter.notifyDataSetChanged();
                             }
                         });
-                        holder.productRecycler.setLayoutManager(new CustomLinearLayoutManager(activity));
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+                        linearLayoutManager.setAutoMeasureEnabled(true);
+                        holder.productRecycler.setLayoutManager(linearLayoutManager);
                         holder.productRecycler.setAdapter(i_adapter);
                         holder.productRecycler.setHasFixedSize(false);
                     }
                 };
         s_recycler.setLayoutManager(new LinearLayoutManager(activity));
+        s_recycler.setClickable(false);
+        s_recycler.setFocusable(false);
         s_recycler.setAdapter(adapter);
         s_recycler.setHasFixedSize(true);
     }
 
     @Override
-    public void onItemClick(ProductCategory item) {
-
-    }
-
-    @Override
-    public void onDelete(ProductCategory item) {
-
-    }
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PRODUCT_DESCRIPTION_RESULT){
-            loadProductDescriptions();
+            //loadProductDescriptions();
             Log.d("TEST", "onActivityResult: ReloadList");
         }
     }
 
-    private void loadProductDescriptions() {
-        /*productDescriptions.clear();
-        productDescriptions.addAll(new Select().from(ProductDescription.class).<ProductDescription>execute());
-        productDescriptionRecyclerView.getAdapter().notifyDataSetChanged();*/
+    @Override
+    public void onItemClick(ProductDescription item) {
+        Intent intent = new Intent(this, MenuProductDescriptionEditActivity.class);
+        intent.putExtra("productDescriptionSelect-uuid", item.getUuid().toString());
+        startActivityForResult(intent, PRODUCT_DESCRIPTION_RESULT);
     }
+
+    @Override
+    public void onDelete(ProductDescription item) {
+        item.delete();
+        //loadProductDescriptions();
+    }
+
+   /*private void loadProductDescriptions() {
+        productDescriptions.clear();
+        productDescriptions.addAll(new Select().from(ProductDescription.class).<ProductDescription>execute());
+        productDescriptionRecyclerView.getAdapter().notifyDataSetChanged();
+    }*/
+
 }

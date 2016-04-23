@@ -11,16 +11,25 @@ import java.util.List;
 
 import butterknife.Bind;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductCategoryViewHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductDescriptionViewHolder;
 
 public class ProductDescriptionAdapter extends RecyclerView.Adapter<ProductDescriptionViewHolder> {
 
     List<ProductDescription> productDescriptions = new ArrayList<>();
     private boolean editMode = false;
+    private Listener mListener;
+    public interface Listener{
+        void onItemClick(ProductDescription item);
+        void onDelete(ProductDescription item);
+    }
 
-    public ProductDescriptionAdapter(List<ProductDescription> list){
+    public ProductDescriptionAdapter(Listener mListener,List<ProductDescription> list){
         this.productDescriptions = list;
+        this.mListener = mListener;
     }
 
     @Override
@@ -31,13 +40,30 @@ public class ProductDescriptionAdapter extends RecyclerView.Adapter<ProductDescr
     }
 
     @Override
-    public void onBindViewHolder(ProductDescriptionViewHolder holder, int position) {
+    public void onBindViewHolder(ProductDescriptionViewHolder holder, final int position) {
         holder.productDescriptionName.setText(productDescriptions.get(position).name);
         holder.productDescriptionDesc.setText(productDescriptions.get(position).description);
+
         if(isEditMode()){
             holder.deleteButton.setVisibility(View.VISIBLE);
         }else{
             holder.deleteButton.setVisibility(View.GONE);
+        }
+
+        if (mListener != null){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onItemClick(productDescriptions.get(position));
+                    }
+                });
+
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onDelete(productDescriptions.get(position));
+                }
+            });
         }
     }
 

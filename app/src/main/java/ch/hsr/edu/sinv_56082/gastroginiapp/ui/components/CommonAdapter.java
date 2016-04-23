@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
+
 public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends RecyclerView.Adapter<VH> {
 
     public void setList(List<ET> items) {
@@ -34,6 +36,11 @@ public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends Recy
         this.items = items;
     }
 
+    public CommonAdapter(int resourceFile, List<ET> items){
+        this.resourceFile = resourceFile;
+        this.items = items;
+    }
+
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(resourceFile, parent, false);
@@ -51,12 +58,16 @@ public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends Recy
         }
 
         if (listener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
+            // instanceof test because of the nested RecyclerView
+            //in ProductDescriptionListActivity, needs to be "let through"
+            if(!(listener instanceof ProductDescriptionListActivity)){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(item);
+                    }
+                });
+            }
 
             holder.delete_button.setOnClickListener(new View.OnClickListener() {
                 @Override
