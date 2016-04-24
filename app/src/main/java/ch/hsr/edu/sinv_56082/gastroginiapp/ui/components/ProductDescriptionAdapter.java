@@ -32,6 +32,12 @@ public class ProductDescriptionAdapter extends RecyclerView.Adapter<ProductDescr
         this.mListener = mListener;
     }
 
+    public ProductDescriptionAdapter(Listener mListener,List<ProductDescription> list, boolean editMode){
+        this.productDescriptions = list;
+        this.mListener = mListener;
+        this.editMode = editMode;
+    }
+
     @Override
     public ProductDescriptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =

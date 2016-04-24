@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.util.Log;
@@ -27,8 +28,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ProductDescriptionAdapt
 
 public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
-    ProductDescriptionListActivity activity;
-    List<ProductCategory> productCategories = new ArrayList<>();
+    private ProductDescriptionListActivity activity;
+    private List<ProductCategory> productCategories = new ArrayList<>();
+    private CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
+    private List<ProductDescriptionAdapter> productDescriptionAdapterList = new ArrayList<>();
+    private boolean editMode = false;
     @Bind(R.id.superProductDescriptionRecyclerView) RecyclerView s_recycler;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.fab) FloatingActionButton fab;
@@ -52,10 +56,8 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
         activity = this;
         productCategories = new Select().from(ProductCategory.class).execute();
 
-        final CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter =
-                new CommonAdapter<ProductCategory, ProductCategoryViewHolder>(
-                        R.layout.column_row_product_description_categories,productCategories
-                ) {
+        adapter = new CommonAdapter<ProductCategory, ProductCategoryViewHolder>(
+                        R.layout.column_row_product_description_categories,productCategories ) {
                     @Override
                     public ProductCategoryViewHolder createItemViewHolder(View view) {
                         return new ProductCategoryViewHolder(view);
@@ -66,18 +68,19 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
                         List<ProductDescription> productDescriptions = new Select().from(ProductDescription.class)
                                 .where("productCategory = ?", item.getId()).execute();
                         final ProductDescriptionAdapter i_adapter = new ProductDescriptionAdapter(activity,productDescriptions);
+                        productDescriptionAdapterList.add(i_adapter);
                         holder.menuTitle.setText(item.name);
-                        holder.editIcon.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                i_adapter.setEditMode(!isEditMode());
-                            }
-                        });
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
                         linearLayoutManager.setAutoMeasureEnabled(true);
                         holder.productRecycler.setLayoutManager(linearLayoutManager);
                         holder.productRecycler.setAdapter(i_adapter);
                         holder.productRecycler.setHasFixedSize(false);
+                        holder.editIcon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                i_adapter.setEditMode(!i_adapter.isEditMode());
+                            }
+                        });
                     }
                 };
         s_recycler.setLayoutManager(new LinearLayoutManager(activity));
@@ -91,9 +94,24 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PRODUCT_DESCRIPTION_RESULT){
+            refreshAdapters();
             //loadProductDescriptions();
             Log.d("TEST", "onActivityResult: ReloadList");
         }
+    }
+
+    private void refreshSuperAdapter(){
+        if(adapter != null){
+            adapter.notifyDataSetChanged();
+        }
+    }
+    private void refreshAdapters() {
+        if(productDescriptionAdapterList != null){
+            for(ProductDescriptionAdapter i_adapter : productDescriptionAdapterList){
+                i_adapter.notifyDataSetChanged();
+            }
+        }
+        refreshSuperAdapter();
     }
 
     @Override
@@ -106,6 +124,7 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
     @Override
     public void onDelete(ProductDescription item) {
         item.delete();
+        refreshAdapters();
         //loadProductDescriptions();
     }
 
