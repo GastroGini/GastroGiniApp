@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -191,11 +190,10 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         super.onResume();
 
         //TODO p2p handling should not be in activity
-        ((App)getApplication()).p2p.startBroadcastReciever();
 
-        ((App)getApplication()).p2p.removeLocalServie();
+        ((App)getApplication()).p2p.removeLocalService();
 
-        ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+       /* ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
                 for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
@@ -208,7 +206,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 foreignEventList.add(service);
                 ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
-        });
+        });*/
 
         ((App)getApplication()).p2p.discoverServices();
 
