@@ -12,6 +12,7 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
@@ -28,6 +29,7 @@ public class StartEventActivity extends CommonActivity {
 
     private Event event;
     private StartEventActivity startEventActivity;
+    private UserController userController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class StartEventActivity extends CommonActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        userController = new UserController();
 
         event = Event.get(UUID.fromString(getIntent().getExtras().getString("event-uuid")));
         startEventActivity = this;
@@ -45,6 +48,7 @@ public class StartEventActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
                 String userName = startEventUserNameInput.getText().toString();
+                userController.saveUser(userName);
                 String eventPassword = startEventPasswordInput.getText().toString();
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
@@ -58,6 +62,7 @@ public class StartEventActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
                 String userNameLocal = startEventUserNameLocalInput.getText().toString();
+                userController.saveUser(userNameLocal);
                 String eventPassword = "";
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
@@ -66,6 +71,8 @@ public class StartEventActivity extends CommonActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
 }

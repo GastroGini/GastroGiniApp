@@ -20,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
@@ -64,8 +65,7 @@ public class EventViewActivity extends CommonActivity {
             event = Event.get(UUID.fromString(args.getString("event-uuid")));
         }else{
             isNewEvent = true;
-            UUID localUser = ((App) getApplication()).getLocalUser();
-            event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), Person.get(localUser));
+            event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
         }
         setTitle(event.name);
 
