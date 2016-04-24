@@ -86,4 +86,13 @@ public class ProductDescriptionAdapter extends RecyclerView.Adapter<ProductDescr
         this.editMode = editMode;
         notifyDataSetChanged();
     }
+
+    public List<ProductDescription> getList(){
+        return productDescriptions;
+    }
+
+    public void setList(List<ProductDescription> newList){
+        this.productDescriptions = newList;
+        notifyDataSetChanged();
+    }
 }

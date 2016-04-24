@@ -48,7 +48,7 @@
     <string name="title_activity_order_pay_view">OrderPayView</string>
     <string name="title_activity_new_order_view">NewOrderView</string>
     <string name="title_activity_order_control_view">OrderControlView</string>
-    <string name="title_activity_product_description_list">ProductDescriptionListActivity</string>
+    <string name="title_activity_product_description_list">Produktbeschreibungen</string>
     <string name="title_activity_menu_product_description_edit">MenuProductDescriptionEditActivity
     </string>
     <string name="save">Speichern</string>
@@ -68,4 +68,5 @@
     <string name="title_activity_product_list_list_edit_view">ProductListListEditViewActivity
     </string>
     <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
+    <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
 </resources>

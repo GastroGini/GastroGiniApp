@@ -14,6 +14,7 @@ public class ProductCategoryViewHolder extends CommonViewHolder {
     @Bind(R.id.menuCardProductListHeaderTitle) public TextView menuTitle;
     @Bind(R.id.productDescriptionRecyclerView) public RecyclerView productRecycler;
     @Bind(R.id.menuCardProductListHeaderEditMenuIcon) public ImageView editIcon;
+    @Bind(R.id.expandCollapseIcon) ImageView expandCollapseIcon;
     public ProductCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);

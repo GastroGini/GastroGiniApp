@@ -29,6 +29,15 @@
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorTextLight" />
 
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/expandCollapseIcon"
+            android:src="@drawable/ic_menu_slideshow"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight" />
+
         <Space
             android:layout_width="20px"
             android:layout_height="match_parent"

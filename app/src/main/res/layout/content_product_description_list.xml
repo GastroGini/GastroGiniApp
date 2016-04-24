@@ -13,9 +13,18 @@
     tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity"
     tools:showIn="@layout/activity_product_description_list">
 
-    <android.support.v7.widget.RecyclerView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/emptyProductDescriptionHintText"
+        android:id="@+id/productDescriptionHintText"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/superProductDescriptionRecyclerView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
