@@ -53,7 +53,7 @@
             android:id="@+id/productListEditViewSaveButton"
             android:layout_gravity="right"
             android:layout_margin="16dp"
-            android:text="Speichern"
+            android:text="@string/save"
             />
     </LinearLayout>
 

@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meine Feste"
+            android:text="@string/my_event"
             android:id="@+id/eventListMyEvents"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -70,7 +70,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sie haben noch keine Feste erstellt, über den &quot;+&quot; Button können Sie Ihren eigenen Fest erstellen"
+        android:text="@string/no_event_alert"
         android:id="@+id/noAvailableEventsText"
         android:layout_margin="16dp"
         android:visibility="gone" />
@@ -84,7 +84,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fremde Feste"
+            android:text="@string/other_events"
             android:id="@+id/eventListForeignEvents"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

@@ -7,7 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello blank </string>
     <string name="title_activity_bestellen">Bestellen</string>
     <string name="title_activity_fest_waehlen">Fest wählen</string>
     <string name="title_activity_verbinden">Verbinden</string>
@@ -20,29 +20,78 @@
         <item>ProduktListe 5</item>
     </string-array>
     <string name="title_activity_tisch">Tisch Activity</string>
-    <string name="title_activity_bestellen_tisch">Bestellen Tisch Activity</string>
+    <string name="title_activity_bestellen_tisch">Bestellen Tisch</string>
     <string name="preis">Preis</string>
     <string name="groesse">Grösse</string>
     <string name="produkt">Produkt</string>
     <string name="anzahl">Anzahl</string>
-    <string name="title_activity_home_screen">Home Screen</string>
-    <string name="title_activity_event_list">Event List</string>
-    <string name="title_activity_event_view">Event View</string>
-    <string name="title_activity_start_event">StartEventActivity</string>
-    <string name="title_activity_join_event">JoinEventActivity</string>
-    <string name="title_activity_menu_main">MenuMain</string>
-    <string name="STATE_OPEN">Open</string>
-    <string name="STATE_PAYED">Payed</string>
+    <string name="title_activity_home_screen">Startbildschirm</string>
+    <string name="title_activity_event_list">Feste Listen</string>
+    <string name="title_activity_event_view">Fest View</string>
+    <string name="title_activity_start_event">Start Fest </string>
+    <string name="title_activity_join_event">Join Fest </string>
+    <string name="title_activity_menu_main">Haupt Menu</string>
+    <string name="STATE_OPEN">Offnen</string>
+    <string name="STATE_PAYED">Bezahlt</string>
 
 
     <!-- MenuMain -->
     <string name="menu_main_menuMapButtonText">Menukarte</string>
     <string name="menu_main_productsButtonText">Produkte</string>
-    <string name="title_activity_menucard_list_view">MenucardListView</string>
-    <string name="title_activity_menucard_view">Menucard View</string>
-    <string name="title_activity_editMenuItem">Edit</string>
+    <string name="title_activity_menucard_list_view">Menukarte List </string>
+    <string name="title_activity_menucard_view">Menukard </string>
+    <string name="title_activity_editMenuItem">Bearbeiten</string>
+    <string name="title_activity_service_home">Service</string>
+    <string name="title_activity_table_order_view">Tisch Bestellung</string>
+    <string name="title_activity_order_pay_view">Bezahlen</string>
+    <string name="title_activity_new_order_view">Neue Bestellung</string>
+    <string name="title_activity_order_control_view">Auftrag Ansicht</string>
+    <string name="title_activity_product_description_list">Produktbeschreibung List</string>
+    <string name="title_activity_menu_product_description_edit">Produktbeschreibung Bearbeiten
+    </string>
+
+    <string name="android_studio">Android Studio</string>
+    <string name="android_email">android.studio@android.com</string>
+    <string name="event_tables">Fest Tabelle</string>
+    <string name="event_title">Fest Titel</string>
+    <string name="amount_table">Anzahl Tabellen</string>
+    <string name="start_date">Anfangsdatum</string>
+    <string name="title">Titel</string>
+    <string name="my_event">Meine Feste</string>
+    <string name="other_events">Fremde Feste</string>
+    <string name="join">Beitreten</string>
+    <string name="pass_hint">Passwort(Fest)</string>
+    <string name="form_name">Benutzername</string>
+    <string name="start">Starten</string>
+    <string name="host">Hosten</string>
+    <string name="menu">Menu</string>
+    <string name="events">Feste</string>
+    <string name="host_event">Fest hosten</string>
+    <string name="pay">Bezahlen</string>
+    <string name="product">Produkt</string>
+    <string name="hint_user">Benutzername</string>
+    <string name="volume">Anzahl</string>
+    <string name="complete">Abschliessen</string>
+    <string name="close_order">Bestellung abschliessen</string>
+    <string name="size">Grösse</string>
+    <string name="new_order">Neue Bestellung</string>
+    <string name="order_overview">Bestellungsübersicht</string>
+    <string name="menu_card_list">Menu Cards List</string>
+    <string name="open_order">Offene Bestellungen</string>
+    <string name="stornieren">Stornieren</string>
+    <string name="host_local_event">Fest lokal hosten</string>
+    <string name="local_host">Lokal hosten</string>
+    <string name="menu_card">Menukarte</string>
+    <string name="menu_product_list">Produkt Liste</string>
+    <string name="summary_of_order">Zusammenfassung der Bestellungen</string>
+    <string name="no_event_alert">Sie haben noch keine Feste erstellt, über den &quot;+&quot; Button können Sie Ihren eigenen Fest erstellen</string>
 
 
+    <string name="dummy_data_1">aaa 1</string>
+    <string name="dummy_data_2">aaa 2</string>
+    <string name="dummy_data_3">aaa 3</string>
+
+ <!--
     <string name="title_activity_service_home">ServiceHome</string>
     <string name="title_activity_table_order_view">TableOrderView</string>
     <string name="title_activity_order_pay_view">OrderPayView</string>
@@ -51,22 +100,25 @@
     <string name="title_activity_product_description_list">Produktbeschreibungen</string>
     <string name="title_activity_menu_product_description_edit">MenuProductDescriptionEditActivity
     </string>
+
+    -->
     <string name="save">Speichern</string>
-    <string name="title_activity_product_description_view">ProductDescriptionViewActivity</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="back">Zuruck</string>
+    <string name="title_activity_product_description_view">Product Description</string>
     <string name="description">Beschreibung</string>
     <string name="string_name">Name</string>
-    <string name="title_activity_menu_product_edit">MenuProductEditActivity</string>
+    <string name="title_activity_menu_product_edit">Menu Product Edit</string>
     <string name="date_format">dd.MM.yyyy H:s</string>
     <string name="eventDate">Ausführungsdatum</string>
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
-    <string name="title_activity_event_static_view">EventStaticViewActivity</string>
-    <string name="title_activity_product_list">ProductListActivity</string>
+    <string name="title_activity_event_static_view">Fest Static</string>
+    <string name="title_activity_product_list">Produkt List</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>
     <string name="string_product_name">Name</string>
-    <string name="title_activity_product_list_list_edit_view">ProductListListEditViewActivity
-    </string>
+    <string name="title_activity_product_list_list_edit_view">Produkt Liste Bearbeiten</string>
     <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
     <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
 </resources>
