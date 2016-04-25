@@ -47,7 +47,7 @@
     <string name="title_activity_new_order_view">Neue Bestellung</string>
     <string name="title_activity_order_control_view">Auftrag Ansicht</string>
     <string name="title_activity_product_description_list">Produktbeschreibung List</string>
-    <string name="title_activity_menu_product_description_edit">Menu Produktbeschreibung Bearbeiten
+    <string name="title_activity_menu_product_description_edit">Produktbeschreibung Bearbeiten
     </string>
 
     <string name="android_studio">Android Studio</string>
