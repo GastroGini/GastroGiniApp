@@ -79,7 +79,7 @@ public class MenuProductEditActivity extends CommonActivity {
         productController = new ViewController<>(Product.class);
         final Bundle extras = getIntent().getExtras();
         if(extras.getString("product-uuid")==null) isNewProduct = true;
-        product = productController.create(new Functions.Supplier<Product>() {
+        product = productController.prepare(new Functions.Supplier<Product>() {//TODO musst be diff
             @Override
             public Product supply() {
                 return new Product(null, new ViewController<>(ProductList.class).get(extras.getString("menucardRowItem-uuid")), 0.0,"");

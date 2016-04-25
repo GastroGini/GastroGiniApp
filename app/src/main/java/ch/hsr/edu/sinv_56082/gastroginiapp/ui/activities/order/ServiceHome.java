@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -39,9 +40,11 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
         setSupportActionBar(toolbar);
 
         Bundle args = getIntent().getExtras();
-        //TODO Extract to controller
-        Event event = Event.get(UUID.fromString(args.getString("event-uuid")));
-        String userName = args.get("userName").toString();
+        Event event = new ViewController<>(Event.class).get(args.getString("event-uuid"));
+        //String userName = args.get("userName").toString();
+
+        String userName = new UserController().getUser().firstName;
+
         String eventPassword = args.get("eventPassword").toString();
 
         setTitle("GastroGini - Event: " + event.name);

@@ -39,8 +39,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
     EventTable eventTable;
     List<OrderPosition> tableOrderPositions = new ArrayList<>();
-    List<OrderPosition> selectedOrderPositionList = new ArrayList<>();
-    ArrayList<String> OrderPositionsUUID = new ArrayList<>();
+
     private AppCompatActivity activity;
     TableRowAdapter adapter;
 
@@ -133,11 +132,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void deleteOrderPosition (OrderPosition op){
-        //eventTable.orders().remove(op);
-        op.delete();
+        new ViewController<>(OrderPosition.class).delete(op);
         tableOrderPositions.remove(op);
-        //selectedOrderPositionList.remove(op);
-        updateRecyclerView();
     }
     public void updateRecyclerView(){
         loadOrderPositions();

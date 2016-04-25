@@ -76,7 +76,7 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras==null) isNewProductDescription = true;
-        productDescription = productDescriptionController.create(new Functions.Supplier<ProductDescription>() {
+        productDescription = productDescriptionController.prepare(new Functions.Supplier<ProductDescription>() {
             @Override
             public ProductDescription supply() {
                 return new ProductDescription("","",null);

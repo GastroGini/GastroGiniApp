@@ -174,7 +174,7 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
 
     @Override
     public void onDelete(ProductDescription item) {
-        item.delete();
+        new ViewController<>(ProductDescription.class).delete(item);
         removeItemFromCorrespondingList(item);
         checkIfHintTextNecessary();
     }

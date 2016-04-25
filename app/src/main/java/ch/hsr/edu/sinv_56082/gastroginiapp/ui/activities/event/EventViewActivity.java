@@ -68,7 +68,7 @@ public class EventViewActivity extends CommonActivity {
             event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            event = eventController.create(new Functions.Supplier<Event>() {
+            event = eventController.prepare(new Functions.Supplier<Event>() {
                 @Override
                 public Event supply() {
                     return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
@@ -131,15 +131,24 @@ public class EventViewActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
 
-                event.name = eventViewTitleInput.getText().toString();
-                event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                eventController.update(event, new Functions.Consumer<Event>() {
+                    @Override
+                    public void consume(Event event) {
+                        event.name = eventViewTitleInput.getText().toString();
+                        event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                    }
+                });
+
                 int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
-
-                event.save();
-
                 if(newTableCount > oldTableCount){
                     for (int i = oldTableCount + 1; i <= newTableCount; i++){
-                        new EventTable(i, "Tisch "+i, event).save();
+                        final int finalI = i;
+                        new ViewController<>(EventTable.class).create(new Functions.Supplier<EventTable>() {
+                            @Override
+                            public EventTable supply() {
+                                return new EventTable(finalI, "Tisch " + finalI, event);
+                            }
+                        });
                         Log.d("aaaaaaaaa", "onClick: new table");
                     }
                 }
