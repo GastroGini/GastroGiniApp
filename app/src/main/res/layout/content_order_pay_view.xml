@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bezahlen"
+            android:text="@string/pay"
             android:id="@+id/payOrderTitle"
             android:textSize="16dp"
             android:padding="16dp"
@@ -43,7 +43,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="Anzahl"
+            android:text="@string/volume"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorIconLight" />
 
@@ -54,7 +54,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="Produkt"
+            android:text="@string/product"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorIconLight" />
 
@@ -65,7 +65,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="Grösse"
+            android:text="@string/size"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorIconLight" />
 
@@ -76,7 +76,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="Preis"
+            android:text="@string/preis"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorIconLight" />
     </LinearLayout>
@@ -106,7 +106,7 @@
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Abbrechen"
+            android:text="@string/cancel"
             android:id="@+id/cancelButton"
             android:layout_gravity="left"
             android:layout_margin="16dp"/>
@@ -114,7 +114,7 @@
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Abschliessen"
+            android:text="@string/complete"
             android:id="@+id/proceedButton"
             android:layout_gravity="right"
             android:layout_margin="16dp" />

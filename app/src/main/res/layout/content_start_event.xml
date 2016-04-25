@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fest hosten"
+        android:text="@string/host_event"
         android:id="@+id/hostEventTitle"
         android:textSize="@dimen/title_text_size"
         android:padding="16dp"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:textSize="16dp"
                 android:layout_height="wrap_content"
-                android:hint="Benutzername" />
+                android:hint="@string/hint_user" />
 
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:hint="Passwort(Fest)"
+                android:hint="@string/pass_hint"
                 android:password="true" />
 
         </android.support.design.widget.TextInputLayout>
@@ -79,7 +79,7 @@
             android:layout_width="160dp"
             android:layout_gravity="right"
             android:layout_margin="16dp"
-            android:text="Hosten"
+            android:text="@string/host"
             android:id="@+id/hostButton" />
 
     </LinearLayout>
@@ -87,7 +87,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fest lokal hosten"
+        android:text="@string/host_local_event"
         android:id="@+id/hostEventLocalTitle"
         android:textSize="@dimen/title_text_size"
         android:padding="16dp"
@@ -110,7 +110,7 @@
             android:layout_width="match_parent"
             android:textSize="16dp"
             android:layout_height="wrap_content"
-            android:hint="Benutzername" />
+            android:hint="@string/hint_user" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -119,6 +119,6 @@
         android:layout_width="160dp"
         android:layout_gravity="right"
         android:layout_margin="16dp"
-        android:text="Lokal hosten"
+        android:text="@string/local_host"
         android:id="@+id/localHostButton" />
 </LinearLayout>

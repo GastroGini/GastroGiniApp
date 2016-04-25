@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Offene Bestellungen"
+                android:text="@string/open_order"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight"/>
         </LinearLayout>
@@ -47,7 +47,7 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Produkt"
+                android:text="@string/product"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
@@ -58,7 +58,7 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Grösse"
+                android:text="@string/size"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
@@ -69,7 +69,7 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="Preis"
+                android:text="@string/preis"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
@@ -97,7 +97,7 @@
             <Button
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Stornieren"
+                android:text="@string/stornieren"
                 android:id="@+id/deleteButton"
                 android:layout_gravity="left"
                 android:layout_margin="16dp"/>

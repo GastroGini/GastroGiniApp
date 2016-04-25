@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="Neue Bestellung"
+            android:text="@string/new_order"
             android:background="@color/colorSubTitleDark"
             android:textColor="@color/colorIconLight"/>
     </LinearLayout>
@@ -53,14 +53,14 @@
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Abbrechen"
+            android:text="@string/cancel"
             android:id="@+id/cancelButton"
             android:layout_gravity="right"
             android:layout_margin="16dp"/>
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Bestellungsübersicht"
+            android:text="@string/order_overview"
             android:id="@+id/finishButton"
             android:layout_gravity="right"
             android:layout_margin="16dp" />

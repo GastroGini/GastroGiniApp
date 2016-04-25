@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_weight="3"
-        android:text="aaaa1"
+        android:text="@string/dummy_data_1"
         android:gravity="center_vertical"
         android:paddingLeft="5dp"
         android:shadowColor="@color/background_floating_material_dark"
@@ -25,7 +25,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
         android:gravity="center"
-        android:text="aaa2"
+        android:text="@string/dummy_data_2"
         android:background="@drawable/border_style" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:gravity="center"
         android:layout_below="@+id/textView1"
         android:layout_toRightOf="@+id/textView2"
-        android:text="aaaa3"
+        android:text="@string/dummy_data_3"
         android:background="@drawable/border_style" />
 
 </LinearLayout>
