@@ -25,6 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
@@ -60,6 +61,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
 
     private AppCompatActivity activity;
+    private ViewController<Event> eventController;
 
 
     @Override
@@ -67,7 +69,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
-            myEventList.addAll(new Select().from(Event.class).<Event>execute());
+            myEventList.addAll(eventController.getModelList());
             eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
             Log.d("hj", "onActivityResult: reloaded list");
         }
@@ -99,7 +101,9 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
         activity = this;
 
-        myEventList.addAll(new Select().from(Event.class).<Event>execute());
+        eventController = new ViewController<>(Event.class);
+
+        myEventList.addAll(eventController.getModelList());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +238,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
     @Override
     public void onDelete(Event ownEvent) {
-        ownEvent.delete();
+        eventController.delete(ownEvent);
         myEventList.remove(ownEvent);
         eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
     }

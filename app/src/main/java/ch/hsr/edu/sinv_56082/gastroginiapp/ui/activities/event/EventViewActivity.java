@@ -18,9 +18,11 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
@@ -45,6 +47,7 @@ public class EventViewActivity extends CommonActivity {
     private int oldTableCount;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
+    private ViewController<Event> eventController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class EventViewActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        eventController = new ViewController<>(Event.class);
 
         eventViewActivity = this;
 
@@ -62,10 +65,15 @@ public class EventViewActivity extends CommonActivity {
         Bundle args = getIntent().getExtras();
         if(args != null){
             isNewEvent = false;
-            event = Event.get(UUID.fromString(args.getString("event-uuid")));
+            event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
+            event = eventController.create(new Functions.Supplier<Event>() {
+                @Override
+                public Event supply() {
+                    return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
+                }
+            });
         }
         setTitle(event.name);
 
@@ -73,7 +81,7 @@ public class EventViewActivity extends CommonActivity {
 
 
 
-        List<ProductList> productLists = new Select().from(ProductList.class).execute();
+        List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
         eventViewProductListSpinner.setAdapter(spinnerAdapter);
 

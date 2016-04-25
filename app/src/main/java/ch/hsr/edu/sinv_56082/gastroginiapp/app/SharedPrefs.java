@@ -4,6 +4,8 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+
 public class SharedPrefs {
 
     private SharedPreferences preferences;
@@ -16,9 +18,9 @@ public class SharedPrefs {
         return preferences;
     }
 
-    public void savePreferences(){
+    public void savePreferences(Functions.Consumer<SharedPreferences.Editor> editorConsumer){
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("local-user-uuid", localUser.toString());
+        editorConsumer.consume(editor);
         editor.commit();
     }
 

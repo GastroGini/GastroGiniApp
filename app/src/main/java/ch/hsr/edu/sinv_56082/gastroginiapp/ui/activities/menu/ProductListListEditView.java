@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import butterknife.Bind;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 
 public class ProductListListEditView extends AppCompatActivity {
@@ -26,8 +28,12 @@ public class ProductListListEditView extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProductList newProductList = new ProductList(productListNameInput.getText().toString());
-                newProductList.save();
+                new ViewController<>(ProductList.class).create(new Functions.Supplier<ProductList>() {
+                    @Override
+                    public ProductList supply() {
+                        return new ProductList(productListNameInput.getText().toString());
+                    }
+                });
                 setResult(RESULT_OK);
                 finish();
             }

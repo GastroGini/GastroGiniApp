@@ -10,6 +10,7 @@ import com.activeandroid.app.Application;
 
 import java.util.UUID;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
@@ -21,7 +22,7 @@ public class App extends Application {
 
 
     private UUID localUser;
-    private SharedPreferences preferences;
+    private SharedPrefs prefs;
 
 
     public P2pHandler p2p;
@@ -46,9 +47,9 @@ public class App extends Application {
     }
 
     private void initLocalUser() {
-        preferences = getSharedPreferences("LocalUserData", MODE_PRIVATE);
-        if (preferences.getString("local-user-uuid", null) != null){
-            localUser = UUID.fromString(preferences.getString("local-user-uuid", null));
+        prefs = new SharedPrefs("LocalUserData");
+        if (prefs.getPreferences().getString("local-user-uuid", null) != null){
+            localUser = UUID.fromString(prefs.getPreferences().getString("local-user-uuid", null));
             Log.d("App", "onCreate: loaded User: " + localUser.toString());
         }else{
             Person localUserPerson = new Person("local", "user");
@@ -58,10 +59,13 @@ public class App extends Application {
     }
 
 
-    public void setLocalUser(UUID localUser) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("local-user-uuid", localUser.toString());
-        editor.commit();
+    public void setLocalUser(final UUID localUser) {
+        prefs.savePreferences(new Functions.Consumer<SharedPreferences.Editor>() {
+            @Override
+            public void consume(SharedPreferences.Editor editor) {
+                editor.putString("local-user-uuid", localUser.toString());
+            }
+        });
         this.localUser = localUser;
     }
 

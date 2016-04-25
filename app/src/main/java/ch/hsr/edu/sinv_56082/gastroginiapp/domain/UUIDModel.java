@@ -7,7 +7,7 @@ import com.activeandroid.query.Select;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class UUIDModel extends Model {
+public abstract class UUIDModel extends Model {
 
     public UUID getUuid() {
         return UUID.fromString(uuid_column);
@@ -27,5 +27,10 @@ public class UUIDModel extends Model {
     public UUIDModel(UUID uuid){
         setUuid(uuid);
     }
+
+
+   public static <M extends UUIDModel> M get(UUID uuid){
+       return new Select().from(UUIDModel.class).where("uuid=?", uuid.toString()).<M>executeSingle();
+   }
 
 }
