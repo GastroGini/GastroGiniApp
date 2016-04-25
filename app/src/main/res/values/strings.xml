@@ -26,7 +26,7 @@
     <string name="produkt">Produkt</string>
     <string name="anzahl">Anzahl</string>
     <string name="title_activity_home_screen">Startbildschirm</string>
-    <string name="title_activity_event_list">Feste List</string>
+    <string name="title_activity_event_list">Feste Listen</string>
     <string name="title_activity_event_view">Fest View</string>
     <string name="title_activity_start_event">Start Fest </string>
     <string name="title_activity_join_event">Join Fest </string>
@@ -82,8 +82,8 @@
     <string name="host_local_event">Fest lokal hosten</string>
     <string name="local_host">Lokal hosten</string>
     <string name="menu_card">Menukarte</string>
-    <string name="menu_product_list">Menu Product List</string>
-    <string name="summary_of_order">Zusammenfassung der Bestellung</string>
+    <string name="menu_product_list">Produkt Liste</string>
+    <string name="summary_of_order">Zusammenfassung der Bestellungen</string>
     <string name="no_event_alert">Sie haben noch keine Feste erstellt, über den &quot;+&quot; Button können Sie Ihren eigenen Fest erstellen</string>
 
 
@@ -114,11 +114,11 @@
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
     <string name="title_activity_event_static_view">Fest Static</string>
-    <string name="title_activity_product_list">Product List</string>
+    <string name="title_activity_product_list">Produkt List</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>
     <string name="string_product_name">Name</string>
-    <string name="title_activity_product_list_list_edit_view">Product List Edit</string>
+    <string name="title_activity_product_list_list_edit_view">Produkt Liste Bearbeiten</string>
     <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
     <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
 </resources>
