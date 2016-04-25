@@ -54,7 +54,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle args = getIntent().getExtras();
-        setTitle("GastroGini - Table order view");
+        setTitle("GastroGini - Tabelle Auftragssicht ");
 
         loadEventTableFromUUID(args);
         loadOrderPositions();

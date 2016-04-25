@@ -25,14 +25,14 @@
     <string name="groesse">Grösse</string>
     <string name="produkt">Produkt</string>
     <string name="anzahl">Anzahl</string>
-    <string name="title_activity_home_screen">Home Screen</string>
-    <string name="title_activity_event_list">Event List</string>
-    <string name="title_activity_event_view">Event View</string>
-    <string name="title_activity_start_event">Start Event </string>
-    <string name="title_activity_join_event">Join Event </string>
-    <string name="title_activity_menu_main">Menu Main</string>
-    <string name="STATE_OPEN">Open</string>
-    <string name="STATE_PAYED">Paid</string>
+    <string name="title_activity_home_screen">Startbildschirm</string>
+    <string name="title_activity_event_list">Fest List</string>
+    <string name="title_activity_event_view">Fest View</string>
+    <string name="title_activity_start_event">Start Fest </string>
+    <string name="title_activity_join_event">Join Fest </string>
+    <string name="title_activity_menu_main">Haupt Menu</string>
+    <string name="STATE_OPEN">Offnen</string>
+    <string name="STATE_PAYED">Bezahlt</string>
 
 
     <!-- MenuMain -->
@@ -40,20 +40,20 @@
     <string name="menu_main_productsButtonText">Produkte</string>
     <string name="title_activity_menucard_list_view">Menukarte List </string>
     <string name="title_activity_menucard_view">Menukard </string>
-    <string name="title_activity_editMenuItem">Edit</string>
-    <string name="title_activity_service_home">Service Home</string>
-    <string name="title_activity_table_order_view">Table Order</string>
-    <string name="title_activity_order_pay_view">Order Pay</string>
-    <string name="title_activity_new_order_view">New Order</string>
-    <string name="title_activity_order_control_view">Order Control</string>
+    <string name="title_activity_editMenuItem">Bearbeiten</string>
+    <string name="title_activity_service_home">Service</string>
+    <string name="title_activity_table_order_view">Tisch Bestellung</string>
+    <string name="title_activity_order_pay_view">Bezahlen</string>
+    <string name="title_activity_new_order_view">Neue Bestellung</string>
+    <string name="title_activity_order_control_view">Auftrag Ansicht</string>
     <string name="title_activity_product_description_list">Produkt Description List</string>
-    <string name="title_activity_menu_product_description_edit">Menu Produkt Description Edit
+    <string name="title_activity_menu_product_description_edit">Menu Produktbeschreibung Bearbeiten
     </string>
 
     <string name="android_studio">Android Studio</string>
     <string name="android_email">android.studio@android.com</string>
-    <string name="event_tables">Event Tabelle</string>
-    <string name="event_title">Event Titel</string>
+    <string name="event_tables">Fest Tabelle</string>
+    <string name="event_title">Fest Titel</string>
     <string name="amount_table">Anzahl Tabellen</string>
     <string name="start_date">Anfangsdatum</string>
     <string name="title">Titel</string>
@@ -72,6 +72,7 @@
     <string name="hint_user">Benutzername</string>
     <string name="volume">Anzahl</string>
     <string name="complete">Abschliessen</string>
+    <string name="close_order">Bestellung abschliessen</string>
     <string name="size">Grösse</string>
     <string name="new_order">Neue Bestellung</string>
     <string name="order_overview">Bestellungsübersicht</string>
@@ -112,7 +113,7 @@
     <string name="eventDate">Ausführungsdatum</string>
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
-    <string name="title_activity_event_static_view">Event Static</string>
+    <string name="title_activity_event_static_view">Fest Static</string>
     <string name="title_activity_product_list">Product List</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>

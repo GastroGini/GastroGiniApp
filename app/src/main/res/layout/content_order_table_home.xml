@@ -105,7 +105,7 @@
             <Button
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:text="Bezahlen"
+                android:text="@string/pay"
                 android:id="@+id/payButton"
                 android:layout_gravity="right"
                 android:layout_margin="16dp" />

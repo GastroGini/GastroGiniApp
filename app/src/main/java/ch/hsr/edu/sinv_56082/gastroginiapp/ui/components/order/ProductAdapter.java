@@ -51,8 +51,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         final CommonSelectable<Product> selectable = orderItems.get(position);
+        Product item  =   selectable.getItem();
 
-        holder.getNameTextView().setText(selectable.getItem().productDescription.name);
+        String name =  (item != null && item.productDescription != null && item.productDescription.name != null)
+                        ? item.productDescription.name
+                        : "";
+
+
+        holder.getNameTextView().setText(name);
         holder.getSizeTextView().setText(selectable.getItem().volume);
         holder.getPriceTextView().setText(selectable.getItem().price + "");
 

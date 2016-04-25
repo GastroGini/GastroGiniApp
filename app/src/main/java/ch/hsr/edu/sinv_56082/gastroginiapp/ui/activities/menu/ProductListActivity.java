@@ -74,8 +74,15 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
 
             @Override
             public void bindViewHolder(ProductViewHolder holder, Product item) {
-                holder.productTitle.setText(item.productDescription.name);
-                holder.productDescription.setText(item.productDescription.description);
+                String name = (item != null && item.productDescription != null && item.productDescription.name != null)
+                        ? item.productDescription.name
+                        : "";
+                String description = (item != null && item.productDescription != null && item.productDescription.description != null)
+                ?item.productDescription.description
+                :"";
+
+                holder.productTitle.setText(name);
+                holder.productDescription.setText(description);
                 holder.productVolume.setText(item.volume);
                 holder.productPrice.setText(item.price+".-");
             }
