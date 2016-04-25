@@ -12,6 +12,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 public class ViewController<M extends UUIDModel> extends Controller {
 
+
+
     public List<M> getModelList() {
         return new Select().from(type).execute();
     }
@@ -36,8 +38,22 @@ public class ViewController<M extends UUIDModel> extends Controller {
         return model;
     }
 
+
+    private M prep;
+    public M prepare(Functions.Supplier<M> supplier){
+        M prep = supplier.supply();
+        this.prep = prep;
+        return prep;
+    }
+
     public void update(M newModel, Functions.Consumer<M> updater){
-        M model = get(newModel.getUuid());
+        M model;
+        if (newModel.equals(prep)) {
+            prep.save();
+            model = prep;
+        } else {
+            model = get(newModel.getUuid());
+        }
         updater.consume(model);
         model.save();
     }

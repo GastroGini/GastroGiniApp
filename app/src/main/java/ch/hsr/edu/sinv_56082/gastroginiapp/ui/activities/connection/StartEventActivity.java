@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
@@ -41,7 +42,7 @@ public class StartEventActivity extends CommonActivity {
 
         userController = new UserController();
 
-        event = Event.get(UUID.fromString(getIntent().getExtras().getString("event-uuid")));
+        event = new ViewController<>(Event.class).get(getIntent().getExtras().getString("event-uuid"));
         startEventActivity = this;
 
         hostButton.setOnClickListener(new View.OnClickListener() {
