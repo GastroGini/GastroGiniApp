@@ -7,7 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello blank </string>
     <string name="title_activity_bestellen">Bestellen</string>
     <string name="title_activity_fest_waehlen">Fest wählen</string>
     <string name="title_activity_verbinden">Verbinden</string>
@@ -20,7 +20,7 @@
         <item>ProduktListe 5</item>
     </string-array>
     <string name="title_activity_tisch">Tisch Activity</string>
-    <string name="title_activity_bestellen_tisch">Bestellen Tisch Activity</string>
+    <string name="title_activity_bestellen_tisch">Bestellen Tisch</string>
     <string name="preis">Preis</string>
     <string name="groesse">Grösse</string>
     <string name="produkt">Produkt</string>
@@ -90,29 +90,34 @@
     <string name="dummy_data_2">aaa 2</string>
     <string name="dummy_data_3">aaa 3</string>
 
+ <!--
+    <string name="title_activity_service_home">ServiceHome</string>
+    <string name="title_activity_table_order_view">TableOrderView</string>
+    <string name="title_activity_order_pay_view">OrderPayView</string>
+    <string name="title_activity_new_order_view">NewOrderView</string>
+    <string name="title_activity_order_control_view">OrderControlView</string>
+    <string name="title_activity_product_description_list">Produktbeschreibungen</string>
+    <string name="title_activity_menu_product_description_edit">MenuProductDescriptionEditActivity
+    </string>
 
-
-
-
-
-
+    -->
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
     <string name="back">Zuruck</string>
-    <string name="title_activity_product_description_view">ProductDescriptionViewActivity</string>
+    <string name="title_activity_product_description_view">Product Description</string>
     <string name="description">Beschreibung</string>
     <string name="string_name">Name</string>
-    <string name="title_activity_menu_product_edit">MenuProductEditActivity</string>
+    <string name="title_activity_menu_product_edit">Menu Product Edit</string>
     <string name="date_format">dd.MM.yyyy H:s</string>
     <string name="eventDate">Ausführungsdatum</string>
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
-    <string name="title_activity_event_static_view">EventStaticViewActivity</string>
-    <string name="title_activity_product_list">ProductListActivity</string>
+    <string name="title_activity_event_static_view">Event Static</string>
+    <string name="title_activity_product_list">Product List</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>
     <string name="string_product_name">Name</string>
-    <string name="title_activity_product_list_list_edit_view">ProductListListEditViewActivity
-    </string>
+    <string name="title_activity_product_list_list_edit_view">Product List Edit</string>
     <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
+    <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
 </resources>

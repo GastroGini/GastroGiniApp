@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 
-public class TestActivity extends AppCompatActivity {
+public class CommonActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

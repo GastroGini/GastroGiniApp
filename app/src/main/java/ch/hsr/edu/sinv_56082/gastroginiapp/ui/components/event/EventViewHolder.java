@@ -6,10 +6,10 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestViewHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonViewHolder;
 
 
-public class EventViewHolder extends TestViewHolder {
+public class EventViewHolder extends CommonViewHolder {
     @Bind(R.id.columnRowEventTitle) public TextView columnRowEventTitle;
     @Bind(R.id.columnRowStartDate) public TextView columnRowStartDate;
     @Bind(R.id.columnRowAmountOfTables) public TextView columnRowAmountOfTables;

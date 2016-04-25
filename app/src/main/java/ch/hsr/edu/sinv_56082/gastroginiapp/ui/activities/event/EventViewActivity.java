@@ -18,17 +18,20 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 
-public class EventViewActivity extends TestActivity {
+public class EventViewActivity extends CommonActivity {
 
     private Event event;
     private boolean isNewEvent = false;
@@ -44,6 +47,7 @@ public class EventViewActivity extends TestActivity {
     private int oldTableCount;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
+    private ViewController<Event> eventController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class EventViewActivity extends TestActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        eventController = new ViewController<>(Event.class);
 
         eventViewActivity = this;
 
@@ -61,11 +65,15 @@ public class EventViewActivity extends TestActivity {
         Bundle args = getIntent().getExtras();
         if(args != null){
             isNewEvent = false;
-            event = Event.get(UUID.fromString(args.getString("event-uuid")));
+            event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            UUID localUser = ((App) getApplication()).getLocalUser();
-            event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), Person.get(localUser));
+            event = eventController.create(new Functions.Supplier<Event>() {
+                @Override
+                public Event supply() {
+                    return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
+                }
+            });
         }
         setTitle(event.name);
 
@@ -73,7 +81,7 @@ public class EventViewActivity extends TestActivity {
 
 
 
-        List<ProductList> productLists = new Select().from(ProductList.class).execute();
+        List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
         eventViewProductListSpinner.setAdapter(spinnerAdapter);
 

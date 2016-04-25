@@ -13,47 +13,24 @@
     tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity"
     tools:showIn="@layout/activity_product_description_list">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSubTitleDark">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/menu_product_list"
-            android:id="@+id/menuCardProductListHeaderTitle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textSize="@dimen/title_text_size"
-            android:padding="16dp"
-            android:background="@color/colorSubTitleDark"
-            android:textColor="@color/colorTextLight" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:id="@+id/menuCardProductListHeaderEditMenuIcon"
-            android:src="@android:drawable/ic_menu_edit"
-            android:layout_gravity="center"
-            android:layout_marginRight="16dp"
-            android:tint="@color/colorIconLight"
-            android:tintMode="multiply" />
-    </LinearLayout>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/emptyProductDescriptionHintText"
+        android:id="@+id/productDescriptionHintText"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/productDescriptionRecyclerView"
+        android:layout_height="match_parent"
+        android:id="@+id/superProductDescriptionRecyclerView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
 </LinearLayout>
+
+
+

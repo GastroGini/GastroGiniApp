@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,14 +25,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.TestActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
-public class EventListActivity extends TestActivity implements Serializable, TestAdapter.Listener<Event> {
+public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
 
     private List<Event> myEventList = new ArrayList<>();
     private List<P2pHandler.ServiceResponseHolder> foreignEventList = new ArrayList<>();
@@ -61,6 +61,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
 
     private AppCompatActivity activity;
+    private ViewController<Event> eventController;
 
 
     @Override
@@ -68,7 +69,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == MYEVENTLIST_IDENTIFIER) {
             myEventList.clear();
-            myEventList.addAll(new Select().from(Event.class).<Event>execute());
+            myEventList.addAll(eventController.getModelList());
             eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
             Log.d("hj", "onActivityResult: reloaded list");
         }
@@ -100,7 +101,9 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
         activity = this;
 
-        myEventList.addAll(new Select().from(Event.class).<Event>execute());
+        eventController = new ViewController<>(Event.class);
+
+        myEventList.addAll(eventController.getModelList());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +118,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
 
         eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventListMyEventsRecyclerView.setAdapter(new TestAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+        eventListMyEventsRecyclerView.setAdapter(new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
             @Override
             public EventViewHolder createItemViewHolder(View view) {
                 return new EventViewHolder(view);
@@ -145,7 +148,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestAdapter adapter = ((TestAdapter) eventListMyEventsRecyclerView.getAdapter());
+                CommonAdapter adapter = ((CommonAdapter) eventListMyEventsRecyclerView.getAdapter());
                 adapter.setEditMode(!adapter.isEditMode());
             }
         });
@@ -191,11 +194,10 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
         super.onResume();
 
         //TODO p2p handling should not be in activity
-        ((App)getApplication()).p2p.startBroadcastReciever();
 
-        ((App)getApplication()).p2p.removeLocalServie();
+        ((App)getApplication()).p2p.removeLocalService();
 
-        ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+       /* ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
                 for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
@@ -208,7 +210,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
                 foreignEventList.add(service);
                 ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
-        });
+        });*/
 
         ((App)getApplication()).p2p.discoverServices();
 
@@ -236,7 +238,7 @@ public class EventListActivity extends TestActivity implements Serializable, Tes
 
     @Override
     public void onDelete(Event ownEvent) {
-        ownEvent.delete();
+        eventController.delete(ownEvent);
         myEventList.remove(ownEvent);
         eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
     }

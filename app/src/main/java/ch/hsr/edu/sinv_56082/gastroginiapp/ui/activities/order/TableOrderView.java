@@ -23,6 +23,7 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -158,8 +159,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void loadEventTableFromUUID(Bundle args){
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

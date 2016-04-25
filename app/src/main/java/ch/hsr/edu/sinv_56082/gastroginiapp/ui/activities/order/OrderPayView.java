@@ -20,7 +20,10 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
@@ -37,6 +40,7 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
     EventTable eventTable;
     List<OrderPosition> tableOrderPositions = new ArrayList<>();
     List<OrderPosition> opToPayList = new ArrayList<>();
+    private ViewController<OrderPosition> orderPositionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +51,16 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        orderPositionController = new ViewController<>(OrderPosition.class);
+
         Bundle args = getIntent().getExtras();
         eventTable=getEventTableFromUUID(args);
         final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
 
+
+
         for(String opUUID : test){
-            opToPayList.add(OrderPosition.get(UUID.fromString(opUUID)));
+            opToPayList.add(orderPositionController.get(UUID.fromString(opUUID)));
         }
         Log.d("ADSF", "onCreate: "+test);
 
@@ -71,15 +79,16 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         proceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("OrderPayView", "payment started");
                 for(OrderPosition op : opToPayList){
-                    op.orderState= OrderState.STATE_PAYED;
-                    op.payTime=new Date(System.currentTimeMillis());
-                    op.save();
-                    Log.d("asdfasdgojad", "onClick: ");
+                    orderPositionController.update(op, new Functions.Consumer<OrderPosition>() {
+                        @Override
+                        public void consume(OrderPosition orderPosition) {
+                            orderPosition.orderState = OrderState.STATE_PAYED;
+                            orderPosition.payTime = new Date(System.currentTimeMillis());
+                        }
+                    });
                 }
                 setResult(RESULT_OK);
-                Log.d("OrderPayView", "payment done");
                 finish();
             }
         });
@@ -99,8 +108,7 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         //No functionality
     }
     public EventTable getEventTableFromUUID (Bundle args){
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
     }
 }

@@ -9,10 +9,10 @@ import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 
-public class TestViewHolder extends RecyclerView.ViewHolder {
+public class CommonViewHolder extends RecyclerView.ViewHolder {
     public View itemView;
     @Bind(R.id.delete_button) ImageView delete_button;
-    public TestViewHolder(View itemView) {
+    public CommonViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;
         ButterKnife.bind(this, itemView);

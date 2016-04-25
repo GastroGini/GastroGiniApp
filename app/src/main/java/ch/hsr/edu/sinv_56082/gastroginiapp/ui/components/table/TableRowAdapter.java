@@ -12,7 +12,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestSelectable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonSelectable;
 
 
 public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
@@ -23,7 +23,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
     public interface TableItemClickListener {
         void onClick(OrderPosition orderPosition);
     }
-    private List<TestSelectable<OrderPosition>> orderItems;
+    private List<CommonSelectable<OrderPosition>> orderItems;
 
     TableRowAdapter adapter;
 
@@ -32,7 +32,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         this.orderItems = new ArrayList<>();
         this.listener = listener;
         for (OrderPosition pos: orderItems){
-            this.orderItems.add(new TestSelectable(pos));
+            this.orderItems.add(new CommonSelectable(pos));
         }
     }
 
@@ -51,7 +51,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     @Override
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
-        final TestSelectable<OrderPosition> selectable = orderItems.get(position);
+        final CommonSelectable<OrderPosition> selectable = orderItems.get(position);
 
         holder.getNameTextView().setText(selectable.getItem().product.productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().product.volume);
@@ -86,7 +86,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     public ArrayList<String> getSelectedUUIDs(){
         ArrayList<String> list = new ArrayList<>();
-        for (TestSelectable<OrderPosition> sel: orderItems){
+        for (CommonSelectable<OrderPosition> sel: orderItems){
             if (sel.isSelected()){
                 list.add(sel.getItem().getUuid().toString());
             }
@@ -96,7 +96,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     public ArrayList<OrderPosition> getSelectedOrderPositions(){
         ArrayList<OrderPosition> list = new ArrayList<>();
-        for (TestSelectable<OrderPosition> sel: orderItems){
+        for (CommonSelectable<OrderPosition> sel: orderItems){
             if (sel.isSelected()){
                 list.add(sel.getItem());
             }

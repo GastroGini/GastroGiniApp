@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.ProductDescriptionListActivity;
 
-public abstract class TestAdapter<ET,VH extends TestViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends RecyclerView.Adapter<VH> {
 
     public void setList(List<ET> items) {
         this.items = items;
@@ -25,14 +25,19 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
     }
 
     private int resourceFile;
-    Listener<ET> listener;
+    public Listener<ET> listener;
     List<ET> items;
 
     private boolean editMode = false;
 
-    public TestAdapter(int resourceFile, List<ET> items, Listener<ET> listener){
+    public CommonAdapter(int resourceFile, List<ET> items, Listener<ET> listener){
         this.resourceFile = resourceFile;
         this.listener = listener;
+        this.items = items;
+    }
+
+    public CommonAdapter(int resourceFile, List<ET> items){
+        this.resourceFile = resourceFile;
         this.items = items;
     }
 
@@ -53,12 +58,16 @@ public abstract class TestAdapter<ET,VH extends TestViewHolder> extends Recycler
         }
 
         if (listener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
+            // instanceof test because of the nested RecyclerView
+            //in ProductDescriptionListActivity, needs to be "let through"
+            if(!(listener instanceof ProductDescriptionListActivity)){
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(item);
+                    }
+                });
+            }
 
             holder.delete_button.setOnClickListener(new View.OnClickListener() {
                 @Override

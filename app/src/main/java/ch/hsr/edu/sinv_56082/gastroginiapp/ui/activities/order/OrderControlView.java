@@ -13,15 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -41,6 +41,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
     ProductAdapter adapter;
+    private ViewController<OrderPosition> orderPositionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        orderPositionController = new ViewController<>(OrderPosition.class);
 
         Bundle args = getIntent().getExtras();
         newOrderPositionUUID=getIntent().getStringArrayListExtra("newOrderPositionsUUID");
@@ -69,16 +72,22 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("OrderControlView", "Create new orders");
-                EventOrder eventOrder=new EventOrder(eventTable, new Date(System.currentTimeMillis()));
-                eventOrder.save();
-                for(Product product : productList){
-                    OrderPosition op = new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
-                    op.save();
+
+                final EventOrder eventOrder = new ViewController<>(EventOrder.class).create(new Functions.Supplier<EventOrder>() {
+                    @Override
+                    public EventOrder supply() {
+                        return new EventOrder(eventTable, new Date(System.currentTimeMillis()));
+                    }
+                });
+
+                for(final Product product : productList){
+                    orderPositionController.create(new Functions.Supplier<OrderPosition>() {
+                        @Override
+                        public OrderPosition supply() {
+                            return new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
+                        }
+                    });
                 }
-                eventTable.orders().add(eventOrder);
-                Log.d("OrderControlView", "new Orders created");
-                //TODO: persistenz???
                 Intent intent = new Intent(activity, TableOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
@@ -97,13 +106,12 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         return super.onOptionsItemSelected(item);
     }
     public EventTable getEventTableFromUUID (Bundle args){
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
     }
     public List<Product> loadProducts (ArrayList<String> newOrderPositionUUID){
         for(String product : newOrderPositionUUID){
-            productList.add(Product.get(product));
+            productList.add(new ViewController<>(Product.class).get(product));
         }
         return productList;
     }
@@ -117,9 +125,8 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         return adapter;
     }
 
-   // @Override
+    @Override
     public void onClick(Product product) {
-
+        //ignore click
     }
-    //No functionality
 }

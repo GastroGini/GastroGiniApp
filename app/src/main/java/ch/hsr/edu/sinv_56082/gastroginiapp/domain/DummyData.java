@@ -22,11 +22,13 @@ public class DummyData {
         if (new Select().from(ProductList.class).execute().size() == 0) {
             ProductCategory cat = new ProductCategory("Kalte Getränke");
             cat.save();
-            new ProductCategory("Warme Getränke").save();
+            ProductCategory cat2 = new ProductCategory("Warme Getränke");
+            cat2.save();
             new ProductCategory("Aloholische Getränke").save();
             new ProductCategory("Biere").save();
             new ProductCategory("Weine").save();
-            new ProductCategory("Speisen").save();
+            ProductCategory cat3 = new ProductCategory("Speisen");
+            cat3.save();
             new ProductCategory("Vorspeisen").save();
             new ProductCategory("Salate").save();
             new ProductCategory("Dessert").save();
@@ -37,7 +39,8 @@ public class DummyData {
             new Person("Marry", "Sims").save();
             new Person("Joanne", "Filde").save();
 
-            new ProductList("ProductList 1").save();
+            ProductList pList2 = new ProductList("ProductList 1");
+            pList2.save();
             ProductList pList = new ProductList("ProductList 2");
             pList.save();
             new ProductList("ProductList 3").save();
@@ -46,17 +49,31 @@ public class DummyData {
 
             ProductDescription pDesc = new ProductDescription("Cola", "Getränk", cat);
             pDesc.save();
-            new ProductDescription("Ice Tea","Gezuckerter schwarzer Tee mit Limonade.",cat).save();
+            ProductDescription pDesc2 = new ProductDescription("Ice Tea","Gezuckerter schwarzer Tee mit Limonade.",cat);
+            pDesc2.save();
             new ProductDescription("Fanta","Erfrischungsgetränk aus Limonade und Orange mit Mineralwasser",cat).save();
             new ProductDescription("Sprite","Gezuckertes Etwas, das Menschen trinken",cat).save();
             new ProductDescription("Coca Cola Zero","Wie Coca Cola, einfach ohne Zucker.",cat).save();
-            new ProductDescription("Red Bull","Süsse Bullenpisse, auch Taurin genannt, mit sehr viel Koffein.",cat).save();
+            ProductDescription pDesc3 = new ProductDescription("Red Bull","Süsse Bullenpisse, auch Taurin genannt, mit sehr viel Koffein.",cat);
+            pDesc3.save();
             new ProductDescription("Cuke","Eine neue Variante von Coca Cola, definitiv geniessbar.",cat).save();
+            new ProductDescription("Ovomaltine","Warme Milch mit Schokolade von der Marke Ovomaltine.",cat2).save();
+            new ProductDescription("Nesquick warm","Warme Milch mit Nesquick-Schokoladenpulver.",cat2).save();
+            new ProductDescription("Schwarzer Tee","Klassisch türkischer Tee.",cat2).save();
+            new ProductDescription("Döner Kebab","Ein türkisches Gericht. Fleisch, Gemüse etc. mit Sauce in Brot.",cat3).save();
+            new ProductDescription("Dürüm","Aehnlich wie Kebab, einfach in Fladenbrot gewickelt.",cat3).save();
 
             Product prod = new Product(pDesc, pList, 4.5, "4dl");
             prod.save();
             new Product(pDesc, pList, 5.5, "5dl").save();
-            new Product(pDesc, pList, 6.5, "6dl").save();
+            new Product(pDesc2, pList, 6.5, "6dl").save();
+            new Product(pDesc2, pList, 6.5, "6dl").save();
+            new Product(pDesc3, pList, 6.5, "6dl").save();
+            new Product(pDesc2, pList2, 5.5, "5dl").save();
+            new Product(pDesc2, pList2, 6.5, "6dl").save();
+            new Product(pDesc2, pList2, 6.5, "6dl").save();
+            new Product(pDesc3, pList2, 6.5, "6dl").save();
+
 
             Event event = new Event(pList, "Test Event", new Date(), new Date(), pers);
             event.save();

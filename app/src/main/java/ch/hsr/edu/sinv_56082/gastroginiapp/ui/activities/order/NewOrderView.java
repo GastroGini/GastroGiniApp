@@ -20,6 +20,7 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
@@ -83,8 +84,7 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         return super.onOptionsItemSelected(item);
     }
     public EventTable getEventTableFromUUID (Bundle args){
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
     }
     public List<Product> loadProducts (EventTable eventTable){

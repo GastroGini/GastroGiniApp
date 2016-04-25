@@ -17,13 +17,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.TestAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
 
-public class ServiceHome extends AppCompatActivity implements TestAdapter.Listener<EventTable> {
+public class ServiceHome extends AppCompatActivity implements CommonAdapter.Listener<EventTable> {
 
 
     @Bind(R.id.toolbar)Toolbar toolbar;
@@ -53,7 +54,7 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
 
         //EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventTablesRecyclerView.setAdapter(new TestAdapter<EventTable, EventTableViewHolder>(R.layout.column_row_event_tables, event.eventTables(), this) {
+        eventTablesRecyclerView.setAdapter(new CommonAdapter<EventTable, EventTableViewHolder>(R.layout.column_row_event_tables, event.eventTables(), this) {
             @Override
             public EventTableViewHolder createItemViewHolder(View view) {
                 return new EventTableViewHolder(view);
@@ -66,7 +67,7 @@ public class ServiceHome extends AppCompatActivity implements TestAdapter.Listen
         });
         eventTablesRecyclerView.setHasFixedSize(true);
         Log.d("states", "onCreate: logging states");
-        for (OrderState s:new Select().from(OrderState.class).<OrderState>execute()){
+        for (OrderState s:new ViewController<>(OrderState.class).getModelList()){
             Log.d("ALLORDERSTATES", "onCreate: "+s.name);
         }
     }

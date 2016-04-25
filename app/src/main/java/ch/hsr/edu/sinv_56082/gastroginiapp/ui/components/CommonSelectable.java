@@ -1,12 +1,12 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components;
 
 
-public class TestSelectable<ET> {
+public class CommonSelectable<ET> {
 
     private boolean selected;
     ET item;
 
-    public TestSelectable(ET wrapped){
+    public CommonSelectable(ET wrapped){
         item = wrapped;
         selected = false;
     }
