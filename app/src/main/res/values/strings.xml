@@ -26,7 +26,7 @@
     <string name="produkt">Produkt</string>
     <string name="anzahl">Anzahl</string>
     <string name="title_activity_home_screen">Startbildschirm</string>
-    <string name="title_activity_event_list">Fest List</string>
+    <string name="title_activity_event_list">Feste List</string>
     <string name="title_activity_event_view">Fest View</string>
     <string name="title_activity_start_event">Start Fest </string>
     <string name="title_activity_join_event">Join Fest </string>
@@ -46,7 +46,7 @@
     <string name="title_activity_order_pay_view">Bezahlen</string>
     <string name="title_activity_new_order_view">Neue Bestellung</string>
     <string name="title_activity_order_control_view">Auftrag Ansicht</string>
-    <string name="title_activity_product_description_list">Produkt Description List</string>
+    <string name="title_activity_product_description_list">Produktbeschreibung List</string>
     <string name="title_activity_menu_product_description_edit">Menu Produktbeschreibung Bearbeiten
     </string>
 
