@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
@@ -66,7 +67,7 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
         });
         eventTablesRecyclerView.setHasFixedSize(true);
         Log.d("states", "onCreate: logging states");
-        for (OrderState s:new Select().from(OrderState.class).<OrderState>execute()){
+        for (OrderState s:new ViewController<>(OrderState.class).getModelList()){
             Log.d("ALLORDERSTATES", "onCreate: "+s.name);
         }
     }

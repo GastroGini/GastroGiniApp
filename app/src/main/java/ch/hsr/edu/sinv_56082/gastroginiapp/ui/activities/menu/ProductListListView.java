@@ -13,13 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.activeandroid.query.Select;
-
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
@@ -27,6 +26,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductListViewHol
 
 public class ProductListListView extends CommonActivity implements CommonAdapter.Listener<ProductList> {
 
+    public static final int REQUEST_CODE_NEW_PRODUCT_LIST = 1;
     List<ProductList> productLists;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -35,6 +35,7 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
     @Bind(R.id.menuCardRecyclerView)RecyclerView menuCardRecyclerView;
     private ProductListListView activity;
     private CommonAdapter<ProductList,ProductListViewHolder> adapter;
+    private ViewController<ProductList> productListController;
 
 
     @Override
@@ -46,14 +47,15 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        productListController = new ViewController<>(ProductList.class);
 
-        productLists = new Select().from(ProductList.class).execute();
+        productLists = productListController.getModelList();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, ProductListListEditView.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, REQUEST_CODE_NEW_PRODUCT_LIST);
             }
         });
 
@@ -95,7 +97,7 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
     }
 
     public void loadDataSet(){
-        productLists = new Select().from(ProductList.class).execute();
+        productLists = productListController.getModelList();
     }
 
     public void refreshList(){
@@ -115,7 +117,7 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
     @Override
     public void onDelete(ProductList item) {
         try {
-            item.delete();
+            productListController.delete(item);
             productLists.remove(item);
             adapter.notifyDataSetChanged();
         }catch (SQLiteConstraintException e){
@@ -139,7 +141,7 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE_NEW_PRODUCT_LIST) {
             if (resultCode == RESULT_OK) {
                 loadDataSet();
                 refreshList();

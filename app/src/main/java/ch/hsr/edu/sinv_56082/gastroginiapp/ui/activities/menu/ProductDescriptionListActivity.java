@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
@@ -55,7 +56,7 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
         });
 
         activity = this;
-        productCategories = new Select().from(ProductCategory.class).execute();
+        productCategories = new ViewController<>(ProductCategory.class).getModelList();
 
         checkIfHintTextNecessary();
 
@@ -71,8 +72,9 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
                         holder.productRecycler.setVisibility(View.GONE);
                         holder.expandCollapseIcon.setAlpha(0.25f);
 
-                        List<ProductDescription> productDescriptions = new Select().from(ProductDescription.class)
-                                .where("productCategory = ?", item.getId()).execute();
+                        List<ProductDescription> productDescriptions = item.productDescriptions();
+                                //productDescriptions = new Select().from(ProductDescription.class)
+                                //.where("productCategory = ?", item.getId()).execute();
 
                         if(productDescriptions.size() > 0){
                             holder.menuTitle.setVisibility(View.VISIBLE);
@@ -140,7 +142,7 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
     }
 
     private void checkIfHintTextNecessary(){
-        if(new Select().from(ProductDescription.class).execute().isEmpty()){
+        if(new Select().from(ProductDescription.class).execute().isEmpty()){ //TODO heavy operation for empty check
             hintText.setVisibility(View.VISIBLE);
             s_recycler.setVisibility(View.GONE);
         }else{
