@@ -19,7 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.BiConsumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 
 public class P2pHandler {
@@ -43,7 +44,7 @@ public class P2pHandler {
         registerWifiP2pManager();
         if(isWifiP2pEnabled()) {
             Log.d(TAG, "P2pHandler: Disconnect all running connections from previous runs");
-            disconnect(new Functions.DoIt() {
+            disconnect(new DoIt() {
                 @Override
                 public void doIt() {
                     registerServiceDiscovery();
@@ -70,19 +71,21 @@ public class P2pHandler {
     }
 
     private Handler handler;
-    private List<Functions.BiConsumer<String, WifiP2pDevice>> serviceResponseCallbacks = new ArrayList<>();
+    private List<BiConsumer<String, WifiP2pDevice>> serviceResponseCallbacks = new ArrayList<>();
 
-    public void disconnect(final Functions.DoIt doIt) {
+    public void disconnect(final DoIt doIt) {
+        if(!isWifiP2pEnabled()) return;
+
         wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                if(doIt!=null)doIt.doIt();
+                doIt.doIt();
                 Log.d(TAG, "onSuccess: Disconnected from P2P network");
             }
 
             @Override
             public void onFailure(int reason) {
-                if(doIt!=null)doIt.doIt();
+                doIt.doIt();
                 Log.d(TAG, "onFailure: Failed to disconnect from P2p network! ReasonCode: "+reason);
             }
         });
@@ -148,11 +151,11 @@ public class P2pHandler {
         }
     }
 
-    public void addServiceResponseCallback(Functions.BiConsumer<String, WifiP2pDevice> callback){
+    public void addServiceResponseCallback(BiConsumer<String, WifiP2pDevice> callback){
         serviceResponseCallbacks.add(callback);
     }
 
-    public void removeServiceResponseCallback(Functions.BiConsumer<String, WifiP2pDevice> callback){
+    public void removeServiceResponseCallback(BiConsumer<String, WifiP2pDevice> callback){
         serviceResponseCallbacks.remove(callback);
     }
 
@@ -196,7 +199,7 @@ public class P2pHandler {
                                                         String registrationType, final WifiP2pDevice srcDevice) {
 
                         if (instanceName.startsWith(SERVICE_INSTANCE)) {
-                            for (Functions.BiConsumer<String, WifiP2pDevice> callback : serviceResponseCallbacks) {
+                            for (BiConsumer<String, WifiP2pDevice> callback : serviceResponseCallbacks) {
                                 if (callback != null) {
                                     callback.consume(instanceName.replace(SERVICE_INSTANCE, ""), srcDevice);
                                 }
