@@ -18,7 +18,8 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
@@ -68,7 +69,7 @@ public class EventViewActivity extends CommonActivity {
             event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            event = eventController.prepare(new Functions.Supplier<Event>() {
+            event = eventController.prepare(new Supplier<Event>() {
                 @Override
                 public Event supply() {
                     return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
@@ -131,7 +132,7 @@ public class EventViewActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
 
-                eventController.update(event, new Functions.Consumer<Event>() {
+                eventController.update(event, new Consumer<Event>() {
                     @Override
                     public void consume(Event event) {
                         event.name = eventViewTitleInput.getText().toString();
@@ -143,7 +144,7 @@ public class EventViewActivity extends CommonActivity {
                 if(newTableCount > oldTableCount){
                     for (int i = oldTableCount + 1; i <= newTableCount; i++){
                         final int finalI = i;
-                        new ViewController<>(EventTable.class).create(new Functions.Supplier<EventTable>() {
+                        new ViewController<>(EventTable.class).create(new Supplier<EventTable>() {
                             @Override
                             public EventTable supply() {
                                 return new EventTable(finalI, "Tisch " + finalI, event);

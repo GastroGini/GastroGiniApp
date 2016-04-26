@@ -19,7 +19,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
@@ -73,7 +73,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
             @Override
             public void onClick(View v) {
 
-                final EventOrder eventOrder = new ViewController<>(EventOrder.class).create(new Functions.Supplier<EventOrder>() {
+                final EventOrder eventOrder = new ViewController<>(EventOrder.class).create(new Supplier<EventOrder>() {
                     @Override
                     public EventOrder supply() {
                         return new EventOrder(eventTable, new Date(System.currentTimeMillis()));
@@ -81,7 +81,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                 });
 
                 for(final Product product : productList){
-                    orderPositionController.create(new Functions.Supplier<OrderPosition>() {
+                    orderPositionController.create(new Supplier<OrderPosition>() {
                         @Override
                         public OrderPosition supply() {
                             return new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
