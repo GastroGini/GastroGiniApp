@@ -31,12 +31,4 @@ public class ProductCategory extends UUIDModel{
         return name;
     }
 
-
-    public static ProductCategory get(UUID uuid){
-        return new Select().from(ProductCategory.class).where("uuid = ?", uuid.toString()).executeSingle();
-    }
-
-    public static ProductCategory get(String uuid){
-        return get(UUID.fromString(uuid));
-    }
 }

@@ -34,7 +34,4 @@ public class OrderPosition extends UUIDModel implements Serializable{
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public EventOrder eventOrder;
 
-    public static OrderPosition get(UUID uuid) {
-        return new Select().from(OrderPosition.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

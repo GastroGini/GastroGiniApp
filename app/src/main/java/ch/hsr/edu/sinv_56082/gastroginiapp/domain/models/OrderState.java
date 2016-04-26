@@ -39,8 +39,4 @@ public class OrderState extends UUIDModel{
     public List<OrderPosition> orderPositions(){
         return getMany(OrderPosition.class, "orderState");
     }
-
-    public static OrderState get(UUID uuid) {
-        return new Select().from(OrderState.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

@@ -87,9 +87,5 @@ public class DomainEventTest {
         assertEquals(test2, query);
     }
 
-    @Test
-    public void testGet(){
-        Event query = Event.get(test1.getUuid());
-        assertEquals(test1, query);
-    }
+
 }

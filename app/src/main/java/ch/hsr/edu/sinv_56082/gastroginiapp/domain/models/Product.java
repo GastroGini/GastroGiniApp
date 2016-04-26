@@ -42,14 +42,6 @@ public class Product extends UUIDModel implements Serializable{
         return productList;
     }
 
-    public static Product get(UUID uuid){
-        return new Select().from(Product.class).where("uuid = ?", uuid.toString()).executeSingle();
-    }
-
-    public static Product get(String uuid){
-        return get(UUID.fromString(uuid));
-    }
-
     public List<OrderPosition> orderPositions(){
         return getMany(OrderPosition.class, "product");
     }

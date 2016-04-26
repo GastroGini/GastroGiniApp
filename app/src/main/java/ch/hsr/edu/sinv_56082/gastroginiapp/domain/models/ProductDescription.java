@@ -32,14 +32,6 @@ public class ProductDescription extends UUIDModel{
         this.productCategory = productCategory;
     }
 
-    public static ProductDescription get(UUID uuid){
-        return new Select().from(ProductDescription.class).where("uuid = ?", uuid.toString()).executeSingle();
-    }
-
-    public static ProductDescription get(String uuid){
-        return get(UUID.fromString(uuid));
-    }
-
     public List<Product> products(){
         return getMany(Product.class, "productDescription");
     }
