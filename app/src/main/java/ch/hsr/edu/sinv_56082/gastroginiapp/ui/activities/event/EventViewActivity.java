@@ -134,9 +134,10 @@ public class EventViewActivity extends CommonActivity {
 
                 eventController.update(event, new Consumer<Event>() {
                     @Override
-                    public void consume(Event event) {
-                        event.name = eventViewTitleInput.getText().toString();
-                        event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                    public void consume(Event saveEvent) {
+                        saveEvent.startTime = event.startTime;
+                        saveEvent.name = eventViewTitleInput.getText().toString();
+                        saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
                     }
                 });
 
