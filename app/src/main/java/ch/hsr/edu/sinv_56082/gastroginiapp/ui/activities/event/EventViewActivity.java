@@ -49,6 +49,7 @@ public class EventViewActivity extends CommonActivity {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     private ViewController<Event> eventController;
+    private Date eventDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class EventViewActivity extends CommonActivity {
 
         }
         eventViewDateInput.setText(DateHelpers.dateToString(event.startTime));
+        eventDate = event.startTime;
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
@@ -120,7 +122,7 @@ public class EventViewActivity extends CommonActivity {
                 new DateHelpers.Picker(eventViewActivity, new DateHelpers.Callback() {
                     @Override
                     public void onSet(Date date) {
-                        event.startTime = date;
+                        eventDate = date;
                         eventViewDateInput.setText(DateHelpers.dateToString(date));
                     }
                 });
@@ -135,7 +137,7 @@ public class EventViewActivity extends CommonActivity {
                 eventController.update(event, new Consumer<Event>() {
                     @Override
                     public void consume(Event saveEvent) {
-                        saveEvent.startTime = event.startTime;
+                        saveEvent.startTime = eventDate;
                         saveEvent.name = eventViewTitleInput.getText().toString();
                         saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
                     }
