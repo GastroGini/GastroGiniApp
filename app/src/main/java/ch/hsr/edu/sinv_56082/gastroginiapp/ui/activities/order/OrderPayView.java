@@ -57,8 +57,6 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         eventTable=getEventTableFromUUID(args);
         final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
 
-
-
         for(String opUUID : test){
             opToPayList.add(orderPositionController.get(UUID.fromString(opUUID)));
         }

@@ -69,6 +69,7 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
                 intent.putStringArrayListExtra("newOrderPositionsUUID", newOrderPositionUUID);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivity(intent);
+                finish();
             }
         });
     }

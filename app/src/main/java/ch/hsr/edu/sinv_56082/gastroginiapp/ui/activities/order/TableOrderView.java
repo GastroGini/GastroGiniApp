@@ -57,6 +57,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
         loadEventTableFromUUID(args);
         loadOrderPositions();
+        Log.d("TableOrderView", "onCreate: loadOrderpositions()");
 
         adapter = new TableRowAdapter(tableOrderPositions, this);
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -70,7 +71,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 Log.d("TableOrderView:", "NewOrder");
                 Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
+                startActivityForResult(intent, 1);
+                updateRecyclerView();
             }
         });
 
@@ -82,6 +84,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivityForResult(intent, 1);
+                updateRecyclerView();
             }
         });
 
@@ -101,7 +104,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                                     if(tableOrderPositions.contains(op)){
                                         Log.d("TEST", "onClick: deleting order pos");
                                         deleteOrderPosition(op);
-                                        updateRecyclerView();
                                     }else{
                                         Log.d("delete order position", "onClick: element to delete not in orderPositionList");
                                     }
@@ -119,32 +121,31 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1) {
-            loadOrderPositions();
-            tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
+            //loadOrderPositions();
+            //tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
             updateRecyclerView();
             Log.d("TableOrderView", "onActivityResult: reloaded list");
         }
-    }
-    @Override
-    public void onResume(){
-        super.onResume();
-        updateRecyclerView();
     }
 
     public void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).delete(op);
         tableOrderPositions.remove(op);
+        //loadOrderPositions();
+        //tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
+        updateRecyclerView();
     }
     public void updateRecyclerView(){
         loadOrderPositions();
-        adapter.notifyDataSetChanged();
+        tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
+        Log.d("TableOrderView", "updateRecyclerView: update view");
     }
     public void onClick(OrderPosition orderPosition) {
         //onLongClick defined in ViewHolder
     }
     public void loadOrderPositions (){
         tableOrderPositions.clear();
-        Log.d("sdafisadif", "loadOrderPositions: Updating list!!");
+        Log.d("TableOrderView", "loadOrderPositions: Updating list!!");
         for(EventOrder order : eventTable.orders()){
             for (OrderPosition pos: order.orderPositions()){
                 if(pos.orderState.name.equals(OrderState.STATE_OPEN.name)){
