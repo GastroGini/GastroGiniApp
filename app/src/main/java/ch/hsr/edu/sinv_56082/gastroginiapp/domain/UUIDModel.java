@@ -28,9 +28,4 @@ public abstract class UUIDModel extends Model {
         setUuid(uuid);
     }
 
-
-   public static <M extends UUIDModel> M get(UUID uuid){
-       return new Select().from(UUIDModel.class).where("uuid=?", uuid.toString()).<M>executeSingle();
-   }
-
 }

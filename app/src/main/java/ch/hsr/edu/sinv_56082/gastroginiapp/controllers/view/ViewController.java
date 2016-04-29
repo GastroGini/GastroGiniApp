@@ -6,11 +6,14 @@ import com.activeandroid.query.Select;
 import java.util.List;
 import java.util.UUID;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.Controller;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 public class ViewController<M extends UUIDModel> extends Controller {
+
+
 
     public List<M> getModelList() {
         return new Select().from(type).execute();
@@ -30,14 +33,28 @@ public class ViewController<M extends UUIDModel> extends Controller {
         return new Select().from(type).where("uuid=?", uuid).executeSingle();
     }
 
-    public M create(Functions.Supplier<M> supplier){
+    public M create(Supplier<M> supplier){
         M model = supplier.supply();
         model.save();
         return model;
     }
 
-    public void update(M newModel, Functions.Consumer<M> updater){
-        M model = get(newModel.getUuid());
+
+    private M prep;
+    public M prepare(Supplier<M> supplier){
+        M prep = supplier.supply();
+        this.prep = prep;
+        return prep;
+    }
+
+    public void update(M newModel, Consumer<M> updater){
+        M model;
+        if (newModel.equals(prep)) {
+            prep.save();
+            model = prep;
+        } else {
+            model = get(newModel.getUuid());
+        }
         updater.consume(model);
         model.save();
     }

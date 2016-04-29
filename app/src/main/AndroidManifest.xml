@@ -79,7 +79,8 @@
         <activity
             android:name=".ui.activities.order.TableOrderView"
             android:label="@string/title_activity_table_order_view"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.activities.order.ServiceHome"/>
 <!--        <activity
             android:name=".ui.activities.menu.MenuCardView.MenuCardView"
             android:label="@string/title_activity_menucard_view"

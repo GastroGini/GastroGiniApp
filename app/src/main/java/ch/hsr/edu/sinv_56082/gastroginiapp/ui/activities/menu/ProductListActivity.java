@@ -16,6 +16,7 @@ import java.util.UUID;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
@@ -102,7 +103,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     public void loadDataSet(){
-       productList = ProductList.get(menucardRowItem);
+       productList = new ViewController<>(ProductList.class).get(menucardRowItem);
     }
 
     public void refreshList(){
@@ -119,7 +120,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
 
     @Override
     public void onDelete(Product item) {
-        item.delete();
+        new ViewController<>(Product.class).delete(item);
         adapter.getList().remove(item);
         adapter.notifyDataSetChanged();
     }

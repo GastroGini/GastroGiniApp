@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
@@ -58,7 +59,7 @@ public class MenuProductEditActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
 
-                productController.update(product, new Functions.Consumer<Product>() {
+                productController.update(product, new Consumer<Product>() {
                     @Override
                     public void consume(Product product) {
                         product.price = Double.valueOf(productEditPrice.getText().toString());
@@ -79,7 +80,7 @@ public class MenuProductEditActivity extends CommonActivity {
         productController = new ViewController<>(Product.class);
         final Bundle extras = getIntent().getExtras();
         if(extras.getString("product-uuid")==null) isNewProduct = true;
-        product = productController.create(new Functions.Supplier<Product>() {
+        product = productController.prepare(new Supplier<Product>() {//TODO musst be diff
             @Override
             public Product supply() {
                 return new Product(null, new ViewController<>(ProductList.class).get(extras.getString("menucardRowItem-uuid")), 0.0,"");

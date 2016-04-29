@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
@@ -55,7 +56,7 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
         productDescriptionSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productDescriptionController.update(productDescription, new Functions.Consumer<ProductDescription>() {
+                productDescriptionController.update(productDescription, new Consumer<ProductDescription>() {
                     @Override
                     public void consume(ProductDescription description) {
                         productDescription.name = productDescriptionEditName.getText().toString();
@@ -76,7 +77,7 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras==null) isNewProductDescription = true;
-        productDescription = productDescriptionController.create(new Functions.Supplier<ProductDescription>() {
+        productDescription = productDescriptionController.prepare(new Supplier<ProductDescription>() {
             @Override
             public ProductDescription supply() {
                 return new ProductDescription("","",null);

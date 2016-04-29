@@ -34,7 +34,4 @@ public class WorkAssignment extends UUIDModel{
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Event event;
 
-    public static WorkAssignment get(UUID uuid) {
-        return new Select().from(WorkAssignment.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

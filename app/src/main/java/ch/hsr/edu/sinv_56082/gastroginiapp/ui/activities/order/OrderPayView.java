@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -57,8 +57,6 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         eventTable=getEventTableFromUUID(args);
         final ArrayList<String> test = args.getStringArrayList("tableOrderPositions");
 
-
-
         for(String opUUID : test){
             opToPayList.add(orderPositionController.get(UUID.fromString(opUUID)));
         }
@@ -80,7 +78,7 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
             @Override
             public void onClick(View v) {
                 for(OrderPosition op : opToPayList){
-                    orderPositionController.update(op, new Functions.Consumer<OrderPosition>() {
+                    orderPositionController.update(op, new Consumer<OrderPosition>() {
                         @Override
                         public void consume(OrderPosition orderPosition) {
                             orderPosition.orderState = OrderState.STATE_PAYED;

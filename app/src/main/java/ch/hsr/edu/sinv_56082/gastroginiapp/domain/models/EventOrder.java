@@ -34,7 +34,4 @@ public class EventOrder extends UUIDModel{
         return getMany(OrderPosition.class, "eventOrder");
     }
 
-    public static EventOrder get(UUID uuid) {
-        return new Select().from(EventOrder.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

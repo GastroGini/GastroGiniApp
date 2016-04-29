@@ -33,7 +33,4 @@ public class EventTable extends UUIDModel{
         return getMany(EventOrder.class, "eventTable");
     }
 
-    public static EventTable get(UUID uuid) {
-        return new Select().from(EventTable.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

@@ -18,7 +18,8 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Functions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
@@ -48,6 +49,7 @@ public class EventViewActivity extends CommonActivity {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     private ViewController<Event> eventController;
+    private Date eventDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class EventViewActivity extends CommonActivity {
             event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            event = eventController.create(new Functions.Supplier<Event>() {
+            event = eventController.prepare(new Supplier<Event>() {
                 @Override
                 public Event supply() {
                     return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
@@ -96,6 +98,7 @@ public class EventViewActivity extends CommonActivity {
 
         }
         eventViewDateInput.setText(DateHelpers.dateToString(event.startTime));
+        eventDate = event.startTime;
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
@@ -119,7 +122,7 @@ public class EventViewActivity extends CommonActivity {
                 new DateHelpers.Picker(eventViewActivity, new DateHelpers.Callback() {
                     @Override
                     public void onSet(Date date) {
-                        event.startTime = date;
+                        eventDate = date;
                         eventViewDateInput.setText(DateHelpers.dateToString(date));
                     }
                 });
@@ -131,15 +134,25 @@ public class EventViewActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
 
-                event.name = eventViewTitleInput.getText().toString();
-                event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                eventController.update(event, new Consumer<Event>() {
+                    @Override
+                    public void consume(Event saveEvent) {
+                        saveEvent.startTime = eventDate;
+                        saveEvent.name = eventViewTitleInput.getText().toString();
+                        saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                    }
+                });
+
                 int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
-
-                event.save();
-
                 if(newTableCount > oldTableCount){
                     for (int i = oldTableCount + 1; i <= newTableCount; i++){
-                        new EventTable(i, "Tisch "+i, event).save();
+                        final int finalI = i;
+                        new ViewController<>(EventTable.class).create(new Supplier<EventTable>() {
+                            @Override
+                            public EventTable supply() {
+                                return new EventTable(finalI, "Tisch " + finalI, event);
+                            }
+                        });
                         Log.d("aaaaaaaaa", "onClick: new table");
                     }
                 }

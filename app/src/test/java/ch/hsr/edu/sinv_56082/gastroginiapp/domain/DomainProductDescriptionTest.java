@@ -57,12 +57,4 @@ public class DomainProductDescriptionTest {
         assertEquals(test1, desc);
     }
 
-    @Test
-    public void testGet(){
-        ProductDescription query = ProductDescription.get(test1.getUuid());
-        assertEquals(test1, query);
-    }
-
-
-
 }
