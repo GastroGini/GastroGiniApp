@@ -31,13 +31,15 @@ public class ClientSocketHandler extends Thread {
             messageHandler = new MessageHandler(socket, handler);
             new Thread(messageHandler).start();
 
-            messageHandler.write("client Hello");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(TAG, "run: ", e);
             try {
                 socket.close();
             } catch (IOException e1) {
                 e1.printStackTrace();
+                Log.e(TAG, "run: ", e1);
+
             }
             return;
         }

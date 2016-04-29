@@ -18,6 +18,8 @@ import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -49,8 +51,11 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
 
         setTitle("GastroGini - Event: " + event.name);
 
+        //ModelHolder<Event> eventJson = new ModelHolder<>(Event.class);
+        //eventJson.setModel(event);
+
         //TODO p2p handling should not be in activity (ApplicationController)
-        ((App)getApplication()).p2p.setLocalService(event.name + " " + userName);
+        new ConnectionController().startServer(event);
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle("User: " + userName + " | Event Password: " + eventPassword);

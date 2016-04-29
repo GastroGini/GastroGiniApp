@@ -1,6 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.activeandroid.query.Select;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,11 +23,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.BiConsumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
@@ -36,7 +38,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
 
     private List<Event> myEventList = new ArrayList<>();
-    private List<P2pHandler.ServiceResponseHolder> foreignEventList = new ArrayList<>();
+    private List<ServiceResponseHolder> foreignEventList = new ArrayList<>();
 
 
     private static int MYEVENTLIST_IDENTIFIER = 1;
@@ -133,7 +135,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         });
 
 
-        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
+        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
         eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -197,7 +199,13 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
         ((App)getApplication()).p2p.removeLocalService();
 
-       /* ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+        ((App)getApplication()).p2p.addServiceResponseCallback(new BiConsumer<String, WifiP2pDevice>() {
+            @Override
+            public void consume(String s, WifiP2pDevice device) {
+                foreignEventList.add(new ServiceResponseHolder(device,s));
+                ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
+            }
+        }/*P2pHandler.ServiceResponseCallback() {
             @Override
             public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
                 for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
@@ -210,7 +218,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 foreignEventList.add(service);
                 ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
-        });*/
+        }*/);
 
         ((App)getApplication()).p2p.discoverServices();
 

@@ -78,6 +78,7 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.2.1'
 
 
+    compile 'com.google.code.gson:gson:2.6.2'
 
     compile 'com.jakewharton:butterknife:7.0.1'
     //Activeandroid ORM
