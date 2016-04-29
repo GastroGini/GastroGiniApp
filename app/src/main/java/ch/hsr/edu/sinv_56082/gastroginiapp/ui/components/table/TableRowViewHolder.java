@@ -8,7 +8,6 @@ import android.widget.TextView;
 public class TableRowViewHolder extends RecyclerView.ViewHolder {
     View tableOrderItemView;
 
-
     TextView name;
     TextView size;
     TextView price;

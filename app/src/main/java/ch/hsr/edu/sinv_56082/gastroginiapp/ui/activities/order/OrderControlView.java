@@ -88,6 +88,10 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                         }
                     });
                 }
+
+                Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
+
+
                 /*
                 Intent intent = new Intent(activity, TableOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());

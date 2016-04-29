@@ -27,13 +27,10 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     TableRowAdapter adapter;
 
-    public TableRowAdapter(List<OrderPosition> orderItems, TableItemClickListener listener){
+    public TableRowAdapter(List<CommonSelectable<OrderPosition>> orderItems, TableItemClickListener listener){
         adapter = this;
-        this.orderItems = new ArrayList<>();
         this.listener = listener;
-        for (OrderPosition pos: orderItems){
-            this.orderItems.add(new CommonSelectable(pos));
-        }
+        this.orderItems=orderItems;
     }
 
     @Override
@@ -62,19 +59,12 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
             @Override
             public void onClick(View v) {
                 listener.onClick(selectable.getItem());
-            }
-        });
-
-        holder.getEventTablesView().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
                 selectable.toggleSelected();
                 v.setSelected(selectable.isSelected());
 
-                Log.d("SELECTED", "onLongClick: "+selectable.isSelected());
+                Log.d("SELECTED", "onClick: "+selectable.isSelected());
 
                 adapter.notifyDataSetChanged();
-                return true;
             }
         });
     }
