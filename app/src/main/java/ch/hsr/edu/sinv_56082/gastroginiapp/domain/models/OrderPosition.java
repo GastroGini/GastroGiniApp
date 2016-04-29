@@ -25,7 +25,7 @@ public class OrderPosition extends UUIDModel implements Serializable{
     @Column
     public Date payTime;
 
-    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column
     public OrderState orderState;
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)

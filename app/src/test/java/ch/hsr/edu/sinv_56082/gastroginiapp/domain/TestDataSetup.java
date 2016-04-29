@@ -73,8 +73,7 @@ public class TestDataSetup {
         order = new EventOrder(table, new Date());
         order.save();
 
-        state = new OrderState("Unbezahlt", "");
-        state.save();
+        state = OrderState.STATE_OPEN;
 
         orderPos = new OrderPosition(new Date(), state, prod, order);
         orderPos.save();

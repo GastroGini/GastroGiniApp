@@ -92,10 +92,4 @@ public class DomainRelationsTest {
         assertEquals(testData.orderPos.orderState, testData.state);
         assertEquals(testData.orderPos.product, testData.prod);
     }
-
-    @Test
-    public void testOrderState(){
-        assertEquals(testData.state.orderPositions().size(), 1);
-    }
-
 }

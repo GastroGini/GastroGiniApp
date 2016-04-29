@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
@@ -95,20 +96,19 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .setIcon(android.R.drawable.ic_delete)
                         .setTitle("Warnung")
                         .setMessage("Wollen sie diese Position(en) wirklich löschen?")
-                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d("TableOrderView", "delete Order");
-                                loadOrderPositions();
-                                for(OrderPosition op : adapter.getSelectedOrderPositions()){
-                                    if(tableOrderPositions.contains(op)){
-                                        Log.d("TEST", "onClick: deleting order pos");
-                                        deleteOrderPosition(op);
-                                    }else{
+                                //loadOrderPositions();
+                                for (OrderPosition op : adapter.getSelectedOrderPositions()) {
+                                    //if(tableOrderPositions.contains(op)){
+                                    Log.d("TEST", "onClick: deleting order pos");
+                                    deleteOrderPosition(op);
+                                    /*}else{
                                         Log.d("delete order position", "onClick: element to delete not in orderPositionList "+
                                                 op.product.productDescription.name+" "+op.product.volume+" "+op.product.price);
-                                    }
+                                    }*/
                                 }
                             }
 
@@ -132,8 +132,12 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void deleteOrderPosition (OrderPosition op){
-        new ViewController<>(OrderPosition.class).delete(op);
-        tableOrderPositions.remove(op);
+        new ViewController<>(OrderPosition.class).update(op, new Consumer<OrderPosition>() {
+            @Override
+            public void consume(OrderPosition orderPosition) {
+                orderPosition.orderState = OrderState.STATE_PAYED;
+            }
+        });
         updateRecyclerView();
     }
     public void updateRecyclerView(){
@@ -149,10 +153,11 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         tableOrderPositions.clear();
         Log.d("TableOrderView", "loadOrderPositions: Updating list!!");
         for(EventOrder order : eventTable.orders()){
+            Log.d("tov", "loadOrderPositions: "+order.orderTime);
             for (OrderPosition pos: order.orderPositions()){
-                Log.d("", "loadOrderPositions: "+pos.product.productDescription.name);
-                if(pos.orderState.name.equals(OrderState.STATE_OPEN.name)){
-                    Log.d("", "loadOrderPositions: State open");
+                Log.d("asdf", "loadOrderPositions: "+pos.product.productDescription.name);
+                if(pos.orderState==OrderState.STATE_OPEN){
+                    Log.d("asdf", "loadOrderPositions: State open");
 
                     tableOrderPositions.add(new CommonSelectable<>(pos));
                 }

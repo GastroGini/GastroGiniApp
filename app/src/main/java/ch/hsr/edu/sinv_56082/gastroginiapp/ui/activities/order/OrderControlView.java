@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 
+import com.activeandroid.query.Select;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                         return new EventOrder(eventTable, new Date(System.currentTimeMillis()));
                     }
                 });
+
 
                 for(final Product product : productList){
                     orderPositionController.create(new Supplier<OrderPosition>() {
