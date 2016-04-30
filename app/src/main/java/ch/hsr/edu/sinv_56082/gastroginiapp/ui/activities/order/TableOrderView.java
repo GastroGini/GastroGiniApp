@@ -45,7 +45,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     private AppCompatActivity activity;
     TableRowAdapter adapter;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +58,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
         loadEventTableFromUUID(args);
         loadOrderPositions();
-        Log.d("TableOrderView", "onCreate: loadOrderpositions()");
 
         adapter = new TableRowAdapter(tableOrderPositions, this);
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -99,16 +97,13 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("TableOrderView", "delete Order");
-                                //loadOrderPositions();
                                 for (OrderPosition op : adapter.getSelectedOrderPositions()) {
-                                    //if(tableOrderPositions.contains(op)){
-                                    Log.d("TEST", "onClick: deleting order pos");
+                                    if(tableOrderPositions.contains(op)){
+                                    Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);
-                                    /*}else{
-                                        Log.d("delete order position", "onClick: element to delete not in orderPositionList "+
-                                                op.product.productDescription.name+" "+op.product.volume+" "+op.product.price);
-                                    }*/
+                                    }else{
+                                        Log.d("delete orderPosition", "element to delete not in orderPositionList ");
+                                    }
                                 }
                             }
 
@@ -122,15 +117,15 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         updateRecyclerView();
-        Log.d("TableOrderView", "onActivityResult: reloaded list");
+        Log.d("TableOrderView", "onActivityResult: returned");
     }
-
+/*
     public void onResume(){
         super.onResume();
         Log.d("TableOrderView", "onResume: check");
         //updateRecyclerView();
     }
-
+*/
     public void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).update(op, new Consumer<OrderPosition>() {
             @Override
@@ -147,7 +142,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         Log.d("LIST", "updateRecyclerView: "+tableOrderPositions);
     }
     public void onClick(OrderPosition orderPosition) {
-        //select implemented in TableRowAdapter
+        //implemented in TableRowAdapter
     }
     public void loadOrderPositions (){
         tableOrderPositions.clear();
@@ -164,7 +159,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
             }
         }
     }
-
     public void loadEventTableFromUUID(Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
     }
