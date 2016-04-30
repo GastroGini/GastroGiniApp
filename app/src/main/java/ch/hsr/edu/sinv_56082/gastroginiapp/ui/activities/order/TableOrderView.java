@@ -63,6 +63,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);
+        Log.d("", "tableOrderPosition: " + tableOrderPositions.toString());
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
         fab_add_order.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +98,10 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                for (OrderPosition op : adapter.getSelectedOrderPositions()) {
+                                List<OrderPosition> selected = adapter.getSelectedOrderPositions();
+                                Log.d("", "TableOrderPositions:"+tableOrderPositions);
+                                Log.d("", "selected:"+selected);
+                                for (OrderPosition op : selected) {
                                     if(tableOrderPositions.contains(op)){
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);
@@ -106,7 +110,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                                     }
                                 }
                             }
-
                         })
                         .setNegativeButton("Abbrechen", null)
                         .show();
@@ -119,18 +122,12 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         updateRecyclerView();
         Log.d("TableOrderView", "onActivityResult: returned");
     }
-/*
-    public void onResume(){
-        super.onResume();
-        Log.d("TableOrderView", "onResume: check");
-        //updateRecyclerView();
-    }
-*/
+
     public void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).update(op, new Consumer<OrderPosition>() {
             @Override
             public void consume(OrderPosition orderPosition) {
-                orderPosition.orderState = OrderState.STATE_PAYED;
+                orderPosition.delete();
             }
         });
         updateRecyclerView();
@@ -145,15 +142,11 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         //implemented in TableRowAdapter
     }
     public void loadOrderPositions (){
+        Log.d("TableOrderView", "loadOrderPositions");
         tableOrderPositions.clear();
-        Log.d("TableOrderView", "loadOrderPositions: Updating list!!");
         for(EventOrder order : eventTable.orders()){
-            Log.d("tov", "loadOrderPositions: "+order.orderTime);
             for (OrderPosition pos: order.orderPositions()){
-                Log.d("asdf", "loadOrderPositions: "+pos.product.productDescription.name);
                 if(pos.orderState==OrderState.STATE_OPEN){
-                    Log.d("asdf", "loadOrderPositions: State open");
-
                     tableOrderPositions.add(new CommonSelectable<>(pos));
                 }
             }
@@ -172,6 +165,4 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
