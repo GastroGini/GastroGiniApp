@@ -98,11 +98,11 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         }
         return list;
     }
-    public ArrayList<OrderPosition> getSelectedOrderPositions(){
-        ArrayList<OrderPosition> list = new ArrayList<>();
+    public ArrayList<CommonSelectable<OrderPosition>> getSelectedOrderPositions(){
+        ArrayList<CommonSelectable<OrderPosition>> list = new ArrayList<>();
         for (CommonSelectable<OrderPosition> sel: orderItems){
             if (sel.isSelected()){
-                list.add(sel.getItem());
+                list.add(sel);
             }
         }
         return list;

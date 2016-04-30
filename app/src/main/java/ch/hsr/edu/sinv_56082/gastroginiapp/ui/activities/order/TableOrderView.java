@@ -61,7 +61,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);
-        Log.d("", "tableOrderPosition: " + tableOrderPositions.toString());
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
         FloatingActionButton fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
@@ -112,9 +111,15 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                                 List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
                                 ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
                                 for (OrderPosition op : orderPositionsToDelete) {
+                                for (CommonSelectable<OrderPosition> op : adapter.getSelectedOrderPositions()) {
+                                    if(tableOrderPositions.contains(op)){
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
-                                    deleteOrderPosition(op);
+                                    deleteOrderPosition(op.getItem());
+                                    }else{
+                                        Log.d("delete orderPosition", "element to delete not in orderPositionList ");
+                                    }
                                 }
+                                updateRecyclerView();
                             }
                         })
                         .setNegativeButton("Abbrechen", null)
