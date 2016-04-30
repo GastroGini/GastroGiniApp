@@ -98,16 +98,9 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                List<OrderPosition> selected = adapter.getSelectedOrderPositions();
-                                Log.d("", "TableOrderPositions:"+tableOrderPositions);
-                                Log.d("", "selected:"+selected);
-                                for (OrderPosition op : selected) {
-                                    if(tableOrderPositions.contains(op)){
+                                for (OrderPosition op : adapter.getSelectedOrderPositions()) {
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);
-                                    }else{
-                                        Log.d("delete orderPosition", "element to delete not in orderPositionList ");
-                                    }
                                 }
                             }
                         })
@@ -124,12 +117,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     }
 
     public void deleteOrderPosition (OrderPosition op){
-        new ViewController<>(OrderPosition.class).update(op, new Consumer<OrderPosition>() {
-            @Override
-            public void consume(OrderPosition orderPosition) {
-                orderPosition.delete();
-            }
-        });
+        new ViewController<>(OrderPosition.class).delete(op);
         updateRecyclerView();
     }
     public void updateRecyclerView(){
@@ -141,7 +129,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     public void onClick(OrderPosition orderPosition) {
         //implemented in TableRowAdapter
     }
-    public void loadOrderPositions (){
+    public void loadOrderPositions() {
         Log.d("TableOrderView", "loadOrderPositions");
         tableOrderPositions.clear();
         for(EventOrder order : eventTable.orders()){
