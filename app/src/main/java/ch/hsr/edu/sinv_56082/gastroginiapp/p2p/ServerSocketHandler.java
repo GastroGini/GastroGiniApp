@@ -13,12 +13,14 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerSocketHandler extends Thread {
 
+    private final String macAddress;
     ServerSocket socket = null;
     private final int THREAD_COUNT = 30;
     private Handler handler;
     private static final String TAG = "ServerSocketHandler";
 
-    public ServerSocketHandler(Handler handler) throws IOException {
+    public ServerSocketHandler(Handler handler, String macAddress) throws IOException {
+        this.macAddress = macAddress;
         try {
             socket = new ServerSocket(P2pHandler.SERVICE_SERVER_PORT);
             this.handler = handler;
@@ -40,7 +42,7 @@ public class ServerSocketHandler extends Thread {
             try {
                 // A blocking operation. Initiate a ChatManager instance when
                 // there is a new connection
-                pool.execute(new MessageHandler(socket.accept(), handler));
+                pool.execute(new MessageHandler(socket.accept(), handler, new ConnectedDevice(macAddress)));
                 Log.d(TAG, "Launching the I/O handler");
 
             } catch (IOException e) {

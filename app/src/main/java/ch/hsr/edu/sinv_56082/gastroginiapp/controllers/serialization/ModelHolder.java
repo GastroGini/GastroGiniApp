@@ -1,9 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.lang.reflect.Modifier;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -16,10 +13,7 @@ public class ModelHolder<M extends UUIDModel> {
     public ModelHolder(Class<M> type){
         this.type = type;
 
-        gson = new GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
-                .serializeNulls()
-                .create();
+        gson = Serializer.get();
 
     }
 

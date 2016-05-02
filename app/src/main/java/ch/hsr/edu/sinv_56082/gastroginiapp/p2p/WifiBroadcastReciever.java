@@ -59,9 +59,10 @@ public class WifiBroadcastReciever {
                     NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
                     if (networkInfo.isConnected()) {
-                        p2pHandler.wifiP2pManager.requestConnectionInfo(p2pHandler.wifiP2pChannel, p2pHandler.connectionInfoListener);
+                        p2pHandler.wifiP2pManager.requestConnectionInfo(p2pHandler.wifiP2pChannel, p2pHandler.client.connectionInfoListener);
                     }
-                } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {}
+                } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+                }
             }
         };
     }

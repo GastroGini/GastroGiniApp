@@ -12,13 +12,15 @@ import java.net.Socket;
 public class ClientSocketHandler extends Thread {
 
     private static final String TAG = "ClientSocketHandler";
+    private final ConnectedDevice clientDevice;
     private Handler handler;
     private MessageHandler messageHandler;
     private InetAddress mAddress;
 
-    public ClientSocketHandler(Handler handler, InetAddress groupOwnerAddress) {
+    public ClientSocketHandler(Handler handler, InetAddress groupOwnerAddress, ConnectedDevice clientDevice) {
         this.handler = handler;
         this.mAddress = groupOwnerAddress;
+        this.clientDevice = clientDevice;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ClientSocketHandler extends Thread {
             socket.bind(null);
             socket.connect(new InetSocketAddress(mAddress.getHostAddress(), P2pHandler.SERVICE_SERVER_PORT), 5000);
             Log.d(TAG, "Launching the I/O handler");
-            messageHandler = new MessageHandler(socket, handler);
+            messageHandler = new MessageHandler(socket, handler, clientDevice);
             new Thread(messageHandler).start();
 
         } catch (IOException e) {

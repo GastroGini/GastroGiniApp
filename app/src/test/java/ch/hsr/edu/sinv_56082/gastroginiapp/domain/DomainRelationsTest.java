@@ -8,10 +8,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 
 import static org.junit.Assert.assertEquals;
 

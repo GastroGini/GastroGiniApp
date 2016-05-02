@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu;
 
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

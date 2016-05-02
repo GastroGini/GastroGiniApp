@@ -1,8 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
 
-import com.activeandroid.query.Select;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
