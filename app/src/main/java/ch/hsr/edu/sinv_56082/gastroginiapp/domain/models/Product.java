@@ -36,10 +36,6 @@ public class Product extends UUIDModel implements Serializable{
         this.volume = volume;
     }
 
-    public ProductList getProductList() {
-        return productList;
-    }
-
     public List<OrderPosition> orderPositions(){
         return getMany(OrderPosition.class, "product");
     }

@@ -14,9 +14,10 @@ public class EventOrder extends UUIDModel{
 
     public EventOrder(){}
 
-    public EventOrder(EventTable eventTable, Date orderTime) {
+    public EventOrder(EventTable eventTable, Date orderTime, Person createdBy) {
         this.eventTable = eventTable;
         this.orderTime = orderTime;
+        this.createdBy = createdBy;
     }
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)

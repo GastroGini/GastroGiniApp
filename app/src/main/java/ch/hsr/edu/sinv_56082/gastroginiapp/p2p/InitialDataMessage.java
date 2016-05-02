@@ -12,7 +12,7 @@ public class InitialDataMessage {
         this.productList = productList;
     }
 
-    Event event;
-    List<Product> productList;
+    public Event event;
+    public List<Product> productList;
 
 }

@@ -21,9 +21,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.Serializer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 
 public class P2pClient {
 
@@ -170,6 +171,7 @@ public class P2pClient {
             } else if (connectionState == ConnectionController.ConnectionState.RECONNECTING){
                 for (ServiceResponseHolder holder:serviceList){
                     if (holder.device.deviceAddress.equals(currentServerAddress)){
+                        Log.d(TAG, "onService: RECONNECTING to server");
                         connectTo(holder);
                     }
                 }
@@ -180,8 +182,8 @@ public class P2pClient {
 
     public void connectTo(final ServiceResponseHolder holder){
         if (!app.p2p.isWifiP2pEnabled()) return;
-        app.p2p.disconnect(new DoNothing());
-        app.p2p.wifiP2pManager.cancelConnect(app.p2p.wifiP2pChannel, null);
+        //app.p2p.disconnect(new DoNothing());
+        //app.p2p.wifiP2pManager.cancelConnect(app.p2p.wifiP2pChannel, null);
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = holder.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
@@ -257,7 +259,7 @@ public class P2pClient {
     private void handleServerMessages(ConnectionMessage message) {
         DataMessage dataMessage = new Gson().fromJson(message.content, DataMessage.class);
         MessageObject messager = messageHandlers.get(dataMessage.action);
-        if (messager != null) messager.handleMessage(new Gson().fromJson(message.content, messager.type), message.fromAddress);
+        if (messager != null) messager.handleMessage(Serializer.get().fromJson(dataMessage.content, messager.type), message.fromAddress);
     }
 
 
@@ -266,6 +268,16 @@ public class P2pClient {
             @Override
             public void handleMessage(InitialDataMessage object, String fromAddress) {
                 Log.d(TAG, "handleMessage: recieved init data"+ object + object.event+ object.productList);
+
+                Log.d(TAG, "handleMessage: HOST: "+object.event.host.firstName+ object.event.startTime+object.event.productList.name);
+
+
+                for (Product p: object.productList){
+                    Log.d(TAG, "handleMessage: PRoduct: "+p.price+p.volume);
+                    Log.d(TAG, "handleMessage: "+p.productDescription.description+p.productDescription.name);
+                    Log.d(TAG, "handleMessage: "+p.productDescription.productCategory.name);
+                }
+
             }
         });
     }

@@ -84,7 +84,7 @@ public class DummyData {
             new EventTable(4, "Tisch 4", event).save();
             new EventTable(5, "Tisch 5", event).save();
 
-            EventOrder order = new EventOrder(table, new Date());
+            EventOrder order = new EventOrder(table, new Date(), pers);
             order.save();
 
             OrderPosition orderPos = new OrderPosition(new Date(), OrderState.STATE_OPEN, prod, order);

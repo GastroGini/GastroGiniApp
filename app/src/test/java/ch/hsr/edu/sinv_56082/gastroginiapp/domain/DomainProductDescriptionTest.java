@@ -56,4 +56,9 @@ public class DomainProductDescriptionTest {
         assertEquals(test1, desc);
     }
 
+    @Test
+    public void testToString(){
+        assertEquals(test1.toString(), test1.name);
+    }
+
 }

@@ -13,6 +13,7 @@ public class Serializer {
         return new GsonBuilder()
                 .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
                 .serializeNulls()
+                .enableComplexMapKeySerialization()
                 .create();
     }
 }

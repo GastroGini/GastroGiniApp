@@ -7,14 +7,14 @@ public class DataMessage {
 
     public DataMessage(String action, String conntent) {
         this.action = action;
-        this.conntent = conntent;
+        this.content = conntent;
     }
 
     public DataMessage(String action, Object conntent){
         this.action = action;
-        this.conntent = Serializer.get().toJson(conntent);
+        this.content = Serializer.get().toJson(conntent);
     }
 
     public String action;
-    public String conntent;
+    public String content;
 }

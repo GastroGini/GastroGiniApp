@@ -78,7 +78,7 @@ public class P2pServer {
                     ConnectedDevice clientDevice = (ConnectedDevice) msg.obj;
 
                     connectedDevices.put(clientDevice.device, clientDevice);
-                    clientDevice.handler.write("Server hello");
+                    //clientDevice.handler.write("Server hello");
                     return true;
                 }else if (P2pHandler.RECIEVED_MESSAGE == msg.what){
                     ConnectionMessage connectionMessage = (ConnectionMessage) msg.obj;
@@ -105,9 +105,9 @@ public class P2pServer {
         if (app.p2p.isWifiP2pEnabled()) {
             Map<String, String> record = new HashMap<>();
             record.put(app.p2p.TXTRECORD_PROP_AVAILABLE, "visible");
-            record.put(app.p2p.EVENT_INFO+"name", eventName.name);
-            record.put(app.p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
-            record.put(app.p2p.EVENT_INFO+"date", eventName.startDate.toString());
+            //record.put(app.p2p.EVENT_INFO+"name", eventName.name);
+            //record.put(app.p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
+            //record.put(app.p2p.EVENT_INFO+"date", eventName.startDate.toString());
 
             app.p2p.wifiP2pManager.clearLocalServices(app.p2p.wifiP2pChannel, null);
 

@@ -58,10 +58,10 @@ public class P2pHandler {
 
     public void disconnect(final DoIt doIt) {
         if(!isWifiP2pEnabled()) return;
-        wifiP2pManager.cancelConnect(wifiP2pChannel, null);
-        wifiP2pManager.clearLocalServices(wifiP2pChannel, null);
-        wifiP2pManager.clearServiceRequests(wifiP2pChannel, null);
-        wifiP2pManager.stopPeerDiscovery(wifiP2pChannel, null);
+        //wifiP2pManager.cancelConnect(wifiP2pChannel, null);
+        //wifiP2pManager.clearLocalServices(wifiP2pChannel, null);
+        //wifiP2pManager.clearServiceRequests(wifiP2pChannel, null);
+        //wifiP2pManager.stopPeerDiscovery(wifiP2pChannel, null);
         wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
