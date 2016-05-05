@@ -56,7 +56,7 @@ public class ModelHolder<M extends UUIDModel> {
             controller.update(newModel, onUpdate);
         }
         this.model = controller.get(model.getUuid());
-        Log.d("asdf", "updateOrSave: "+model.getId()+model+model.getUuid());
+//      Log.d("asdf", "updateOrSave: "+model.getId()+model+model.getUuid());
         return this;
     }
 }

@@ -1,5 +1,5 @@
 
-package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client;
 
 import android.os.Handler;
 import android.util.Log;
@@ -9,12 +9,16 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageReciever;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
+
 public class ClientSocketHandler extends Thread {
 
     private static final String TAG = "ClientSocketHandler";
     private final ConnectedDevice clientDevice;
     private Handler handler;
-    private MessageHandler messageHandler;
+    private MessageReciever messageReciever;
     private InetAddress mAddress;
 
     public ClientSocketHandler(Handler handler, InetAddress groupOwnerAddress, ConnectedDevice clientDevice) {
@@ -30,8 +34,8 @@ public class ClientSocketHandler extends Thread {
             socket.bind(null);
             socket.connect(new InetSocketAddress(mAddress.getHostAddress(), P2pHandler.SERVICE_SERVER_PORT), 5000);
             Log.d(TAG, "Launching the I/O handler");
-            messageHandler = new MessageHandler(socket, handler, clientDevice);
-            new Thread(messageHandler).start();
+            messageReciever = new MessageReciever(socket, handler, clientDevice);
+            new Thread(messageReciever).start();
 
         } catch (IOException e) {
             e.printStackTrace();

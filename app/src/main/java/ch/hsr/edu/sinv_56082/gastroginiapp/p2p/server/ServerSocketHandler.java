@@ -1,5 +1,5 @@
 
-package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.server;
 
 import android.os.Handler;
 import android.util.Log;
@@ -9,6 +9,10 @@ import java.net.ServerSocket;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageReciever;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 
 
 public class ServerSocketHandler extends Thread {
@@ -44,7 +48,7 @@ public class ServerSocketHandler extends Thread {
             try {
                 // A blocking operation. Initiate a ChatManager instance when
                 // there is a new connection
-                pool.execute(new MessageHandler(socket.accept(), handler, new ConnectedDevice(macAddress)));
+                pool.execute(new MessageReciever(socket.accept(), handler, new ConnectedDevice(macAddress)));
                 Log.d(TAG, "Launching the I/O handler");
 
             } catch (IOException e) {

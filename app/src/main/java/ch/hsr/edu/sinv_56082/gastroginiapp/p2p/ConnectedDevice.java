@@ -1,10 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
 
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 
 public class ConnectedDevice {
-    public MessageHandler handler;
+    public MessageReciever handler;
 
     public ConnectedDevice(String device) {
         this.device = device;
@@ -12,5 +12,5 @@ public class ConnectedDevice {
 
     public String device;
 
-    public ConnectionController.ConnectionState connectionState = ConnectionController.ConnectionState.CONNECTED;
+    public ConnectionState connectionState = ConnectionState.CONNECTED;
 }

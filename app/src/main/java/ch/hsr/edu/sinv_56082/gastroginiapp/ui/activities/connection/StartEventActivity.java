@@ -55,7 +55,7 @@ public class StartEventActivity extends CommonActivity {
                 intent.putExtra("userName", userName);
                 intent.putExtra("eventPassword", eventPassword);
 
-                new ConnectionController().startServer(event);
+                ConnectionController.instance.startServer(event);
 
                 startActivity(intent);
             }

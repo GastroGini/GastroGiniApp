@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public class TransferEvent {
 
-    UUID uuid;
-    String name;
-    Date startDate;
+    public UUID uuid;
+    public String name;
+    public Date startDate;
 
     public TransferEvent(UUID uuid, String name, Date startDate) {
         this.uuid = uuid;

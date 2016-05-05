@@ -9,12 +9,11 @@ import android.util.Log;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 
 public class P2pHandler {
 
     private static final String TAG = "P2PHandler";
-
-
 
     public static final String SERVICE_INSTANCE = "_|gagi|_";
     public static final String SERVICE_REG_TYPE = "_presence._tcp";
@@ -27,14 +26,12 @@ public class P2pHandler {
 
 
     Context application;
-    private P2pHandler p2pHandler;
     public String macAddress;
     public P2pClient client;
 
 
     public P2pHandler(final App application){
         this.application = application;
-        p2pHandler = this;
         registerWifiP2pManager();
         if(isWifiP2pEnabled()) {
             Log.d(TAG, "P2pHandler: Disconnect all running connections from previous runs");
@@ -43,7 +40,7 @@ public class P2pHandler {
                 @Override
                 public void doIt() {
                     client = new P2pClient();
-                    new WifiBroadcastReciever(p2pHandler, application);
+
                 }
             });
         }
@@ -51,17 +48,14 @@ public class P2pHandler {
 
     boolean isWifiP2pEnabled=false;
 
-    WifiP2pManager wifiP2pManager;
-    WifiP2pManager.Channel wifiP2pChannel;
+    public WifiP2pManager wifiP2pManager;
+    public WifiP2pManager.Channel wifiP2pChannel;
 
 
 
     public void disconnect(final DoIt doIt) {
         if(!isWifiP2pEnabled()) return;
-        //wifiP2pManager.cancelConnect(wifiP2pChannel, null);
-        //wifiP2pManager.clearLocalServices(wifiP2pChannel, null);
-        //wifiP2pManager.clearServiceRequests(wifiP2pChannel, null);
-        //wifiP2pManager.stopPeerDiscovery(wifiP2pChannel, null);
+
         wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -76,65 +70,6 @@ public class P2pHandler {
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private void registerWifiP2pManager() {

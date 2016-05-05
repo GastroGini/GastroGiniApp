@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
@@ -87,6 +88,8 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                 }
 
                 Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
+
+                App.getApp().p2p.client.sendNew(eventOrder); // TODO Controller
 
                 setResult(RESULT_OK);
                 finish();

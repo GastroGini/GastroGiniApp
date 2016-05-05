@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client;
 
 
 import android.net.wifi.WpsInfo;
@@ -23,14 +23,23 @@ import java.util.UUID;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.Serializer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.Actions;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.initial_data.InitialDataReader;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectionMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageReciever;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.TransferEvent;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.WifiBroadcastReciever;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.new_event_order.NewEventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.order_positions.OrderPositionsHolder;
 
@@ -39,12 +48,12 @@ public class P2pClient {
 
     private static final String TAG = "P2pClient";
     private final App app;
+    private final ClientMessageHandler messageHandler;
 
-    private ConnectionController.ConnectionState connectionState;
-    public String currentServerAddress;
+    public ConnectionState connectionState;
+    private String currentServerAddress;
     public boolean connectedToServer;
     public ArrayList<ServiceResponseHolder> serviceList;
-    private Map<String, MessageObject> messageHandlers;
     private boolean initialized;
 
 
@@ -52,31 +61,30 @@ public class P2pClient {
         this.app = App.getApp();
 
         serviceList = new ArrayList<>();
-        messageHandlers = new HashMap<>();
 
-        registerMessageHandlers();
+        messageHandler = new ClientMessageHandler(this);
+        messageHandler.registerMessages();
 
-        connectionState = ConnectionController.ConnectionState.DISCONNECTED;
+        connectionState = ConnectionState.DISCONNECTED;
 
         registerServiceDiscovery();
         registerConnectionInfoListener();
-        registerMessageHandler();
+        registerMessageReciever();
+
+        new WifiBroadcastReciever(app.p2p, app);
 
     }
 
+    public WifiP2pManager.ConnectionInfoListener connectionInfoListener;
 
 
+    private MessageReciever messageReciever;
 
-    WifiP2pManager.ConnectionInfoListener connectionInfoListener;
-
-
-    private MessageHandler messageHandler;
-
-    public MessageHandler getMessageHandler(){
-        return messageHandler;
+    public MessageReciever getMessageReciever(){
+        return messageReciever;
     }
 
-    private Handler handler;
+    private Handler reciever;
     private List<DoIt> serviceResponseCallbacks = new ArrayList<>();
 
     public void addServiceResponseCallback(DoIt callback){
@@ -89,6 +97,8 @@ public class P2pClient {
 
 
     public void discoverServices(){
+        if (!app.p2p.isWifiP2pEnabled())return;
+
         WifiP2pDnsSdServiceRequest wifiP2pServiceRequest = WifiP2pDnsSdServiceRequest.newInstance();
         app.p2p.wifiP2pManager.addServiceRequest(app.p2p.wifiP2pChannel, wifiP2pServiceRequest, new WifiP2pManager.ActionListener() {
             @Override
@@ -168,13 +178,13 @@ public class P2pClient {
             }
             serviceList.add(service);
 
-            if (connectionState == ConnectionController.ConnectionState.DISCONNECTED) {
+            if (connectionState == ConnectionState.DISCONNECTED) {
                 for (DoIt callback : serviceResponseCallbacks) {
                     if (callback != null) {
                         callback.doIt();
                     }
                 }
-            } else if (connectionState == ConnectionController.ConnectionState.RECONNECTING){
+            } else if (connectionState == ConnectionState.RECONNECTING){
                 for (ServiceResponseHolder holder:serviceList){
                     if (holder.device.deviceAddress.equals(currentServerAddress)){
                         Log.d(TAG, "onService: RECONNECTING to server");
@@ -220,34 +230,36 @@ public class P2pClient {
                 if (!info.isGroupOwner) {
                     Log.d(TAG, "onConnectionInfoAvailable: starting Client");
                     if(info.groupOwnerAddress != null) {
-                        new ClientSocketHandler(handler, info.groupOwnerAddress, new ConnectedDevice(app.p2p.macAddress)).start();
+                        new ClientSocketHandler(reciever, info.groupOwnerAddress, new ConnectedDevice(app.p2p.macAddress)).start();
                     }
                 }
             }
         };
     }
 
-    private void registerMessageHandler() { //TODO maybe one handler for server and client
-        handler = new Handler(new Handler.Callback() {
+    private Map<String, MessageObject> messageHandlers;
+
+    private void registerMessageReciever() {
+        reciever = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 Log.d(TAG, "handleMessage: recieved"+msg+ P2pHandler.SET_MESSAGE_HANDLER);
                 if(P2pHandler.SET_MESSAGE_HANDLER == msg.what){
-                    connectionState = ConnectionController.ConnectionState.CONNECTED;
+                    connectionState = ConnectionState.CONNECTED;
                     connectedToServer = true;
                     Log.d(TAG, "handleMessage: sethandler");
-                    messageHandler = ((ConnectedDevice) msg.obj).handler;
+                    messageReciever = ((ConnectedDevice) msg.obj).handler;
 
-                    sendMessage(new DataMessage(Actions.GET_INITIAL_DATA, null));
+                    sendMessage(new DataMessage(MessageAction.GET_INITIAL_DATA, null));
 
                     return true;
                 }else if (P2pHandler.RECIEVED_MESSAGE == msg.what){
                     ConnectionMessage message = (ConnectionMessage) msg.obj;
                     Log.d(TAG, "handleMessage: " + message.content);
-                    handleServerMessages(message);
+                    messageHandler.handleMessages(message);
                     return true;
                 } else if (P2pHandler.DISCONNECTED == msg.what) {
-                    connectionState = ConnectionController.ConnectionState.RECONNECTING;
+                    connectionState = ConnectionState.RECONNECTING;
                     discoverServices();
                     return true;
                 }
@@ -257,15 +269,10 @@ public class P2pClient {
     }
 
     private void sendMessage(DataMessage message){
-        if (messageHandler == null) return;
-        messageHandler.write(new Gson().toJson(message));
+        if (messageReciever == null) return;
+        messageReciever.write(new Gson().toJson(message));
     }
 
-    private void handleServerMessages(ConnectionMessage message) {
-        DataMessage dataMessage = new Gson().fromJson(message.content, DataMessage.class);
-        MessageObject messager = messageHandlers.get(dataMessage.action);
-        if (messager != null) messager.handleMessage(Serializer.get().fromJson(dataMessage.content, messager.type), message.fromAddress);
-    }
 
 
     public Consumer<String> onInitDataSuccess = new ConsumerDoNothing<>(); //TODO find something better
@@ -276,21 +283,21 @@ public class P2pClient {
 
         EventOrder newOrder = new ViewController<>(EventOrder.class).get(order.getUuid());
         NewEventOrder neo = new NewEventOrder(newOrder, newOrder.orderPositions());
-        sendMessage(new DataMessage(Actions.NEW_ORDER, Serializer.get().toJson(neo)));
+        sendMessage(new DataMessage(MessageAction.NEW_ORDER, Serializer.get().toJson(neo)));
     }
 
     public void sendDelete(List<OrderPosition> orderPositions){
         if (!isInitialized()) return;
 
         List<OrderPosition> newOrderPositions = getNewOrderPositions(orderPositions);
-        sendMessage(new DataMessage(Actions.DELETE_ORDER_POSITIONS, Serializer.get().toJson(new OrderPositionsHolder(newOrderPositions))));
+        sendMessage(new DataMessage(MessageAction.DELETE_ORDER_POSITIONS, Serializer.get().toJson(new OrderPositionsHolder(newOrderPositions))));
     }
 
     public void sendPayed(List<OrderPosition> orderPositions){
         if (!isInitialized()) return;
 
         List<OrderPosition> newOrderPositions = getNewOrderPositions(orderPositions);
-        sendMessage(new DataMessage(Actions.SET_ORDER_POSITIONS_PAYED, Serializer.get().toJson(new OrderPositionsHolder(newOrderPositions))));
+        sendMessage(new DataMessage(MessageAction.SET_ORDER_POSITIONS_PAYED, Serializer.get().toJson(new OrderPositionsHolder(newOrderPositions))));
     }
 
     public List<OrderPosition> getNewOrderPositions(List<OrderPosition> orderPositions){
@@ -303,25 +310,25 @@ public class P2pClient {
     }
 
     public void disconnectClient(){
-        sendMessage(new DataMessage(Actions.DISCONNECT_CLIENT, new Object()));
-        connectionState = ConnectionController.ConnectionState.DISCONNECTED;
-        connectedToServer = false;
-        messageHandler.terminate();
-    }
+        sendMessage(new DataMessage(MessageAction.DISCONNECT_CLIENT, new Object()));
 
-
-    private void registerMessageHandlers() {
-        messageHandlers.put(Actions.INITIAL_DATA, new InitialDataReader(this));
-
-        messageHandlers.put(Actions.STOP_SERVER, new MessageObject(Object.class) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void handleMessage(Object object, String fromAddress) {
-                messageHandler.terminate();
-                connectedToServer = false;
-                connectionState = ConnectionController.ConnectionState.DISCONNECTED;
+            public void run() {
+                disconnect();
             }
-        });
+        }, 3000);
     }
+
+    public void disconnect(){
+        connectionState = ConnectionState.DISCONNECTED;
+        connectedToServer = false;
+        messageReciever.terminate();
+        setInitialized(false);
+        app.p2p.disconnect(new DoNothing());
+    }
+
 
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;

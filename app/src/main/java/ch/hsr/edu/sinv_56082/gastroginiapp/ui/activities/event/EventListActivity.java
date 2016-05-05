@@ -27,6 +27,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
@@ -134,15 +135,13 @@ public class EventListActivity extends CommonActivity implements Serializable, C
             }
         });
 
-
         foreignEventList = App.getApp().p2p.client.serviceList;
 
         eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
         eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO p2p not in activity
-                ((App) getApplication()).p2p.client.connectTo(foreignEventList.get(position));
+                ConnectionController.instance.connectTo(foreignEventList.get(position));
             }
         });
         eventListMyEventsRecyclerView.setHasFixedSize(true);

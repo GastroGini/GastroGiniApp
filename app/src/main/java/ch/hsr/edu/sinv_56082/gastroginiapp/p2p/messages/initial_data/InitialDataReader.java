@@ -1,5 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.initial_data;
 
+import android.util.Log;
+
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -10,7 +12,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pClient;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 
 public class InitialDataReader extends MessageObject<InitialDataMessage> {
     private P2pClient p2pClient;
@@ -23,6 +25,8 @@ public class InitialDataReader extends MessageObject<InitialDataMessage> {
     @Override
     public void handleMessage(final InitialDataMessage initData, String fromAddress) {
         if (p2pClient.isInitialized()) return;
+
+        Log.d("initDataReader", "handleMessage: "+initData.event);
 
         final Person updatedHost = updateHost(initData);
         final ProductList updatedList = updateProductList(initData);
