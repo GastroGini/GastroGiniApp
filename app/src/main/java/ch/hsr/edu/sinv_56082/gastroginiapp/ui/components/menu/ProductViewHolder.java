@@ -6,7 +6,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonViewHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonViewHolder;
 
 
 public class ProductViewHolder extends CommonViewHolder {

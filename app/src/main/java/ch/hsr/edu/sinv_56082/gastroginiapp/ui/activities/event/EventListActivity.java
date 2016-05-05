@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {

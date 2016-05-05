@@ -23,8 +23,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ProductDescriptionAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.ProductDescriptionAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductCategoryViewHolder;
 
 public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {

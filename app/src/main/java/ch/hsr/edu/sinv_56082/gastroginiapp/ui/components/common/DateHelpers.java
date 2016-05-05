@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components;
+package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common;
 
 
 import android.content.Context;

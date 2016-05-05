@@ -21,7 +21,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductListViewHolder;
 
 public class ProductListListView extends CommonActivity implements CommonAdapter.Listener<ProductList> {

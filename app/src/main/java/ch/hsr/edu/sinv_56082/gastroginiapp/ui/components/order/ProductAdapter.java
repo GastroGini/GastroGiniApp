@@ -12,7 +12,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonSelectable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
