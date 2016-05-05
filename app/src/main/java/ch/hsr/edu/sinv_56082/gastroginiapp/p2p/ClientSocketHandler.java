@@ -43,12 +43,6 @@ public class ClientSocketHandler extends Thread {
                 Log.e(TAG, "run: ", e1);
 
             }
-            return;
         }
     }
-
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
-    }
-
 }

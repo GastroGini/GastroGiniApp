@@ -30,7 +30,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 public class EventViewActivity extends CommonActivity {
 
     private Event event;
-    private boolean isNewEvent = false;
 
     @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
     @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
@@ -60,6 +59,7 @@ public class EventViewActivity extends CommonActivity {
 
 
         Bundle args = getIntent().getExtras();
+        boolean isNewEvent = false;
         if(args != null){
             isNewEvent = false;
             event = eventController.get(args.getString("event-uuid"));
@@ -79,7 +79,7 @@ public class EventViewActivity extends CommonActivity {
 
 
         List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
-        ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
+        ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, productLists);
         eventViewProductListSpinner.setAdapter(spinnerAdapter);
 
         eventViewTitleInput.setText(event.name);

@@ -13,7 +13,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -47,7 +46,6 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
         //ModelHolder<Event> eventJson = new ModelHolder<>(Event.class);
         //eventJson.setModel(event);
 
-        new ConnectionController().startServer(event);
 
         //TODO: Remove password display, just for showcase
         getSupportActionBar().setSubtitle("User: " + userName + " | Event Password: " + eventPassword);

@@ -22,6 +22,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
@@ -29,6 +31,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
@@ -40,7 +43,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
 
     private static int MYEVENTLIST_IDENTIFIER = 1;
-    private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
 
 
     private boolean myEventsCollapsedState = true;
@@ -200,6 +202,17 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     protected void onResume() {
         super.onResume();
 
+        App.getApp().p2p.client.onInitDataSuccess = new Consumer<String>() {
+            @Override
+            public void consume(String s) {
+                Intent intent = new Intent(activity, ServiceHome.class);
+                intent.putExtra("event-uuid", s);
+                intent.putExtra("userName", "new user");
+                intent.putExtra("eventPassword", "wrong pw");
+                startActivity(intent);
+            }
+        };
+
         responseCallback = new DoIt() {
             @Override
             public void doIt() {
@@ -213,6 +226,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     @Override
     protected void onPause() {
         super.onPause();
+        App.getApp().p2p.client.onInitDataSuccess = new ConsumerDoNothing<>();
         App.getApp().p2p.client.removeServiceResponseCallback(responseCallback);
     }
 
@@ -221,6 +235,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     }
 
     public static int getForeigneventlistIdentifier(){
+        int FOREIGNEVENTLIST_IDENTIFIER = 2;
         return FOREIGNEVENTLIST_IDENTIFIER;
     }
 

@@ -30,7 +30,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductCategoryVie
 public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private ProductDescriptionListActivity activity;
-    private List<ProductCategory> productCategories = new ArrayList<>();
     private CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
     private List<ProductDescriptionAdapter> productDescriptionAdapterList = new ArrayList<>();
     private boolean editMode = false;
@@ -56,12 +55,12 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
         });
 
         activity = this;
-        productCategories = new ViewController<>(ProductCategory.class).getModelList();
+        List<ProductCategory> productCategories = new ViewController<>(ProductCategory.class).getModelList();
 
         checkIfHintTextNecessary();
 
         adapter = new CommonAdapter<ProductCategory, ProductCategoryViewHolder>(
-                        R.layout.column_row_product_description_categories,productCategories ) {
+                        R.layout.column_row_product_description_categories, productCategories) {
                     @Override
                     public ProductCategoryViewHolder createItemViewHolder(View view) {
                         return new ProductCategoryViewHolder(view);

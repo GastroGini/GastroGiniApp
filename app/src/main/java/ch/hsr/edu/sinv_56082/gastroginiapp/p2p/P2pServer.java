@@ -9,20 +9,32 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.ModelHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.Actions;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.initial_data.InitialDataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.new_event_order.NewEventOrder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.order_positions.OrderPositionsHolder;
 
 public class P2pServer {
 
     private static final String TAG = "SERVER::";
     private final App app;
-    private TransferEvent dto;
+    private ServerSocketHandler serverService;
     private Event runningEvent;
     private Handler handler;
 
@@ -33,7 +45,7 @@ public class P2pServer {
     private Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
 
     public P2pServer(Event event){
-        dto = new TransferEvent(event.getUuid(), event.name, event.startTime);
+        TransferEvent dto = new TransferEvent(event.getUuid(), event.name, event.startTime);
         app = App.getApp();
         runningEvent = event;
         messageHandlers = new HashMap<>();
@@ -43,7 +55,8 @@ public class P2pServer {
         registerMessageHandlers();
         registerMessageHandler();
         try {
-            new ServerSocketHandler(handler, app.p2p.macAddress).start();
+            serverService = new ServerSocketHandler(handler, app.p2p.macAddress);
+            serverService.start();
         } catch (IOException e) {
             Log.e(TAG, "P2pServer: failed to create server socket", e);
         }
@@ -104,23 +117,23 @@ public class P2pServer {
     public void setLocalService(final TransferEvent eventName) {
         if (app.p2p.isWifiP2pEnabled()) {
             Map<String, String> record = new HashMap<>();
-            record.put(app.p2p.TXTRECORD_PROP_AVAILABLE, "visible");
+            record.put(P2pHandler.TXTRECORD_PROP_AVAILABLE, "visible");
             //record.put(app.p2p.EVENT_INFO+"name", eventName.name);
             //record.put(app.p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
             //record.put(app.p2p.EVENT_INFO+"date", eventName.startDate.toString());
 
             app.p2p.wifiP2pManager.clearLocalServices(app.p2p.wifiP2pChannel, null);
 
-            wifiP2pService = WifiP2pDnsSdServiceInfo.newInstance(app.p2p.SERVICE_INSTANCE + eventName.name, app.p2p.SERVICE_REG_TYPE, record);
+            wifiP2pService = WifiP2pDnsSdServiceInfo.newInstance(P2pHandler.SERVICE_INSTANCE + eventName.name, P2pHandler.SERVICE_REG_TYPE, record);
             app.p2p.wifiP2pManager.addLocalService(app.p2p.wifiP2pChannel, wifiP2pService, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
-                    Log.d(TAG, "onSuccess: added Local Service: " + app.p2p.SERVICE_INSTANCE + eventName);
+                    Log.d(TAG, "onSuccess: added Local Service: " + P2pHandler.SERVICE_INSTANCE + eventName);
                 }
 
                 @Override
                 public void onFailure(int reason) {
-                    Log.d(TAG, "onFailure: failed to add Service" + app.p2p.SERVICE_INSTANCE + eventName);
+                    Log.d(TAG, "onFailure: failed to add Service" + P2pHandler.SERVICE_INSTANCE + eventName);
                 }
             });
         }
@@ -141,22 +154,88 @@ public class P2pServer {
     }
 
     private void registerMessageHandlers() {
-        messageHandlers.put("get_initial_data", new MessageObject<Object>(Object.class){
+        messageHandlers.put(Actions.GET_INITIAL_DATA, new MessageObject<Object>(Object.class){
             @Override
             public void handleMessage(Object object, String from) {
                 List<Product> products = runningEvent.productList.products();
-                InitialDataMessage msg = new InitialDataMessage(runningEvent, products);
-
-                sendMessage(from, new DataMessage("InitialData", msg));
+                List<EventTable> tables = runningEvent.eventTables();
+                InitialDataMessage msg = new InitialDataMessage(runningEvent, products, tables);
+                sendMessage(from, new DataMessage(Actions.INITIAL_DATA, msg));
             }
         });
 
+        messageHandlers.put(Actions.STOP_SERVER, new MessageObject(Object.class) {
+            @Override
+            public void handleMessage(Object object, String fromAddress) {
+                ConnectedDevice device = connectedDevices.get(fromAddress);
+                device.connectionState = ConnectionController.ConnectionState.DISCONNECTED;
+                device.handler.terminate();
+                connectedDevices.remove(fromAddress);
+            }
+        });
+
+        messageHandlers.put(Actions.NEW_ORDER, new MessageObject<NewEventOrder>(NewEventOrder.class){
+            @Override
+            public void handleMessage(final NewEventOrder neo, String fromAddress) {
+                final EventOrder newOrder = new ModelHolder<>(EventOrder.class).setModel(neo.order).updateOrSave(new Consumer<EventOrder>() {
+                    @Override
+                    public void consume(EventOrder order) {
+                        order.createdBy = new ViewController<>(Person.class).get(neo.order.createdBy.getUuid());
+                        order.eventTable = new ViewController<>(EventTable.class).get(neo.order.eventTable.getUuid());
+                        order.orderTime = neo.order.orderTime;
+                    }
+                }).getModel();
+
+                for (final OrderPosition orderPosDTO: neo.orderPositions){
+                    saveOrderPos(orderPosDTO);
+                }
+            }
+        });
+
+        messageHandlers.put(Actions.DELETE_ORDER_POSITIONS, new MessageObject<OrderPositionsHolder>(OrderPositionsHolder.class){
+            @Override
+            public void handleMessage(OrderPositionsHolder holder, String fromAddress) {
+                final ViewController<OrderPosition> controller = new ViewController<>(OrderPosition.class);
+                for (OrderPosition orderPosition: holder.orderPositions){
+                    new ModelHolder<>(OrderPosition.class).setModel(orderPosition).updateOrSave(new Consumer<OrderPosition>() {
+                        @Override
+                        public void consume(OrderPosition orderPosition) {
+                            controller.delete(orderPosition);
+                        }
+                    });
+                }
+            }
+        });
+
+        messageHandlers.put(Actions.SET_ORDER_POSITIONS_PAYED, new MessageObject<OrderPositionsHolder>(OrderPositionsHolder.class){
+            @Override
+            public void handleMessage(OrderPositionsHolder holder, String fromAddress) {
+                for (OrderPosition orderPosition: holder.orderPositions){
+                    saveOrderPos(orderPosition);
+                }
+            }
+        });
 
     }
 
-
+    private void saveOrderPos(final OrderPosition orderPosDTO) {
+        new ModelHolder<>(OrderPosition.class).setModel(orderPosDTO).updateOrSave(new Consumer<OrderPosition>() {
+            @Override
+            public void consume(OrderPosition orderPosition) {
+                orderPosition.orderState = orderPosDTO.orderState;
+                orderPosition.eventOrder = new ViewController<>(EventOrder.class).get(orderPosDTO.eventOrder.getUuid());
+                orderPosition.payTime = orderPosDTO.payTime;
+                orderPosition.product = new ViewController<>(Product.class).get(orderPosDTO.product.getUuid());
+            }
+        });
+    }
 
     public void sendStop() {
-
+        for (ConnectedDevice device : connectedDevices.values()){
+            sendMessage(device.device, new DataMessage(Actions.STOP_SERVER, new Object()));
+            device.handler.terminate();
+        }
+        serverService.terminate();
+        removeLocalService();
     }
 }

@@ -144,7 +144,7 @@ public class P2pHandler {
             WifiInfo info = manager.getConnectionInfo();
             macAddress = info.getMacAddress();
 
-            wifiP2pManager = (WifiP2pManager) application.getSystemService(application.WIFI_P2P_SERVICE);
+            wifiP2pManager = (WifiP2pManager) application.getSystemService(Context.WIFI_P2P_SERVICE);
             setIsWifiP2pEnabled(wifiP2pManager != null);
             if (isWifiP2pEnabled()) {
                 wifiP2pChannel = wifiP2pManager.initialize(application, application.getMainLooper(), new WifiP2pManager.ChannelListener() {

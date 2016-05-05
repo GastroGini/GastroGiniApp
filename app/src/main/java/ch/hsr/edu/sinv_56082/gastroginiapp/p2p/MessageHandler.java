@@ -13,6 +13,7 @@ import java.net.Socket;
 
 public class MessageHandler implements Runnable{
 
+    private volatile boolean running = true;
 
     public static final String TAG = "MESSAFE HANDLER";
     private final ConnectedDevice device;
@@ -25,21 +26,20 @@ public class MessageHandler implements Runnable{
         this.handler = handler;
     }
 
-    private BufferedReader iStream;
     private PrintWriter oStream;
 
     @Override
     public void run() {
         Log.d("MESSAGE::", "run: starting");
         try {
-            iStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader iStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             oStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 
             device.handler = this;
 
             handler.obtainMessage(P2pHandler.SET_MESSAGE_HANDLER, device).sendToTarget();
 
-            while (true) {
+            while (running) {
                 //Scanner s = new Scanner(iStream).useDelimiter("\\A");
                 //String result = s.hasNext() ? s.next() : "";
                 String result = iStream.readLine();
@@ -61,6 +61,10 @@ public class MessageHandler implements Runnable{
                 Log.e(TAG, "run: ", e);
             }
         }
+    }
+
+    public void terminate(){
+        this.running = false;
     }
 
     public void write(String message) {

@@ -19,6 +19,8 @@ public class ServerSocketHandler extends Thread {
     private Handler handler;
     private static final String TAG = "ServerSocketHandler";
 
+    private volatile boolean running = true;
+
     public ServerSocketHandler(Handler handler, String macAddress) throws IOException {
         this.macAddress = macAddress;
         try {
@@ -38,7 +40,7 @@ public class ServerSocketHandler extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 // A blocking operation. Initiate a ChatManager instance when
                 // there is a new connection
@@ -57,6 +59,10 @@ public class ServerSocketHandler extends Thread {
                 break;
             }
         }
+    }
+
+    public void terminate(){
+        running = false;
     }
 
 }

@@ -34,7 +34,6 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     @Bind(R.id.backButton) Button backButton;
     @Bind(R.id.finishButton) Button finishButton;
 
-    private AppCompatActivity activity;
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
@@ -46,7 +45,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_control_view);
         ButterKnife.bind(this);
-        activity = this;
+        AppCompatActivity activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
