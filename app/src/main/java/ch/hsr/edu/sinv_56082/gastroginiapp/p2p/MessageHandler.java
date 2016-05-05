@@ -1,59 +1,28 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
 
-import android.os.Handler;
-import android.util.Log;
+import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MessageHandler implements Runnable{
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.Serializer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
 
+public abstract class MessageHandler {
 
-    private Socket socket = null;
-    private Handler handler;
+    protected Map<MessageAction, MessageObject<?>> messageHandlers;
 
-    public MessageHandler(Socket socket, Handler handler) {
-        this.socket = socket;
-        this.handler = handler;
+    public MessageHandler(){
+        messageHandlers = new HashMap<>();
     }
 
-    private InputStream iStream;
-    private OutputStream oStream;
-
-    @Override
-    public void run() {
-        try {
-            iStream = socket.getInputStream();
-            oStream = socket.getOutputStream();
-
-            handler.obtainMessage(P2pHandler.SET_MESSAGE_HANDLER, this).sendToTarget();
-
-            while (true) {
-                Scanner s = new Scanner(iStream).useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
-                if (result != "") {
-                    handler.obtainMessage(P2pHandler.RECIEVED_MESSAGE, result).sendToTarget();
-                }
-            }
-        } catch (IOException e) {
-            Log.e("", "Exception during reading", e);
-        } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void handleMessages(ConnectionMessage message) {
+        DataMessage dataMessage = new Gson().fromJson(message.content, DataMessage.class);
+        MessageObject messager = messageHandlers.get(dataMessage.action);
+        if (messager != null) messager.handleMessage(Serializer.get().fromJson(dataMessage.content, messager.type), message.fromAddress);
     }
 
-    public void write(String message) {
-        try {
-            oStream.write(message.getBytes());
-        } catch (IOException e) {
-            Log.e("", "Exception during write", e);
-        }
-    }
+    public abstract void registerMessages();
+
+
 }

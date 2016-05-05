@@ -1,12 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.app;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
-
 
 import java.util.UUID;
 

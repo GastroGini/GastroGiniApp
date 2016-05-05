@@ -12,13 +12,12 @@ import android.util.Log;
 
 public class WifiBroadcastReciever {
 
-    BroadcastReceiver wifiBroadcatsReciver;
-    Context application;
-    P2pHandler p2pHandler;
-    IntentFilter intentFilter;
+    private BroadcastReceiver wifiBroadcatsReciver;
+    private Context application;
+    private P2pHandler p2pHandler;
+    private IntentFilter intentFilter;
 
-
-    WifiBroadcastReciever(P2pHandler p2pHandler, Context application){
+    public WifiBroadcastReciever(P2pHandler p2pHandler, Context application){
         this.application = application;
         this.p2pHandler = p2pHandler;
         intentFilter = new IntentFilter();
@@ -26,42 +25,27 @@ public class WifiBroadcastReciever {
         startBroadcastReciever();
     }
 
-
     private void startBroadcastReciever(){
         if (p2pHandler.isWifiP2pEnabled())
             application.registerReceiver(wifiBroadcatsReciver, intentFilter);
     }
 
     private void registerWifiBroadcastReciver() {
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-        final String TAG ="WIFI_BroadcastReciever";
         wifiBroadcatsReciver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                Log.d(TAG, "onReceive: " + action);
-                if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
-                    int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
-                    if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                        //p2pHandler.setIsWifiP2pEnabled(true);
-                    } else {
-                        //p2pHandler.setIsWifiP2pEnabled(false);
-                    }
-                } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-
-                } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+                if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
                     if (p2pHandler.wifiP2pManager == null) return;
 
                     NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
                     if (networkInfo.isConnected()) {
-                        p2pHandler.wifiP2pManager.requestConnectionInfo(p2pHandler.wifiP2pChannel, p2pHandler.connectionInfoListener);
+                        p2pHandler.wifiP2pManager.requestConnectionInfo(p2pHandler.wifiP2pChannel, p2pHandler.client.connectionInfoListener);
                     }
-                } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {}
+                }
             }
         };
     }

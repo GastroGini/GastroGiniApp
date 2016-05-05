@@ -4,18 +4,16 @@ import com.activeandroid.query.Select;
 
 import java.util.Date;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.WorkAssignment;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 
 public class DummyData {
     public DummyData(){
@@ -86,7 +84,7 @@ public class DummyData {
             new EventTable(4, "Tisch 4", event).save();
             new EventTable(5, "Tisch 5", event).save();
 
-            EventOrder order = new EventOrder(table, new Date());
+            EventOrder order = new EventOrder(table, new Date(), pers);
             order.save();
 
             OrderPosition orderPos = new OrderPosition(new Date(), OrderState.STATE_OPEN, prod, order);

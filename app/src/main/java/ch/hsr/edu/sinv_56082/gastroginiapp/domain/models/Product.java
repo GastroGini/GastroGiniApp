@@ -2,11 +2,9 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -36,10 +34,6 @@ public class Product extends UUIDModel implements Serializable{
         this.productList = productList;
         this.price = price;
         this.volume = volume;
-    }
-
-    public ProductList getProductList() {
-        return productList;
     }
 
     public List<OrderPosition> orderPositions(){

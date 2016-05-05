@@ -9,7 +9,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 
@@ -55,6 +54,11 @@ public class DomainProductDescriptionTest {
 
         ProductDescription desc = ProductDescription.load(ProductDescription.class, test1.getId());
         assertEquals(test1, desc);
+    }
+
+    @Test
+    public void testToString(){
+        assertEquals(test1.toString(), test1.name);
     }
 
 }

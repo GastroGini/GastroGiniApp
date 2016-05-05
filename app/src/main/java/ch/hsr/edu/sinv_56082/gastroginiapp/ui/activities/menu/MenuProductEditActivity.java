@@ -46,7 +46,7 @@ public class MenuProductEditActivity extends CommonActivity {
 
         productEditPrice.setText(String.valueOf(product.price));
         productEditVolume.setText(product.volume);
-        final ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<ProductDescription>(
+        final ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item,
                 new ViewController(ProductDescription.class).getModelList());
         productDescriptionSelect.setAdapter(adapter);

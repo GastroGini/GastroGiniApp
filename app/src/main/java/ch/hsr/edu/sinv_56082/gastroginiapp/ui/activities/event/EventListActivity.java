@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,12 +22,17 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
@@ -34,11 +40,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
 
     private List<Event> myEventList = new ArrayList<>();
-    private List<P2pHandler.ServiceResponseHolder> foreignEventList = new ArrayList<>();
+    private List<ServiceResponseHolder> foreignEventList;
 
 
     private static int MYEVENTLIST_IDENTIFIER = 1;
-    private static int FOREIGNEVENTLIST_IDENTIFIER = 2;
 
 
     private boolean myEventsCollapsedState = true;
@@ -130,13 +135,13 @@ public class EventListActivity extends CommonActivity implements Serializable, C
             }
         });
 
+        foreignEventList = App.getApp().p2p.client.serviceList;
 
-        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<P2pHandler.ServiceResponseHolder>(this, android.R.layout.simple_list_item_1, foreignEventList));
+        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
         eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO p2p not in activity
-                ((App) getApplication()).p2p.connectTo(foreignEventList.get(position));
+                ConnectionController.instance.connectTo(foreignEventList.get(position));
             }
         });
         eventListMyEventsRecyclerView.setHasFixedSize(true);
@@ -187,32 +192,41 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         }
     }
 
+
+    private DoIt responseCallback;
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        //TODO p2p handling should not be in activity
-
-        ((App)getApplication()).p2p.removeLocalService();
-
-       /* ((App)getApplication()).p2p.addServiceResponseCallback(new P2pHandler.ServiceResponseCallback() {
+        App.getApp().p2p.client.onInitDataSuccess = new Consumer<String>() {
             @Override
-            public void onNewServiceResponse(P2pHandler.ServiceResponseHolder service) {
-                for (P2pHandler.ServiceResponseHolder holder : foreignEventList) {
-                    if (holder.device.deviceAddress.equals(service.device.deviceAddress)) {
-                        foreignEventList.remove(holder);
-                        break;
-                    }
-                }
+            public void consume(String s) {
+                Intent intent = new Intent(activity, ServiceHome.class);
+                intent.putExtra("event-uuid", s);
+                intent.putExtra("userName", "new user");
+                intent.putExtra("eventPassword", "wrong pw");
+                startActivity(intent);
+            }
+        };
 
-                foreignEventList.add(service);
+        responseCallback = new DoIt() {
+            @Override
+            public void doIt() {
                 ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
-        });*/
+        };
+        App.getApp().p2p.client.addServiceResponseCallback(responseCallback); //TODO Controller
+        App.getApp().p2p.client.discoverServices();
+    }
 
-        ((App)getApplication()).p2p.discoverServices();
-
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.getApp().p2p.client.onInitDataSuccess = new ConsumerDoNothing<>();
+        App.getApp().p2p.client.removeServiceResponseCallback(responseCallback);
     }
 
     public static int getMyeventlistIdentifier(){
@@ -220,6 +234,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     }
 
     public static int getForeigneventlistIdentifier(){
+        int FOREIGNEVENTLIST_IDENTIFIER = 2;
         return FOREIGNEVENTLIST_IDENTIFIER;
     }
 

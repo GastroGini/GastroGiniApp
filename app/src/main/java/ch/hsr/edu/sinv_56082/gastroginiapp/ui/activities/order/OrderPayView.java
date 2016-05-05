@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -82,6 +83,8 @@ public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.O
                         }
                     });
                 }
+
+                App.getApp().p2p.client.sendPayed(opToPayList); // TODO Controller
                 setResult(RESULT_OK);
                 finish();
             }

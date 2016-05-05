@@ -17,7 +17,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private ProductItemClickListener listener;
-    private ProductViewHolder productViewHolder;
 
     public interface ProductItemClickListener {
         void onClick(Product product);
@@ -31,7 +30,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
         this.orderItems = new ArrayList<>();
         this.listener = listener;
         for (Product pos: orderItems){
-            this.orderItems.add(new CommonSelectable<Product>(pos));
+            this.orderItems.add(new CommonSelectable<>(pos));
         }
     }
 
@@ -44,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
         TextView price = (TextView) ProductItemView.findViewById(R.id.product_item_price);
 
 
-        productViewHolder = new ProductViewHolder(ProductItemView,name, size,price);
+        ProductViewHolder productViewHolder = new ProductViewHolder(ProductItemView, name, size, price);
         return productViewHolder;
     }
 

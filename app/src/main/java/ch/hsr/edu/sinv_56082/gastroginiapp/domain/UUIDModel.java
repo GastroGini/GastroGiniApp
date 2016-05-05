@@ -2,9 +2,7 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
-import com.activeandroid.query.Select;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 public abstract class UUIDModel extends Model {

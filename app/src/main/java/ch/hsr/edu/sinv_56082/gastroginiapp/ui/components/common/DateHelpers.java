@@ -17,7 +17,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 
 public class DateHelpers {
     public interface Callback {
-        public void onSet(Date date);
+        void onSet(Date date);
     }
 
     public static class Picker {

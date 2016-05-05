@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.domain;
+package ch.hsr.edu.sinv_56082.gastroginiapp;
 
 
 import java.util.Date;
@@ -70,7 +70,7 @@ public class TestDataSetup {
         new EventTable(4, "Tisch 4", event).save();
         new EventTable(5, "Tisch 5", event).save();
 
-        order = new EventOrder(table, new Date());
+        order = new EventOrder(table, new Date(), pers);
         order.save();
 
         state = OrderState.STATE_OPEN;

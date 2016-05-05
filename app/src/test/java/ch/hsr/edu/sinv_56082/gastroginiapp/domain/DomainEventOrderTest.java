@@ -52,13 +52,13 @@ public class DomainEventOrderTest {
         table = new EventTable(1, "Tisch 1", event);
         table.save();
 
-        test1 = new EventOrder(table, new Date());test1.save();
-        test2 = new EventOrder(table, new Date());test2.save();
+        test1 = new EventOrder(table, new Date(),person);test1.save();
+        test2 = new EventOrder(table, new Date(), person);test2.save();
     }
 
     @Test
     public void testCreate() {
-        EventOrder eventOrder = new EventOrder(table, new Date());
+        EventOrder eventOrder = new EventOrder(table, new Date(), person);
         eventOrder.save();
 
         EventOrder query = EventOrder.load(EventOrder.class, eventOrder.getId());

@@ -18,7 +18,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable
 public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     private TableItemClickListener listener;
-    private TableRowViewHolder etvh;
 
     public interface TableItemClickListener {
         void onClick(OrderPosition orderPosition);
@@ -42,7 +41,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         TextView price = (TextView) tableOrderItemView.findViewById(R.id.product_item_price);
 
 
-        etvh = new TableRowViewHolder(tableOrderItemView,name, size,price);
+        TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price);
         return etvh;
     }
 

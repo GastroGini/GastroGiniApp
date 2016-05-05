@@ -1,11 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 
-import com.activeandroid.annotation.*;
-import com.activeandroid.query.Select;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
 import java.util.List;
-import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 

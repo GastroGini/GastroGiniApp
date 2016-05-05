@@ -1,28 +1,25 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import java.util.Date;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-
-import com.activeandroid.query.Select;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -38,7 +35,6 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     @Bind(R.id.backButton) Button backButton;
     @Bind(R.id.finishButton) Button finishButton;
 
-    private AppCompatActivity activity;
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
@@ -50,7 +46,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_control_view);
         ButterKnife.bind(this);
-        activity = this;
+        AppCompatActivity activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -78,7 +74,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                 final EventOrder eventOrder = new ViewController<>(EventOrder.class).create(new Supplier<EventOrder>() {
                     @Override
                     public EventOrder supply() {
-                        return new EventOrder(eventTable, new Date(System.currentTimeMillis()));
+                        return new EventOrder(eventTable, new Date(), new UserController().getUser());
                     }
                 });
 
@@ -92,6 +88,8 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                 }
 
                 Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
+
+                App.getApp().p2p.client.sendNew(eventOrder); // TODO Controller
 
                 setResult(RESULT_OK);
                 finish();
