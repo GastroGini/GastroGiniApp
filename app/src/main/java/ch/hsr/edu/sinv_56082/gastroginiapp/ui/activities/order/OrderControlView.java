@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 
 
+import com.activeandroid.query.Select;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,11 +90,9 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
                         }
                     });
                 }
-                /*
-                Intent intent = new Intent(activity, TableOrderView.class);
-                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
-                */
+
+                Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
+
                 setResult(RESULT_OK);
                 finish();
 

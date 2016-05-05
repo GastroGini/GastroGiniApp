@@ -27,13 +27,10 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     TableRowAdapter adapter;
 
-    public TableRowAdapter(List<OrderPosition> orderItems, TableItemClickListener listener){
+    public TableRowAdapter(List<CommonSelectable<OrderPosition>> orderItems, TableItemClickListener listener){
         adapter = this;
-        this.orderItems = new ArrayList<>();
         this.listener = listener;
-        for (OrderPosition pos: orderItems){
-            this.orderItems.add(new CommonSelectable(pos));
-        }
+        this.orderItems=orderItems;
     }
 
     @Override
@@ -56,25 +53,17 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         holder.getNameTextView().setText(selectable.getItem().product.productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().product.volume);
         holder.getPriceTextView().setText(selectable.getItem().product.price + "");
-        Log.d("TableRowAdapter", selectable.getItem().orderState.name);
 
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClick(selectable.getItem());
-            }
-        });
-
-        holder.getEventTablesView().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
                 selectable.toggleSelected();
                 v.setSelected(selectable.isSelected());
 
-                Log.d("SELECTED", "onLongClick: "+selectable.isSelected());
+                Log.d("SELECTED", "onClick: "+selectable.isSelected());
 
                 adapter.notifyDataSetChanged();
-                return true;
             }
         });
     }
@@ -93,7 +82,6 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         }
         return list;
     }
-
     public ArrayList<OrderPosition> getSelectedOrderPositions(){
         ArrayList<OrderPosition> list = new ArrayList<>();
         for (CommonSelectable<OrderPosition> sel: orderItems){

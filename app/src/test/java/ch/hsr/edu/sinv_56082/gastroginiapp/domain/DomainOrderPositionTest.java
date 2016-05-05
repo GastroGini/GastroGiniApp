@@ -58,8 +58,7 @@ public class DomainOrderPositionTest {
         table = new EventTable(1, "Tisch 1", event);
         table.save();
         order = new EventOrder(table, new Date());order.save();
-        state = new OrderState("Test2", "wegfw");
-        state.save();
+        state = OrderState.STATE_OPEN;
 
         test1 = new OrderPosition(new Date(), state, product, order);test1.save();
         test2 = new OrderPosition(new Date(), state, product, order);test2.save();
@@ -80,8 +79,7 @@ public class DomainOrderPositionTest {
         test2.payTime = new Date();
         test2.eventOrder = new EventOrder(table, new Date());
         test2.eventOrder.save();
-        test2.orderState = new OrderState("adsf","wfe");
-        test2.orderState.save();
+        test2.orderState = OrderState.STATE_OPEN;
         test2.product = new Product(description, list, 12.0, "324dl");
         test2.product.save();
         test2.save();

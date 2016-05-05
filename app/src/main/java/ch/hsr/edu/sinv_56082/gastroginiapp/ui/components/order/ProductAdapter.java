@@ -56,8 +56,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
         String name =  (item != null && item.productDescription != null && item.productDescription.name != null)
                         ? item.productDescription.name
                         : "";
-
-
         holder.getNameTextView().setText(name);
         holder.getSizeTextView().setText(selectable.getItem().volume);
         holder.getPriceTextView().setText(selectable.getItem().price + "");

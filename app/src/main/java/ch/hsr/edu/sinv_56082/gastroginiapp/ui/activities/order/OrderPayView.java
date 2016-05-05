@@ -27,9 +27,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonSelectable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
-public class OrderPayView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
+public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.OrderItemClickListener {
 
     @Bind(R.id.cancelButton) Button cancelButton;
     @Bind(R.id.proceedButton) Button proceedButton;
@@ -62,7 +64,7 @@ public class OrderPayView extends AppCompatActivity implements TableRowAdapter.T
         }
         Log.d("ADSF", "onCreate: "+test);
 
-        TableRowAdapter adapter = new TableRowAdapter(opToPayList, this);
+        OrderPayAdapter adapter = new OrderPayAdapter(opToPayList, this);
         orderPayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderPayRecyclerView.setAdapter(adapter);
         orderPayRecyclerView.setHasFixedSize(true);

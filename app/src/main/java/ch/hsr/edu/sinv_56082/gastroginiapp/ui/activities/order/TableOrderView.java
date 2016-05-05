@@ -22,12 +22,14 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonSelectable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 public class TableOrderView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
@@ -38,11 +40,10 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     @Bind(R.id.deleteButton) Button deleteButton;
 
     EventTable eventTable;
-    List<OrderPosition> tableOrderPositions = new ArrayList<>();
+    List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
 
     private AppCompatActivity activity;
     TableRowAdapter adapter;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,12 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
         loadEventTableFromUUID(args);
         loadOrderPositions();
-        Log.d("TableOrderView", "onCreate: loadOrderpositions()");
 
         adapter = new TableRowAdapter(tableOrderPositions, this);
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);
+        Log.d("", "tableOrderPosition: " + tableOrderPositions.toString());
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
         fab_add_order.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +73,6 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivityForResult(intent, 1);
-                updateRecyclerView();
             }
         });
 
@@ -95,66 +95,51 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .setIcon(android.R.drawable.ic_delete)
                         .setTitle("Warnung")
                         .setMessage("Wollen sie diese Position(en) wirklich löschen?")
-                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("TableOrderView", "delete Order");
-                                for(OrderPosition op : adapter.getSelectedOrderPositions()){
-                                    if(tableOrderPositions.contains(op)){
-                                        Log.d("TEST", "onClick: deleting order pos");
-                                        deleteOrderPosition(op);
-                                    }else{
-                                        Log.d("delete order position", "onClick: element to delete not in orderPositionList");
-                                    }
+                                for (OrderPosition op : adapter.getSelectedOrderPositions()) {
+                                    Log.d("delete orderPosition", "onClick: deleting order pos");
+                                    deleteOrderPosition(op);
                                 }
                             }
-
                         })
                         .setNegativeButton("Abbrechen", null)
                         .show();
-
             }
         });
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) {
-            //loadOrderPositions();
-            //tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
-            updateRecyclerView();
-            Log.d("TableOrderView", "onActivityResult: reloaded list");
-        }
+        updateRecyclerView();
+        Log.d("TableOrderView", "onActivityResult: returned");
     }
 
     public void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).delete(op);
-        tableOrderPositions.remove(op);
-        //loadOrderPositions();
-        //tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
         updateRecyclerView();
     }
     public void updateRecyclerView(){
-        loadOrderPositions();
-        tableOrderRecyclerView.getAdapter().notifyDataSetChanged();
         Log.d("TableOrderView", "updateRecyclerView: update view");
+        loadOrderPositions();
+        adapter.notifyDataSetChanged();
+        Log.d("LIST", "updateRecyclerView: "+tableOrderPositions);
     }
     public void onClick(OrderPosition orderPosition) {
-        //onLongClick defined in ViewHolder
+        //implemented in TableRowAdapter
     }
-    public void loadOrderPositions (){
+    public void loadOrderPositions() {
+        Log.d("TableOrderView", "loadOrderPositions");
         tableOrderPositions.clear();
-        Log.d("TableOrderView", "loadOrderPositions: Updating list!!");
         for(EventOrder order : eventTable.orders()){
             for (OrderPosition pos: order.orderPositions()){
-                if(pos.orderState.name.equals(OrderState.STATE_OPEN.name)){
-                    tableOrderPositions.add(pos);
+                if(pos.orderState==OrderState.STATE_OPEN){
+                    tableOrderPositions.add(new CommonSelectable<>(pos));
                 }
             }
         }
     }
-
     public void loadEventTableFromUUID(Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
     }
@@ -168,6 +153,4 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

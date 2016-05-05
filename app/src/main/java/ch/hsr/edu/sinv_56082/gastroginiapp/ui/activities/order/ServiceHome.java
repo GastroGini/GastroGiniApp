@@ -69,10 +69,6 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
             }
         });
         eventTablesRecyclerView.setHasFixedSize(true);
-        Log.d("states", "onCreate: logging states");
-        for (OrderState s:new ViewController<>(OrderState.class).getModelList()){
-            Log.d("ALLORDERSTATES", "onCreate: "+s.name);
-        }
     }
 
     @Override
