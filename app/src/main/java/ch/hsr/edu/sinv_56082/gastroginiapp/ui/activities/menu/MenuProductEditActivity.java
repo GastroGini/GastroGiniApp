@@ -39,8 +39,8 @@ public class MenuProductEditActivity extends CommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_product_edit);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeProductDescription();
 

@@ -44,8 +44,8 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
         setContentView(R.layout.activity_product_list_list_view);
         this.activity = this;
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productListController = new ViewController<>(ProductList.class);
 

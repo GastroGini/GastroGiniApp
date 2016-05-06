@@ -36,8 +36,8 @@ public class StartEventActivity extends CommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_event);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         userController = new UserController();
 

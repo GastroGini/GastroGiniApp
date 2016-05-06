@@ -3,16 +3,23 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.inject.Provider;
 
 import java.util.List;
 import java.util.UUID;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Abstract.IPersonRepository;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.Concreate.PersonRepository;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
 @Table(name = "Persons")
-public class Person extends UUIDModel{
+public class Person extends UUIDModel implements  IPersonRepository  {
+
+
 
     public Person(){}
+
+
 
     @Column
     public String firstName;
