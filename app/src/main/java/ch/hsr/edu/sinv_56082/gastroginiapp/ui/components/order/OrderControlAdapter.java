@@ -1,7 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order;
 
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,25 +19,25 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
+public class OrderControlAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private ProductItemClickListener listener;
     Map<Product,List<Product>> mappedProducts = new HashMap<>();
+    List<CommonSelectable<Product>> productList = new ArrayList<>();
 
     public interface ProductItemClickListener {
         void onClick(Product product);
         void onDelete(Product product);
     }
-    private List<CommonSelectable<Product>> orderItems;
 
-    ProductAdapter adapter;
+    OrderControlAdapter adapter;
 
-    public ProductAdapter(List<Product> orderItems, ProductItemClickListener listener){
+    public OrderControlAdapter(List<Product> orderItems, ProductItemClickListener listener){
         adapter = this;
-        this.orderItems = new ArrayList<>();
         this.listener = listener;
         createProductMap(orderItems, mappedProducts);
-        for (Product pos: orderItems){
-            this.orderItems.add(new CommonSelectable<>(pos));
+        Iterator<Product> iterator = mappedProducts.keySet().iterator();
+        while(iterator.hasNext()){
+            productList.add(new CommonSelectable<>(iterator.next()));
         }
     }
 
@@ -71,22 +71,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, int position) {
-        final CommonSelectable<Product> selectable = orderItems.get(position);
+        final CommonSelectable<Product> selectable = productList.get(position);
         Product item  =   selectable.getItem();
-
         String name =  (item != null && item.productDescription != null && item.productDescription.name != null)
                         ? item.productDescription.name
                         : "";
+        holder.setCount(mappedProducts.get(item).size());
         holder.getNameTextView().setText(name);
         holder.getSizeTextView().setText(selectable.getItem().volume);
         holder.getPriceTextView().setText(selectable.getItem().price + "");
-
-//        for(CommonSelectable<Product> orderItem :orderItems){
-//            if(orderItem.getItem().equals(item)){
-//                holder.setCount(holder.getCount() + 1);
-//            }
-//        }
-
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +88,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
                 listener.onClick(selectable.getItem());
             }
         });
+        holder.getAmountCounterView().setText(holder.getCount()+"");
 
         holder.getSubtractAmountView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +110,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     }
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return productList.size();
     }
 }

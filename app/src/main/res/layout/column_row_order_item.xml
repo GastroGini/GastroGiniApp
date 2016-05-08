@@ -2,7 +2,8 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/linear_layout_half_padding">
+    android:padding="@dimen/linear_layout_half_padding"
+    android:background="?android:attr/selectableItemBackground">
 
     <TableRow
         android:stretchColumns="0,1,2"

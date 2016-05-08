@@ -37,10 +37,22 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
     public ImageView getSubtractAmountView(){return subtractAmount;}
     public TextView getAmountCounterView(){return amountCounter;}
     public ImageView getAddAmountView(){return addAmount;}
+
+    public int getCount(){
+        return count;
+    }
+
     public void setCount(int count){
         this.count = count;
     }
-    public int getCount(){
-        return count;
+
+    public void increaseCount(){
+        count++;
+    }
+
+    public void decreaseCount(){
+        if(count > 0){
+            count--;
+        }
     }
 }

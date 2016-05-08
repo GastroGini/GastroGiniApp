@@ -26,9 +26,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
-public class OrderControlView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
+public class OrderControlView extends AppCompatActivity implements OrderControlAdapter.ProductItemClickListener{
 
     public final static int ORDERCONTROLVIEW_ABORT = 1453;
     public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
@@ -41,7 +43,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
-    ProductAdapter adapter;
+    OrderControlAdapter adapter;
     private ViewController<OrderPosition> orderPositionController;
 
     @Override
@@ -60,7 +62,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
 
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(newOrderPositionUUID);
-        adapter=createAdapter(productList);
+        adapter = createAdapter(productList);
         startRecyclerView(adapter);
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -128,23 +130,23 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         }
         return productList;
     }
-    public void startRecyclerView(ProductAdapter adapter){
+    public void startRecyclerView(OrderControlAdapter adapter){
         orderControlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderControlRecyclerView.setAdapter(adapter);
         orderControlRecyclerView.setHasFixedSize(true);
     }
-    public ProductAdapter createAdapter(List<Product> productList){
-        adapter = new ProductAdapter(productList, this);
+    public OrderControlAdapter createAdapter(List<Product> productList){
+        adapter = new OrderControlAdapter(productList, this);
         return adapter;
     }
 
     @Override
     public void onClick(Product product) {
-        //ignore click
+        newOrderPositionUUID.add(product.getUuid().toString());
     }
 
     @Override
     public void onDelete(Product product) {
-
+        newOrderPositionUUID.remove(product.getUuid().toString());
     }
 }

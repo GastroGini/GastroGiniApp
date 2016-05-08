@@ -76,10 +76,12 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         if(requestCode == NEWORDERVIEW_REQUESTCODE){
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_ABORT){
                 Log.d("NewOrderView", "Order was aborted");
+                adapter.notifyDataSetChanged();
             }
 
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_CONFIRM){
                 Log.d("NewOrderView", "Order was confirmed");
+                setResult(RESULT_OK);
                 finish();
             }
         }

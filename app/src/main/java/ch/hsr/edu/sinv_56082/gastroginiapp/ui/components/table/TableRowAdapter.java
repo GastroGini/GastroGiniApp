@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,6 +40,13 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         TextView name = (TextView) tableOrderItemView.findViewById(R.id.product_item_name);
         TextView size = (TextView) tableOrderItemView.findViewById(R.id.product_item_size);
         TextView price = (TextView) tableOrderItemView.findViewById(R.id.product_item_price);
+        ImageView subtractAmount = (ImageView) tableOrderItemView.findViewById(R.id.subtractAmount);
+        TextView amountCounter = (TextView) tableOrderItemView.findViewById(R.id.amountCounter);
+        ImageView addAmount = (ImageView) tableOrderItemView.findViewById(R.id.addAmount);
+
+        subtractAmount.setVisibility(View.GONE);
+        amountCounter.setVisibility(View.GONE);
+        addAmount.setVisibility(View.GONE);
 
 
         TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price);
