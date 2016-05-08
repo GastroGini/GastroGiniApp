@@ -12,7 +12,7 @@
         android:name="android.permission.INTERNET"
         android:required="true" />
 
-    <context
+    <application
         android:name=".controllers.app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -81,18 +81,18 @@
             android:label="@string/title_activity_table_order_view"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.activities.order.ServiceHome"/>
-<!--        <activity
-            android:name=".ui.activities.menu.MenuCardView.MenuCardView"
-            android:label="@string/title_activity_menucard_view"
-            android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--        <activity
+                    android:name=".ui.activities.menu.MenuCardView.MenuCardView"
+                    android:label="@string/title_activity_menucard_view"
+                    android:theme="@style/AppTheme.NoActionBar" />-->
         <activity
             android:name=".ui.activities.event.EventStaticViewActivity"
             android:label="@string/title_activity_event_static_view"
             android:theme="@style/AppTheme.NoActionBar" />
-<!--        <activity
-            android:name=".ui.activities.menu.MenuCardView.EditMenuEntity"
-            android:label="@string/title_activity_editMenuItem"
-            android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--        <activity
+                    android:name=".ui.activities.menu.MenuCardView.EditMenuEntity"
+                    android:label="@string/title_activity_editMenuItem"
+                    android:theme="@style/AppTheme.NoActionBar" />-->
         <activity
             android:name=".ui.activities.menu.ProductListActivity"
             android:label="@string/title_activity_product_list"
@@ -128,6 +128,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.NewOrderView" />
         </activity>
-    </context>
+    </application>
 
 </manifest>
