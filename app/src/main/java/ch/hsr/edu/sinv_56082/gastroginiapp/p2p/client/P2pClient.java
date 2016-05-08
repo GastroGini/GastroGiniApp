@@ -326,7 +326,7 @@ public class P2pClient {
         connectedToServer = false;
         messageReciever.terminate();
         setInitialized(false);
-        app.p2p.disconnect(new DoNothing());
+        app.p2p.disconnect();
     }
 
 

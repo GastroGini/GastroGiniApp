@@ -46,7 +46,7 @@ public class ServerSocketHandler extends Thread {
     public void run() {
         while (running) {
             try {
-                // A blocking operation. Initiate a ChatManager instance when
+                // A blocking operation. Initiate a MessageReciever instance when
                 // there is a new connection
                 pool.execute(new MessageReciever(socket.accept(), handler, new ConnectedDevice(macAddress)));
                 Log.d(TAG, "Launching the I/O handler");

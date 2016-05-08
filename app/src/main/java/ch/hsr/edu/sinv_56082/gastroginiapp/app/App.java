@@ -40,7 +40,7 @@ public class App extends Application {
     public void onTerminate() {
         super.onTerminate();
 
-        p2p.disconnect(new DoNothing());
+        p2p.disconnect();
     }
 
     private void initLocalUser() {

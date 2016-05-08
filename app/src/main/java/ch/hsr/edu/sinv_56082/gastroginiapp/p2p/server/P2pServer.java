@@ -152,7 +152,7 @@ public class P2pServer {
             device.handler.terminate();
         }
         serverService.terminate();
-        app.p2p.disconnect(new DoNothing());
+        app.p2p.disconnect();
         removeLocalService();
     }
 }

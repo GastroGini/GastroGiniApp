@@ -8,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 
@@ -52,6 +53,10 @@ public class P2pHandler {
     public WifiP2pManager.Channel wifiP2pChannel;
 
 
+
+    public void disconnect(){
+        disconnect(new DoNothing());
+    }
 
     public void disconnect(final DoIt doIt) {
         if(!isWifiP2pEnabled()) return;
