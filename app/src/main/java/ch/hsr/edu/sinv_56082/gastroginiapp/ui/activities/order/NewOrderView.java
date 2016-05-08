@@ -119,4 +119,9 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         Log.d("NewOrderView", "product added to new order");
         newOrderPositionUUID.add(product.getUuid().toString());
     }
+
+    @Override
+    public void onDelete(Product product) {
+        newOrderPositionUUID.remove(product.getUuid().toString());
+    }
 }

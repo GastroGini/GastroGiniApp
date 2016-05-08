@@ -142,4 +142,9 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
     public void onClick(Product product) {
         //ignore click
     }
+
+    @Override
+    public void onDelete(Product product) {
+
+    }
 }

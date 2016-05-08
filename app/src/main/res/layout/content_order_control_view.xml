@@ -50,7 +50,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:padding="@dimen/linear_layout_padding"
+            android:gravity="center">
 
             <Button
                 android:layout_width="160dp"
