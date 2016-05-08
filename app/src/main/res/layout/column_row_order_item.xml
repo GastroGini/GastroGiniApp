@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/linear_layout_padding">
 
     <TextView
         android:id="@+id/product_item_name"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:text="@string/dummy_data_1"
         android:gravity="center_vertical"
-        android:paddingLeft="5dp"
         android:shadowColor="@color/background_floating_material_dark"
-        android:background="@drawable/border_style"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:layout_gravity="center"
+        android:paddingStart="@dimen/linear_layout_half_padding" />
 
     <TextView
         android:id="@+id/product_item_size"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_weight="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
         android:gravity="center"
         android:text="@string/dummy_data_2"
-        android:background="@drawable/border_style" />
+        android:textAlignment="textStart"
+        android:paddingStart="@dimen/linear_layout_half_padding" />
 
     <TextView
         android:id="@+id/product_item_price"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_weight="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="center"
         android:layout_below="@+id/textView1"
         android:layout_toRightOf="@+id/textView2"
         android:text="@string/dummy_data_3"
-        android:background="@drawable/border_style" />
+        android:textAlignment="textStart"
+        android:paddingStart="@dimen/linear_layout_half_padding" />
 
 </LinearLayout>

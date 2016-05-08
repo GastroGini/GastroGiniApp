@@ -30,6 +30,9 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
 public class OrderControlView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
 
+    public final static int ORDERCONTROLVIEW_ABORT = 1453;
+    public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
+
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderControlRecyclerView) RecyclerView orderControlRecyclerView;
     @Bind(R.id.backButton) Button backButton;
@@ -63,7 +66,8 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                setResult(ORDERCONTROLVIEW_ABORT);
+                finish();
             }
         });
 
@@ -91,12 +95,19 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
 
                 App.getApp().p2p.client.sendNew(eventOrder); // TODO Controller
 
-                setResult(RESULT_OK);
+                setResult(ORDERCONTROLVIEW_CONFIRM);
                 finish();
 
             }
         });
     }
+
+    @Override
+    public void onBackPressed(){
+        setResult(ORDERCONTROLVIEW_ABORT);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
