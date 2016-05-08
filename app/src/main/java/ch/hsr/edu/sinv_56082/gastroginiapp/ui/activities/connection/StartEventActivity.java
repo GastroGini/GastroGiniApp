@@ -11,7 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
@@ -55,7 +55,7 @@ public class StartEventActivity extends CommonActivity {
                 intent.putExtra("userName", userName);
                 intent.putExtra("eventPassword", eventPassword);
 
-                ConnectionController.instance.startServer(event);
+                ConnectionController.getInstance().startServer(event);
 
                 startActivity(intent);
             }

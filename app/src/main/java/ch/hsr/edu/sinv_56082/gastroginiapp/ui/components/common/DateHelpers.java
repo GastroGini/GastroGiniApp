@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
 
 public class DateHelpers {
     public interface Callback {

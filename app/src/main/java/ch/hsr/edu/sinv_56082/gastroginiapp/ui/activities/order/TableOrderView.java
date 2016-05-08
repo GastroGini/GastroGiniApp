@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -96,7 +96,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
-                                App.getApp().p2p.client.sendDelete(orderPositionsToDelete); // TODO Controller
+                                ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
                                 for (OrderPosition op : orderPositionsToDelete) {
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);
