@@ -8,10 +8,9 @@ import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.Controller;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
-public class ViewController<M extends UUIDModel> extends Controller {
+public class ViewController<M extends UUIDModel> {
 
 
 
