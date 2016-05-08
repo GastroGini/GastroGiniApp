@@ -1,7 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;

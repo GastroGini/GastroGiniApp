@@ -93,7 +93,7 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
 
                 Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
 
-                App.getApp().p2p.client.sendNew(eventOrder); // TODO Controller
+                App.getApp().getP2p().getClient().sendNew(eventOrder); // TODO Controller
 
                 setResult(ORDERCONTROLVIEW_CONFIRM);
                 finish();

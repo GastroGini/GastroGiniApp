@@ -9,7 +9,6 @@ import android.util.Log;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 
 public class P2pHandler {
@@ -26,13 +25,37 @@ public class P2pHandler {
     public static final int DISCONNECTED = 14534;
 
 
-    Context application;
-    public String macAddress;
-    public P2pClient client;
+
+    private final P2pHandler p2p;
+    private Context context;
+    private String macAddress;
+    private P2pClient client;
+    private boolean isWifiP2pEnabled=false;
+    private WifiP2pManager wifiP2pManager;
+    private WifiP2pManager.Channel wifiP2pChannel;
+
+    public P2pClient getClient() {
+        return client;
+    }
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public WifiP2pManager.Channel getWifiP2pChannel() {
+        return wifiP2pChannel;
+    }
+
+    public WifiP2pManager getWifiP2pManager() {
+        return wifiP2pManager;
+    }
 
 
-    public P2pHandler(final App application){
-        this.application = application;
+
+
+    public P2pHandler(final Context context){
+        this.p2p = this;
+        this.context = context;
         registerWifiP2pManager();
         if(isWifiP2pEnabled()) {
             Log.d(TAG, "P2pHandler: Disconnect all running connections from previous runs");
@@ -40,17 +63,14 @@ public class P2pHandler {
             disconnect(new DoIt() {
                 @Override
                 public void doIt() {
-                    client = new P2pClient();
+                    client = new P2pClient(p2p, context);
 
                 }
             });
         }
     }
 
-    boolean isWifiP2pEnabled=false;
 
-    public WifiP2pManager wifiP2pManager;
-    public WifiP2pManager.Channel wifiP2pChannel;
 
 
 
@@ -78,16 +98,16 @@ public class P2pHandler {
 
 
     private void registerWifiP2pManager() {
-        WifiManager manager = (WifiManager) application.getSystemService(Context.WIFI_SERVICE);
+        WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         setIsWifiP2pEnabled(manager != null);
         if (isWifiP2pEnabled()) {
             WifiInfo info = manager.getConnectionInfo();
             macAddress = info.getMacAddress();
 
-            wifiP2pManager = (WifiP2pManager) application.getSystemService(Context.WIFI_P2P_SERVICE);
+            wifiP2pManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
             setIsWifiP2pEnabled(wifiP2pManager != null);
             if (isWifiP2pEnabled()) {
-                wifiP2pChannel = wifiP2pManager.initialize(application, application.getMainLooper(), new WifiP2pManager.ChannelListener() {
+                wifiP2pChannel = wifiP2pManager.initialize(context, context.getMainLooper(), new WifiP2pManager.ChannelListener() {
                     @Override
                     public void onChannelDisconnected() {
                         Log.d(TAG, "onChannelDisconnected: Disconnected from Channel");

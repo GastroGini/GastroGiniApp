@@ -84,7 +84,7 @@ public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.O
                     });
                 }
 
-                App.getApp().p2p.client.sendPayed(opToPayList); // TODO Controller
+                App.getApp().getP2p().getClient().sendPayed(opToPayList); // TODO Controller
                 setResult(RESULT_OK);
                 finish();
             }

@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.p2p;
+package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages;
 
 public abstract class MessageObject<M> {
     public final Class<M> type;

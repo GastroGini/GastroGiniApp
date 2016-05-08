@@ -11,7 +11,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 
 public class InitialDataReader extends MessageObject<InitialDataMessage> {

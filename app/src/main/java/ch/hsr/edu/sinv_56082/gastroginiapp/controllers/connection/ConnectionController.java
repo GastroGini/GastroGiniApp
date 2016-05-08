@@ -5,17 +5,19 @@ import android.util.Log;
 import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.Controller;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.server.P2pServer;
 
 public class ConnectionController extends Controller {
+
+    private final P2pHandler p2p;
 
     enum ConnectionType {
         SERVER, CLIENT, DISCONNECTED
     }
 
-    public static ConnectionController instance = new ConnectionController();
+    public static ConnectionController instance = new ConnectionController(App.getApp().getP2p());
 
     private static final String TAG = "ConnectionController";
     public P2pServer server;
@@ -23,7 +25,7 @@ public class ConnectionController extends Controller {
     private ConnectionType connectionType;
 
     public void connectTo(ServiceResponseHolder serviceResponseHolder) {
-        App.getApp().p2p.client.connectTo(serviceResponseHolder);
+        p2p.getClient().connectTo(serviceResponseHolder);
         connectionType = ConnectionType.CLIENT;
     }
 
@@ -35,7 +37,7 @@ public class ConnectionController extends Controller {
             if (server == null) return;
             server.sendStop();
         }else if (connectionType == ConnectionType.CLIENT){
-            App.getApp().p2p.client.disconnectClient();
+            p2p.getClient().disconnectClient();
         }
         connectionType = ConnectionType.DISCONNECTED;
         connectionState = ConnectionState.DISCONNECTED;
@@ -43,7 +45,7 @@ public class ConnectionController extends Controller {
 
     private ConnectionState getConnectionState() {
         if (connectionType == ConnectionType.CLIENT){
-            return App.getApp().p2p.client.connectionState;
+            return p2p.getClient().connectionState;
         }
         if (connectionType == ConnectionType.SERVER){
             return connectionState;
@@ -52,7 +54,8 @@ public class ConnectionController extends Controller {
     }
 
 
-    private ConnectionController(){
+    private ConnectionController(P2pHandler p2p){
+        this.p2p = p2p;
         connectionType = ConnectionType.DISCONNECTED;
         connectionState = ConnectionState.DISCONNECTED;
     }
@@ -62,7 +65,7 @@ public class ConnectionController extends Controller {
             Log.d(TAG, "startServer: ");
             return;
         }
-        server = new P2pServer(event);
+        server = new P2pServer(event, p2p);
         connectionState = ConnectionState.CONNECTED;
         connectionType = ConnectionType.SERVER;
     }

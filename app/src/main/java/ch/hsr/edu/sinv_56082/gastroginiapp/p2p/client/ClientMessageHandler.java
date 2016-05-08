@@ -1,9 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionController;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.initial_data.InitialDataReader;
 

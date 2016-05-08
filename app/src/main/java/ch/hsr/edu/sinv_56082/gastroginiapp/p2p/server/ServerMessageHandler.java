@@ -6,6 +6,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -14,7 +15,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.DataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.initial_data.InitialDataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.new_event_order.NewEventOrder;
@@ -24,9 +25,11 @@ public class ServerMessageHandler extends MessageHandler {
 
 
     private final P2pServer server;
+    private final Event runningEvent;
 
-    ServerMessageHandler(P2pServer server){
+    ServerMessageHandler(P2pServer server, Event runningEvent){
         this.server = server;
+        this.runningEvent = runningEvent;
     }
 
 
@@ -35,9 +38,9 @@ public class ServerMessageHandler extends MessageHandler {
         messageHandlers.put(MessageAction.GET_INITIAL_DATA, new MessageObject<Object>(Object.class){
             @Override
             public void handleMessage(Object object, String from) {
-                List<Product> products = server.runningEvent.productList.products();
-                List<EventTable> tables = server.runningEvent.eventTables();
-                InitialDataMessage msg = new InitialDataMessage(server.runningEvent, products, tables);
+                List<Product> products = runningEvent.productList.products();
+                List<EventTable> tables = runningEvent.eventTables();
+                InitialDataMessage msg = new InitialDataMessage(runningEvent, products, tables);
                 server.sendMessage(from, new DataMessage(MessageAction.INITIAL_DATA, msg));
             }
         });

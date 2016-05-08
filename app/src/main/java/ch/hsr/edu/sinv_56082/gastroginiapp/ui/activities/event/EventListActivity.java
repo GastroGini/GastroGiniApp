@@ -33,8 +33,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
@@ -135,7 +135,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
             }
         });
 
-        foreignEventList = App.getApp().p2p.client.serviceList;
+        foreignEventList = App.getApp().getP2p().getClient().serviceList;
 
         eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
         eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -201,7 +201,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     protected void onResume() {
         super.onResume();
 
-        App.getApp().p2p.client.onInitDataSuccess = new Consumer<String>() {
+        App.getApp().getP2p().getClient().onInitDataSuccess = new Consumer<String>() {
             @Override
             public void consume(String s) {
                 Intent intent = new Intent(activity, ServiceHome.class);
@@ -218,15 +218,15 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 ((BaseAdapter) eventListForeignEventsRecyclerView.getAdapter()).notifyDataSetChanged();
             }
         };
-        App.getApp().p2p.client.addServiceResponseCallback(responseCallback); //TODO Controller
-        App.getApp().p2p.client.discoverServices();
+        App.getApp().getP2p().getClient().addServiceResponseCallback(responseCallback); //TODO Controller
+        App.getApp().getP2p().getClient().discoverServices();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        App.getApp().p2p.client.onInitDataSuccess = new ConsumerDoNothing<>();
-        App.getApp().p2p.client.removeServiceResponseCallback(responseCallback);
+        App.getApp().getP2p().getClient().onInitDataSuccess = new ConsumerDoNothing<>();
+        App.getApp().getP2p().getClient().removeServiceResponseCallback(responseCallback);
     }
 
     public static int getMyeventlistIdentifier(){

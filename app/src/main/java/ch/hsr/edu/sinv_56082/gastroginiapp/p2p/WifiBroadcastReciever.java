@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.util.Log;
 
 
 
@@ -38,12 +37,12 @@ public class WifiBroadcastReciever {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-                    if (p2pHandler.wifiP2pManager == null) return;
+                    if (p2pHandler.getWifiP2pManager() == null) return;
 
                     NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
                     if (networkInfo.isConnected()) {
-                        p2pHandler.wifiP2pManager.requestConnectionInfo(p2pHandler.wifiP2pChannel, p2pHandler.client.connectionInfoListener);
+                        p2pHandler.getWifiP2pManager().requestConnectionInfo(p2pHandler.getWifiP2pChannel(), p2pHandler.getClient().connectionInfoListener);
                     }
                 }
             }

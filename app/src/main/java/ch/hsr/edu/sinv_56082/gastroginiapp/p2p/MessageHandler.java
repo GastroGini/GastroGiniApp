@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.Serializer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageObject;
 
 public abstract class MessageHandler {
 

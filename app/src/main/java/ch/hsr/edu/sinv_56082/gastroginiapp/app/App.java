@@ -9,7 +9,6 @@ import com.activeandroid.app.Application;
 import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 
@@ -23,7 +22,11 @@ public class App extends Application {
     private SharedPrefs prefs;
 
 
-    public P2pHandler p2p;
+    private P2pHandler p2p;
+
+    public P2pHandler getP2p(){
+        return p2p;
+    }
 
 
     @Override

@@ -96,7 +96,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
-                                App.getApp().p2p.client.sendDelete(orderPositionsToDelete); // TODO Controller
+                                App.getApp().getP2p().getClient().sendDelete(orderPositionsToDelete); // TODO Controller
                                 for (OrderPosition op : orderPositionsToDelete) {
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);

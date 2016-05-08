@@ -1,6 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.p2p.client;
 
 
+import android.content.Context;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -23,8 +24,6 @@ import java.util.UUID;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.serialization.Serializer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
@@ -33,7 +32,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectionMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.MessageReciever;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ServiceResponseHolder;
@@ -47,8 +46,8 @@ public class P2pClient {
 
 
     private static final String TAG = "P2pClient";
-    private final App app;
     private final ClientMessageHandler messageHandler;
+    private final P2pHandler p2p;
 
     public ConnectionState connectionState;
     private String currentServerAddress;
@@ -57,9 +56,8 @@ public class P2pClient {
     private boolean initialized;
 
 
-    public P2pClient(){
-        this.app = App.getApp();
-
+    public P2pClient(P2pHandler p2p, Context context){
+        this.p2p = p2p;
         serviceList = new ArrayList<>();
 
         messageHandler = new ClientMessageHandler(this);
@@ -71,7 +69,7 @@ public class P2pClient {
         registerConnectionInfoListener();
         registerMessageReciever();
 
-        new WifiBroadcastReciever(app.p2p, app);
+        new WifiBroadcastReciever(p2p, context);
 
     }
 
@@ -97,10 +95,10 @@ public class P2pClient {
 
 
     public void discoverServices(){
-        if (!app.p2p.isWifiP2pEnabled())return;
+        if (!p2p.isWifiP2pEnabled())return;
 
         WifiP2pDnsSdServiceRequest wifiP2pServiceRequest = WifiP2pDnsSdServiceRequest.newInstance();
-        app.p2p.wifiP2pManager.addServiceRequest(app.p2p.wifiP2pChannel, wifiP2pServiceRequest, new WifiP2pManager.ActionListener() {
+        p2p.getWifiP2pManager().addServiceRequest(p2p.getWifiP2pChannel(), wifiP2pServiceRequest, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "onSuccess: added Service Request");
@@ -111,7 +109,7 @@ public class P2pClient {
                 Log.d(TAG, "onFailure: failled to add service req");
             }
         });
-        app.p2p.wifiP2pManager.discoverServices(app.p2p.wifiP2pChannel, new WifiP2pManager.ActionListener() {
+        p2p.getWifiP2pManager().discoverServices(p2p.getWifiP2pChannel(), new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "onSuccess: started service discovery");
@@ -130,17 +128,17 @@ public class P2pClient {
 
 
     private void registerServiceDiscovery() {
-        if (!app.p2p.isWifiP2pEnabled())return;
+        if (!p2p.isWifiP2pEnabled())return;
 
         Log.d(TAG, "registerServiceDiscovery: registering discovery listeners");
 
-        app.p2p.wifiP2pManager.setDnsSdResponseListeners(app.p2p.wifiP2pChannel,
+        p2p.getWifiP2pManager().setDnsSdResponseListeners(p2p.getWifiP2pChannel(),
                 new WifiP2pManager.DnsSdServiceResponseListener() {
 
                     @Override
                     public void onDnsSdServiceAvailable(String instanceName,
                                                         String registrationType, final WifiP2pDevice srcDevice) {
-                        Log.d(TAG, "onDnsSdServiceAvailable: "+instanceName+"--"+registrationType);
+                        Log.d(TAG, "onDnsSdServiceAvailable: " + instanceName + "--" + registrationType);
                         if (instanceName.startsWith(P2pHandler.SERVICE_INSTANCE)) {
                             serviceVisible.put(srcDevice.deviceAddress, instanceName.replace(P2pHandler.SERVICE_INSTANCE, ""));
                             onService(srcDevice);
@@ -153,10 +151,10 @@ public class P2pClient {
                             String fullDomainName, Map<String, String> record,
                             WifiP2pDevice device) {
                         Log.d("TEST",
-                                device.deviceName + " is "+ record.get(P2pHandler.TXTRECORD_PROP_AVAILABLE));
+                                device.deviceName + " is " + record.get(P2pHandler.TXTRECORD_PROP_AVAILABLE));
 
-                        if(record.containsKey(P2pHandler.EVENT_INFO +"name")){
-                            TransferEvent ev = new TransferEvent(UUID.fromString(record.get(P2pHandler.EVENT_INFO + "uuid")),record.get(P2pHandler.EVENT_INFO +"name"), new Date());
+                        if (record.containsKey(P2pHandler.EVENT_INFO + "name")) {
+                            TransferEvent ev = new TransferEvent(UUID.fromString(record.get(P2pHandler.EVENT_INFO + "uuid")), record.get(P2pHandler.EVENT_INFO + "name"), new Date());
                             String txt = new Gson().toJson(ev);
 
                             serviceInfo.put(device.deviceAddress, txt);
@@ -197,14 +195,14 @@ public class P2pClient {
 
 
     public void connectTo(final ServiceResponseHolder holder){
-        if (!app.p2p.isWifiP2pEnabled()) return;
-        //app.p2p.disconnect(new DoNothing());
-        //app.p2p.wifiP2pManager.cancelConnect(app.p2p.wifiP2pChannel, null);
+        if (!p2p.isWifiP2pEnabled()) return;
+        //p2p.disconnect(new DoNothing());
+        //p2p.getWifiP2pManager().cancelConnect(p2p.getWifiP2pChannel(), null);
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = holder.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
         config.groupOwnerIntent = 2;
-        app.p2p.wifiP2pManager.connect(app.p2p.wifiP2pChannel, config, new WifiP2pManager.ActionListener() {
+        p2p.getWifiP2pManager().connect(p2p.getWifiP2pChannel(), config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 currentServerAddress = holder.device.deviceAddress;
@@ -230,7 +228,7 @@ public class P2pClient {
                 if (!info.isGroupOwner) {
                     Log.d(TAG, "onConnectionInfoAvailable: starting Client");
                     if(info.groupOwnerAddress != null) {
-                        new ClientSocketHandler(reciever, info.groupOwnerAddress, new ConnectedDevice(app.p2p.macAddress)).start();
+                        new ClientSocketHandler(reciever, info.groupOwnerAddress, new ConnectedDevice(p2p.getMacAddress())).start();
                     }
                 }
             }
@@ -326,7 +324,7 @@ public class P2pClient {
         connectedToServer = false;
         messageReciever.terminate();
         setInitialized(false);
-        app.p2p.disconnect();
+        p2p.disconnect();
     }
 
 

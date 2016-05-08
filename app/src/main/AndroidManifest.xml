@@ -12,7 +12,7 @@
         android:name="android.permission.INTERNET"
         android:required="true" />
 
-    <application
+    <context
         android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -128,6 +128,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.NewOrderView" />
         </activity>
-    </application>
+    </context>
 
 </manifest>

@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.connection.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.ConnectedDevice;
@@ -26,7 +24,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.p2p.messages.MessageAction;
 public class P2pServer {
 
     private static final String TAG = "SERVER::";
-    private final App app;
+    private final P2pHandler p2p;
     private ServerSocketHandler serverService;
     protected Event runningEvent;
     private Handler handler;
@@ -35,18 +33,18 @@ public class P2pServer {
     protected Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
     private final ServerMessageHandler messageHandler;
 
-    public P2pServer(Event event){
+    public P2pServer(Event event, P2pHandler p2p){
+        this.p2p = p2p;
         TransferEvent dto = new TransferEvent(event.getUuid(), event.name, event.startTime);
-        app = App.getApp();
         runningEvent = event;
 
         initGroup();
         removeLocalService();
-        messageHandler = new ServerMessageHandler(this);
+        messageHandler = new ServerMessageHandler(this, runningEvent);
         messageHandler.registerMessages();
         registerMessageHandler();
         try {
-            serverService = new ServerSocketHandler(handler, app.p2p.macAddress);
+            serverService = new ServerSocketHandler(handler, p2p.getMacAddress());
             serverService.start();
         } catch (IOException e) {
             Log.e(TAG, "P2pServer: failed to create server socket", e);
@@ -57,10 +55,10 @@ public class P2pServer {
     }
 
     public void initGroup() {
-        if(!app.p2p.isWifiP2pEnabled()) return;
-        app.p2p.wifiP2pManager.cancelConnect(app.p2p.wifiP2pChannel, null);
+        if(!p2p.isWifiP2pEnabled()) return;
+        p2p.getWifiP2pManager().cancelConnect(p2p.getWifiP2pChannel(), null);
 
-        app.p2p.wifiP2pManager.createGroup(app.p2p.wifiP2pChannel, new WifiP2pManager.ActionListener() {
+        p2p.getWifiP2pManager().createGroup(p2p.getWifiP2pChannel(), new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "onSuccess: Created Group");
@@ -100,22 +98,22 @@ public class P2pServer {
     }
 
     public void removeLocalService(){
-        if (app.p2p.isWifiP2pEnabled())
-            app.p2p.wifiP2pManager.clearLocalServices(app.p2p.wifiP2pChannel, null);
+        if (p2p.isWifiP2pEnabled())
+            p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), null);
     }
 
     public void setLocalService(final TransferEvent eventName) {
-        if (app.p2p.isWifiP2pEnabled()) {
+        if (p2p.isWifiP2pEnabled()) {
             Map<String, String> record = new HashMap<>();
             record.put(P2pHandler.TXTRECORD_PROP_AVAILABLE, "visible");
-            //record.put(app.p2p.EVENT_INFO+"name", eventName.name);
-            //record.put(app.p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
-            //record.put(app.p2p.EVENT_INFO+"date", eventName.startDate.toString());
+            //record.put(p2p.EVENT_INFO+"name", eventName.name);
+            //record.put(p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
+            //record.put(p2p.EVENT_INFO+"date", eventName.startDate.toString());
 
-            app.p2p.wifiP2pManager.clearLocalServices(app.p2p.wifiP2pChannel, null);
+            p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), null);
 
             wifiP2pService = WifiP2pDnsSdServiceInfo.newInstance(P2pHandler.SERVICE_INSTANCE + eventName.name, P2pHandler.SERVICE_REG_TYPE, record);
-            app.p2p.wifiP2pManager.addLocalService(app.p2p.wifiP2pChannel, wifiP2pService, new WifiP2pManager.ActionListener() {
+            p2p.getWifiP2pManager().addLocalService(p2p.getWifiP2pChannel(), wifiP2pService, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
                     Log.d(TAG, "onSuccess: added Local Service: " + P2pHandler.SERVICE_INSTANCE + eventName);
@@ -152,7 +150,7 @@ public class P2pServer {
             device.handler.terminate();
         }
         serverService.terminate();
-        app.p2p.disconnect();
+        p2p.disconnect();
         removeLocalService();
     }
 }
