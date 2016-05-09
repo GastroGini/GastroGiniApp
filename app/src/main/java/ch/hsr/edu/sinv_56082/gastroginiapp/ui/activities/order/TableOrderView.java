@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
@@ -35,6 +35,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
     @Bind(R.id.payButton) Button payButton;
     @Bind(R.id.deleteButton) Button deleteButton;
+    private boolean selectionStatus = false;
 
     EventTable eventTable;
     List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
@@ -63,6 +64,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         Log.d("", "tableOrderPosition: " + tableOrderPositions.toString());
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
+        FloatingActionButton fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
+
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +73,17 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivityForResult(intent, 1);
+            }
+        });
+        fab_select_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(CommonSelectable<OrderPosition> position : tableOrderPositions){
+                    position.setSelected(!selectionStatus);
+                }
+                selectionStatus = !selectionStatus;
+                adapter.notifyDataSetChanged();
+                Log.d("TableOrderView:", "Select all clicked");
             }
         });
 
@@ -96,7 +110,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
-                                App.getApp().p2p.client.sendDelete(orderPositionsToDelete); // TODO Controller
+                                ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
                                 for (OrderPosition op : orderPositionsToDelete) {
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
                                     deleteOrderPosition(op);

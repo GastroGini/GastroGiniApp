@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
@@ -32,6 +33,7 @@ public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.O
     @Bind(R.id.proceedButton) Button proceedButton;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderPayRecyclerView) RecyclerView orderPayRecyclerView;
+    @Bind(R.id.order_pay_subtotal) TextView subtotalField;
     AppCompatActivity activity;
 
     EventTable eventTable;
@@ -57,8 +59,9 @@ public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.O
         for(String opUUID : test){
             opToPayList.add(orderPositionController.get(UUID.fromString(opUUID)));
         }
-        Log.d("ADSF", "onCreate: "+test);
+        Log.d("ADSF", "onCreate: " + test);
 
+        subtotalField.setText("Subtotal: " + calculateSubtotal(opToPayList));
         OrderPayAdapter adapter = new OrderPayAdapter(opToPayList, this);
         orderPayRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderPayRecyclerView.setAdapter(adapter);
@@ -84,12 +87,21 @@ public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.O
                     });
                 }
 
-                App.getApp().p2p.client.sendPayed(opToPayList); // TODO Controller
+                ConnectionController.getInstance().sendPayed(opToPayList); // TODO Controller
                 setResult(RESULT_OK);
                 finish();
             }
         });
     }
+
+    private String calculateSubtotal(List<OrderPosition> opToPayList) {
+        double sum = 0;
+        for(OrderPosition orderPosition : opToPayList){
+            sum += orderPosition.product.price;
+        }
+        return sum + "";
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

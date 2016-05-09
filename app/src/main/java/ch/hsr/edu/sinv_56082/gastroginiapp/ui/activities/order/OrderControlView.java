@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
@@ -26,19 +27,25 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
-public class OrderControlView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
+public class OrderControlView extends AppCompatActivity implements OrderControlAdapter.ProductItemClickListener{
+
+    public final static int ORDERCONTROLVIEW_ABORT = 1453;
+    public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderControlRecyclerView) RecyclerView orderControlRecyclerView;
     @Bind(R.id.backButton) Button backButton;
     @Bind(R.id.finishButton) Button finishButton;
+    @Bind(R.id.order_control_subtotal) TextView subTotal;
 
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
-    ProductAdapter adapter;
+    OrderControlAdapter adapter;
     private ViewController<OrderPosition> orderPositionController;
 
     @Override
@@ -57,13 +64,16 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
 
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(newOrderPositionUUID);
-        adapter=createAdapter(productList);
+        adapter = createAdapter(productList);
         startRecyclerView(adapter);
+
+        subTotal.setText("Zwischensumme: " + calculateSubTotal(productList));
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                setResult(ORDERCONTROLVIEW_ABORT);
+                finish();
             }
         });
 
@@ -89,14 +99,29 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
 
                 Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
 
-                App.getApp().p2p.client.sendNew(eventOrder); // TODO Controller
+                ConnectionController.getInstance().sendNew(eventOrder); // TODO Controller
 
-                setResult(RESULT_OK);
+                setResult(ORDERCONTROLVIEW_CONFIRM);
                 finish();
 
             }
         });
     }
+
+    private String calculateSubTotal(List<Product> productList) {
+        double sum = 0;
+        for(Product item : productList){
+            sum += item.price;
+        }
+        return sum + "";
+    }
+
+    @Override
+    public void onBackPressed(){
+        setResult(ORDERCONTROLVIEW_ABORT);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -117,18 +142,23 @@ public class OrderControlView extends AppCompatActivity implements ProductAdapte
         }
         return productList;
     }
-    public void startRecyclerView(ProductAdapter adapter){
+    public void startRecyclerView(OrderControlAdapter adapter){
         orderControlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderControlRecyclerView.setAdapter(adapter);
         orderControlRecyclerView.setHasFixedSize(true);
     }
-    public ProductAdapter createAdapter(List<Product> productList){
-        adapter = new ProductAdapter(productList, this);
+    public OrderControlAdapter createAdapter(List<Product> productList){
+        adapter = new OrderControlAdapter(productList, this);
         return adapter;
     }
 
     @Override
     public void onClick(Product product) {
-        //ignore click
+        newOrderPositionUUID.add(product.getUuid().toString());
+    }
+
+    @Override
+    public void onDelete(Product product) {
+        newOrderPositionUUID.remove(product.getUuid().toString());
     }
 }

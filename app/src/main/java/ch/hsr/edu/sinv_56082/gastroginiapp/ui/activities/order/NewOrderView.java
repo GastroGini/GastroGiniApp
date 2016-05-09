@@ -23,7 +23,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
 public class NewOrderView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
-
+    private final int NEWORDERVIEW_REQUESTCODE = 1989;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.newOrderRecyclerView) RecyclerView newOrderRecyclerView;
     @Bind(R.id.cancelButton) Button cancelButton;
@@ -65,10 +65,27 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
                 Intent intent = new Intent(activity, OrderControlView.class);
                 intent.putStringArrayListExtra("newOrderPositionsUUID", newOrderPositionUUID);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, NEWORDERVIEW_REQUESTCODE);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == NEWORDERVIEW_REQUESTCODE){
+            if(resultCode == OrderControlView.ORDERCONTROLVIEW_ABORT){
+                Log.d("NewOrderView", "Order was aborted");
+                adapter.notifyDataSetChanged();
+            }
+
+            if(resultCode == OrderControlView.ORDERCONTROLVIEW_CONFIRM){
+                Log.d("NewOrderView", "Order was confirmed");
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
+
     }
 
     @Override
@@ -103,5 +120,10 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
     public void onClick(Product product) {
         Log.d("NewOrderView", "product added to new order");
         newOrderPositionUUID.add(product.getUuid().toString());
+    }
+
+    @Override
+    public void onDelete(Product product) {
+        newOrderPositionUUID.remove(product.getUuid().toString());
     }
 }

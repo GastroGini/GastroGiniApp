@@ -60,7 +60,7 @@ public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends Recy
         if (listener != null){
             // instanceof test because of the nested RecyclerView
             //in ProductDescriptionListActivity, needs to be "let through"
-            if(!(listener instanceof ProductDescriptionListActivity)){
+            if(!(listener instanceof ProductDescriptionListActivity)){ 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
