@@ -12,7 +12,7 @@
         android:paddingRight="@dimen/linear_layout_padding">
         <TextView
             android:id="@+id/product_item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/dummy_data_1"
             android:layout_weight="10"
@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/product_item_size"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="10"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/product_item_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="10"
@@ -42,7 +42,7 @@
             android:layout_gravity="center" />
 
         <Space
-            android:layout_width="20px"
+            android:layout_width="0dp"
             android:layout_height="20px"
             android:layout_weight="1" />
 
@@ -50,7 +50,8 @@
             android:layout_weight="1"
             android:layout_width="16dp"
             android:layout_height="wrap_content"
-            android:id="@+id/subtractAmount" />
+            android:id="@+id/subtractAmount"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:id="@+id/addAmount"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center" />
 
     </TableRow>
 
