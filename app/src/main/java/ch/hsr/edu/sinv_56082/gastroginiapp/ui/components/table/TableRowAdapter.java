@@ -1,10 +1,12 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,9 +41,16 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         TextView name = (TextView) tableOrderItemView.findViewById(R.id.product_item_name);
         TextView size = (TextView) tableOrderItemView.findViewById(R.id.product_item_size);
         TextView price = (TextView) tableOrderItemView.findViewById(R.id.product_item_price);
+        ImageView subtractAmount = (ImageView) tableOrderItemView.findViewById(R.id.subtractAmount);
+        TextView amountCounter = (TextView) tableOrderItemView.findViewById(R.id.amountCounter);
+        ImageView addAmount = (ImageView) tableOrderItemView.findViewById(R.id.addAmount);
+
+        subtractAmount.setVisibility(View.GONE);
+        amountCounter.setVisibility(View.GONE);
+        addAmount.setVisibility(View.GONE);
 
 
-        TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price);
+        TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price,amountCounter);
         return etvh;
     }
 
@@ -49,9 +58,17 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
         final CommonSelectable<OrderPosition> selectable = orderItems.get(position);
 
+        if(selectable.isSelected()){
+            holder.getEventTablesView().setBackgroundColor(Color.LTGRAY);
+        }else{
+            holder.getEventTablesView().setBackgroundColor(Color.WHITE);
+        }
+
         holder.getNameTextView().setText(selectable.getItem().product.productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().product.volume);
         holder.getPriceTextView().setText(selectable.getItem().product.price + "");
+
+
 
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override

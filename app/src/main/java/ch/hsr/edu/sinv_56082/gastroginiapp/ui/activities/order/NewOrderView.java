@@ -76,10 +76,12 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         if(requestCode == NEWORDERVIEW_REQUESTCODE){
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_ABORT){
                 Log.d("NewOrderView", "Order was aborted");
+                adapter.notifyDataSetChanged();
             }
 
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_CONFIRM){
                 Log.d("NewOrderView", "Order was confirmed");
+                setResult(RESULT_OK);
                 finish();
             }
         }
@@ -118,5 +120,10 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
     public void onClick(Product product) {
         Log.d("NewOrderView", "product added to new order");
         newOrderPositionUUID.add(product.getUuid().toString());
+    }
+
+    @Override
+    public void onDelete(Product product) {
+        newOrderPositionUUID.remove(product.getUuid().toString());
     }
 }
