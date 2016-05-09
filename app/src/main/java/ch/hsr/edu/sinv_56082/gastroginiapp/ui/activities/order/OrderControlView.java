@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,7 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
     @Bind(R.id.orderControlRecyclerView) RecyclerView orderControlRecyclerView;
     @Bind(R.id.backButton) Button backButton;
     @Bind(R.id.finishButton) Button finishButton;
+    @Bind(R.id.order_control_subtotal) TextView subTotal;
 
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
@@ -64,6 +66,8 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
         productList=loadProducts(newOrderPositionUUID);
         adapter = createAdapter(productList);
         startRecyclerView(adapter);
+
+        subTotal.setText("Zwischensumme: " + calculateSubTotal(productList));
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +106,14 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
 
             }
         });
+    }
+
+    private String calculateSubTotal(List<Product> productList) {
+        double sum = 0;
+        for(Product item : productList){
+            sum += item.price;
+        }
+        return sum + "";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
         addAmount.setVisibility(View.GONE);
 
 
-        TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price);
+        TableRowViewHolder etvh = new TableRowViewHolder(tableOrderItemView, name, size, price,amountCounter);
         return etvh;
     }
 
@@ -57,9 +58,17 @@ public class TableRowAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
         final CommonSelectable<OrderPosition> selectable = orderItems.get(position);
 
+        if(selectable.isSelected()){
+            holder.getEventTablesView().setBackgroundColor(Color.LTGRAY);
+        }else{
+            holder.getEventTablesView().setBackgroundColor(Color.WHITE);
+        }
+
         holder.getNameTextView().setText(selectable.getItem().product.productDescription.name);
         holder.getSizeTextView().setText(selectable.getItem().product.volume);
         holder.getPriceTextView().setText(selectable.getItem().product.price + "");
+
+
 
         holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
             @Override

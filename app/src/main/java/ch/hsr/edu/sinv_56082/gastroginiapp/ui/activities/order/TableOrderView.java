@@ -35,6 +35,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
     @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
     @Bind(R.id.payButton) Button payButton;
     @Bind(R.id.deleteButton) Button deleteButton;
+    private boolean selectionStatus = false;
 
     EventTable eventTable;
     List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
@@ -63,6 +64,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         Log.d("", "tableOrderPosition: " + tableOrderPositions.toString());
 
         FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
+        FloatingActionButton fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
+
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +73,17 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                 Intent intent = new Intent(activity, NewOrderView.class);
                 intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                 startActivityForResult(intent, 1);
+            }
+        });
+        fab_select_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(CommonSelectable<OrderPosition> position : tableOrderPositions){
+                    position.setSelected(!selectionStatus);
+                }
+                selectionStatus = !selectionStatus;
+                adapter.notifyDataSetChanged();
+                Log.d("TableOrderView:", "Select all clicked");
             }
         });
 
