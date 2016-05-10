@@ -11,7 +11,7 @@
     <string name="title_activity_bestellen">Bestellen</string>
     <string name="title_activity_fest_waehlen">Fest wählen</string>
     <string name="title_activity_verbinden">Verbinden</string>
-    <string name="title_activity_fest_bearbeiten">FestBearbeiten</string>
+    <string name="title_activity_fest_bearbeiten">Fest bearbeiten</string>
     <string-array name="produktList_array">
         <item>ProduktListe 1</item>
         <item>ProduktListe 2</item>
@@ -26,28 +26,28 @@
     <string name="produkt">Produkt</string>
     <string name="anzahl">Anzahl</string>
     <string name="title_activity_home_screen">Startbildschirm</string>
-    <string name="title_activity_event_list">Feste Listen</string>
+    <string name="title_activity_event_list">Feste Übersicht</string>
     <string name="title_activity_event_view">Fest View</string>
     <string name="title_activity_start_event">Start Fest </string>
     <string name="title_activity_join_event">Join Fest </string>
-    <string name="title_activity_menu_main">Haupt Menu</string>
+    <string name="title_activity_menu_main">Menükarte und Produkte</string>
     <string name="STATE_OPEN">Offnen</string>
     <string name="STATE_PAYED">Bezahlt</string>
 
 
     <!-- MenuMain -->
-    <string name="menu_main_menuMapButtonText">Menukarte</string>
+    <string name="menu_main_menuMapButtonText">Menükarte</string>
     <string name="menu_main_productsButtonText">Produkte</string>
-    <string name="title_activity_menucard_list_view">Menukarte List </string>
-    <string name="title_activity_menucard_view">Menukard </string>
+    <string name="title_activity_menucard_list_view">Menükarten </string>
+    <string name="title_activity_menucard_view">Menükarte </string>
     <string name="title_activity_editMenuItem">Bearbeiten</string>
     <string name="title_activity_service_home">Service</string>
     <string name="title_activity_table_order_view">Tisch Bestellung</string>
     <string name="title_activity_order_pay_view">Bezahlen</string>
     <string name="title_activity_new_order_view">Neue Bestellung</string>
-    <string name="title_activity_order_control_view">Auftrag Ansicht</string>
-    <string name="title_activity_product_description_list">Produktbeschreibung List</string>
-    <string name="title_activity_menu_product_description_edit">Produktbeschreibung Bearbeiten
+    <string name="title_activity_order_control_view">Zusammenfassung</string>
+    <string name="title_activity_product_description_list">Produkte</string>
+    <string name="title_activity_menu_product_description_edit">Produkt bearbeiten
     </string>
 
     <string name="android_studio">Android Studio</string>
@@ -104,21 +104,21 @@
     -->
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
-    <string name="back">Zuruck</string>
-    <string name="title_activity_product_description_view">Product Description</string>
+    <string name="back">Zurück</string>
+    <string name="title_activity_product_description_view">Produktbeschreibung</string>
     <string name="description">Beschreibung</string>
     <string name="string_name">Name</string>
-    <string name="title_activity_menu_product_edit">Menu Product Edit</string>
-    <string name="date_format">dd.MM.yyyy H:s</string>
+    <string name="title_activity_menu_product_edit">Menüposition bearbeiten</string>
+    <string name="date_format">dd.MM.yyyy H:m</string>
     <string name="eventDate">Ausführungsdatum</string>
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
     <string name="title_activity_event_static_view">Fest Static</string>
-    <string name="title_activity_product_list">Produkt List</string>
+    <string name="title_activity_product_list">Produktübersicht</string>
     <string name="string_volume">Menge</string>
     <string name="string_price">Preis</string>
     <string name="string_product_name">Name</string>
-    <string name="title_activity_product_list_list_edit_view">Produkt Liste Bearbeiten</string>
-    <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet, und kann deshalb nicht gelöscht werden</string>
+    <string name="title_activity_product_list_list_edit_view">Menüpunkt hinzufügen</string>
+    <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet und kann deshalb nicht gelöscht werden</string>
     <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
 </resources>
