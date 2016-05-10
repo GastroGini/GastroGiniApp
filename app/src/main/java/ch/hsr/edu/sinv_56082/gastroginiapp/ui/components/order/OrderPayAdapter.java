@@ -9,16 +9,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowViewHolder;
 
 public class OrderPayAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
-
+    private OrderItemClickListener listener;
+    private Map<Product,List<Product>> mappedProducts = new HashMap();
+    private List<CommonSelectable<Product>> productList = new ArrayList<>();
     public interface OrderItemClickListener {
         void onClick(OrderPosition orderPosition);
     }
@@ -27,8 +31,25 @@ public class OrderPayAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     public OrderPayAdapter(List<OrderPosition> orderItems, OrderItemClickListener listener){
         adapter = this;
-        OrderItemClickListener listener1 = listener;
+         this.listener = listener;
+        createOrderPositionMap(orderItems,mappedProducts);
+        Iterator<Product> iterator = mappedProducts.keySet().iterator();
+        while(iterator.hasNext()){
+            productList.add(new CommonSelectable<>(iterator.next()));
+        }
         this.orderItems=orderItems;
+    }
+
+    private void createOrderPositionMap(List<OrderPosition> orderItems, Map<Product, List<Product>> mappedOrderPositions) {
+        for(OrderPosition orderPosition : orderItems){
+            Product item = orderPosition.product;
+            if(!mappedProducts.containsKey(item)){
+                mappedProducts.put(item,new ArrayList<Product>());
+                mappedProducts.get(item).add(item);
+            }else{
+                mappedProducts.get(item).add(item);
+            }
+        }
     }
 
     @Override
@@ -45,17 +66,17 @@ public class OrderPayAdapter extends RecyclerView.Adapter<TableRowViewHolder> {
 
     @Override
     public void onBindViewHolder(TableRowViewHolder holder, int position) {
-        final OrderPosition selectable = orderItems.get(position);
+        final CommonSelectable<Product> selectable = productList.get(position);
 
-        holder.getNameTextView().setText(selectable.product.productDescription.name);
-        holder.getSizeTextView().setText(selectable.product.volume);
-        holder.getPriceTextView().setText(selectable.product.price + "");
-        holder.getAmountCounterView().setText("1");
-        Log.d("OrderPayAdapter", selectable.orderState.name);
+        holder.getNameTextView().setText(selectable.getItem().productDescription.name);
+        holder.getSizeTextView().setText(selectable.getItem().volume);
+        holder.getPriceTextView().setText(selectable.getItem().price + "");
+        holder.getAmountCounterView().setText(mappedProducts.get(selectable.getItem()).size()+"");
+        Log.d("OrderPayAdapter", selectable.getItem().productDescription.name);
     }
 
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return productList.size();
     }
 }
