@@ -109,7 +109,7 @@
     <string name="description">Beschreibung</string>
     <string name="string_name">Name</string>
     <string name="title_activity_menu_product_edit">Menüposition bearbeiten</string>
-    <string name="date_format">dd.MM.yyyy H:m</string>
+    <string name="date_format">dd.MM.yyyy HH:mm</string>
     <string name="eventDate">Ausführungsdatum</string>
     <string name="eventProductList">Produktliste</string>
     <string name="number_of_tables">Anzahl Tische</string>
