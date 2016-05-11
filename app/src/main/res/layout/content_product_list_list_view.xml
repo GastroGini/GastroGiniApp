@@ -40,7 +40,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:id="@+id/EditMenuCardList"
-            android:src="@android:drawable/ic_menu_edit"
+            android:src="@android:drawable/ic_menu_delete"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
             android:tint="@color/colorIconLight"
