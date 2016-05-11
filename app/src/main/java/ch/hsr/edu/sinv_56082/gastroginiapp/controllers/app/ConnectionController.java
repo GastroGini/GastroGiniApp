@@ -14,7 +14,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ServiceResponseHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
 
 public class ConnectionController {

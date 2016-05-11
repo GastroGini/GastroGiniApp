@@ -10,7 +10,6 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -36,7 +35,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageReciever;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
@@ -186,8 +184,6 @@ public class P2pClient {
         p2p.getWifiP2pManager().connect(p2p.getWifiP2pChannel(), config, null);
     }
 
-
-
     private void registerConnectionInfoListener() {
         connectionInfoListener = new WifiP2pManager.ConnectionInfoListener() {
 
@@ -201,8 +197,6 @@ public class P2pClient {
             }
         };
     }
-
-    private Map<String, MessageObject> messageHandlers;
 
     private void registerMessageReciever() {
         reciever = new Handler(new Handler.Callback() {
@@ -218,7 +212,7 @@ public class P2pClient {
                     return true;
                 }else if (P2pHandler.RECIEVED_MESSAGE == msg.what){
                     ConnectionMessage message = (ConnectionMessage) msg.obj;
-                    messageHandler.handleMessages(message);
+                    handleMessages(message);
                     return true;
                 } else if (P2pHandler.DISCONNECTED == msg.what) {
                     connectionState = ConnectionState.RECONNECTING;
@@ -230,14 +224,15 @@ public class P2pClient {
         });
     }
 
+    void handleMessages(ConnectionMessage message){
+        messageHandler.handleMessages(message);
+    }
+
+
     private void sendMessage(DataMessage message){
         if (messageReciever == null) return;
         messageReciever.write(new Gson().toJson(message));
     }
-
-
-
-
 
     public void sendNew(EventOrder order){
         if (!isInitialized()) return;
@@ -289,7 +284,6 @@ public class P2pClient {
         setInitialized(false);
         p2p.disconnect();
     }
-
 
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
