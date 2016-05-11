@@ -64,10 +64,9 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
 
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(newOrderPositionUUID);
+        updateSubTotalField();
         adapter = createAdapter(productList);
         startRecyclerView(adapter);
-
-        subTotal.setText("Zwischensumme: " + calculateSubTotal(productList));
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +115,10 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
         return sum + "";
     }
 
+    public void updateSubTotalField(){
+        subTotal.setText("Zwischensumme: " + calculateSubTotal(productList));
+    }
+
     @Override
     public void onBackPressed(){
         setResult(ORDERCONTROLVIEW_ABORT);
@@ -155,10 +158,12 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
     @Override
     public void onClick(Product product) {
         newOrderPositionUUID.add(product.getUuid().toString());
+        productList.add(product);
     }
 
     @Override
     public void onDelete(Product product) {
         newOrderPositionUUID.remove(product.getUuid().toString());
+        productList.remove(product);
     }
 }

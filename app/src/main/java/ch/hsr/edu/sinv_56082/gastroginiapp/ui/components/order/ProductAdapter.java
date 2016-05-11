@@ -21,7 +21,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private ProductItemClickListener listener;
-    Map<Product,List<Product>> mappedProducts = new HashMap<>();
+    Map<Product,List<Product>> mappedProducts;
 
     public interface ProductItemClickListener {
         void onClick(Product product);
@@ -33,8 +33,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
     public ProductAdapter(List<Product> orderItems, ProductItemClickListener listener){
         adapter = this;
-        this.orderItems = new ArrayList<>();
         this.listener = listener;
+        setOrUpdateContainers(orderItems);
+    }
+
+    private void setOrUpdateContainers(List<Product> orderItems) {
+        mappedProducts = new HashMap<>();
+        this.orderItems = new ArrayList<>();
         createProductMap(orderItems, mappedProducts);
         for (Product pos: orderItems){
             this.orderItems.add(new CommonSelectable<>(pos));
@@ -71,7 +76,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, int position) {
-        final CommonSelectable<Product> selectable = orderItems.get(position);
+        final CommonSelectable<Product> selectable = this.orderItems.get(position);
         Product item  =   selectable.getItem();
 
         String name =  (item != null && item.productDescription != null && item.productDescription.name != null)
@@ -116,6 +121,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     }
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return this.orderItems.size();
     }
 }

@@ -70,13 +70,19 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         });
     }
 
+    public List<Product> reloadProducts (ArrayList<String> newOrderPositionUUID){
+        for(String product : newOrderPositionUUID){
+            productList.add(new ViewController<>(Product.class).get(product));
+        }
+        return productList;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == NEWORDERVIEW_REQUESTCODE){
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_ABORT){
                 Log.d("NewOrderView", "Order was aborted");
-                adapter.notifyDataSetChanged();
             }
 
             if(resultCode == OrderControlView.ORDERCONTROLVIEW_CONFIRM){

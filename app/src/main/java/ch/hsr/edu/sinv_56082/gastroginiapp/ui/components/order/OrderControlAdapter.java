@@ -16,6 +16,7 @@ import java.util.Map;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.OrderControlView;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 
 
@@ -86,6 +87,7 @@ public class OrderControlAdapter extends RecyclerView.Adapter<ProductViewHolder>
                 holder.increaseCount();
                 holder.getAmountCounterView().setText(holder.getCount() + "");
                 listener.onClick(selectable.getItem());
+                ((OrderControlView)listener).updateSubTotalField();
             }
         });
         holder.getAmountCounterView().setText(holder.getCount()+"");
@@ -96,6 +98,7 @@ public class OrderControlAdapter extends RecyclerView.Adapter<ProductViewHolder>
                 holder.decreaseCount();
                 holder.getAmountCounterView().setText(holder.getCount() + "");
                 listener.onDelete(selectable.getItem());
+                ((OrderControlView)listener).updateSubTotalField();
             }
         });
 
@@ -105,6 +108,7 @@ public class OrderControlAdapter extends RecyclerView.Adapter<ProductViewHolder>
                 holder.increaseCount();
                 holder.getAmountCounterView().setText(holder.getCount() + "");
                 listener.onClick(selectable.getItem());
+                ((OrderControlView)listener).updateSubTotalField();
             }
         });
     }
