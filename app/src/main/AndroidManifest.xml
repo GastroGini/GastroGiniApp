@@ -136,6 +136,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
         </activity>
+        //test
         <activity
             android:name=".ui.activities.order.OrderControlView"
             android:label="@string/title_activity_order_control_view"
