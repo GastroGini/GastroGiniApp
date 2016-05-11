@@ -85,7 +85,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
                 holder.productTitle.setText(name);
                 holder.productDescription.setText(description);
                 holder.productVolume.setText(item.volume);
-                holder.productPrice.setText(item.price+".-");
+                holder.productPrice.setText(item.price+"");
             }
         };
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
