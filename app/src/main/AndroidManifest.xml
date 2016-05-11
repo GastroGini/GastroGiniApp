@@ -28,7 +28,8 @@
 
         <activity
             android:name=".ui.activities.HomeScreenActivity"
-            android:label="@string/title_activity_home_screen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,46 +40,57 @@
         <activity
             android:name=".ui.activities.event.EventListActivity"
             android:label="@string/title_activity_event_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.event.EventViewActivity"
             android:label="@string/title_activity_event_view"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.connection.StartEventActivity"
             android:label="@string/title_activity_start_event"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.connection.JoinEventActivity"
             android:label="@string/title_activity_join_event"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuMain"
             android:label="@string/title_activity_menu_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order.ServiceHome"
             android:label="@string/title_activity_service_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.ProductDescriptionListActivity"
             android:label="@string/title_activity_product_description_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.ProductListListView"
             android:label="@string/title_activity_menucard_list_view"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuProductDescriptionEditActivity"
             android:label="@string/title_activity_menu_product_description_edit"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuProductEditActivity"
             android:label="@string/title_activity_menu_product_edit"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order.TableOrderView"
             android:label="@string/title_activity_table_order_view"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.activities.order.ServiceHome"/>
         <!--        <activity
@@ -88,6 +100,7 @@
         <activity
             android:name=".ui.activities.event.EventStaticViewActivity"
             android:label="@string/title_activity_event_static_view"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--        <activity
                     android:name=".ui.activities.menu.MenuCardView.EditMenuEntity"
@@ -96,14 +109,17 @@
         <activity
             android:name=".ui.activities.menu.ProductListActivity"
             android:label="@string/title_activity_product_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.menu.ProductListListEditView"
             android:label="@string/title_activity_product_list_list_edit_view"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.order.OrderPayView"
             android:label="@string/title_activity_order_pay_view"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.activities.order.TableOrderView"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -113,6 +129,7 @@
         <activity
             android:name=".ui.activities.order.NewOrderView"
             android:label="@string/title_activity_new_order_view"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.activities.order.TableOrderView"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -122,6 +139,7 @@
         <activity
             android:name=".ui.activities.order.OrderControlView"
             android:label="@string/title_activity_order_control_view"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.activities.order.NewOrderView"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
