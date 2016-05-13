@@ -111,15 +111,9 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                                 List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
                                 ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
                                 for (OrderPosition op : orderPositionsToDelete) {
-                                for (CommonSelectable<OrderPosition> op : adapter.getSelectedOrderPositions()) {
-                                    if(tableOrderPositions.contains(op)){
                                     Log.d("delete orderPosition", "onClick: deleting order pos");
-                                    deleteOrderPosition(op.getItem());
-                                    }else{
-                                        Log.d("delete orderPosition", "element to delete not in orderPositionList ");
-                                    }
+                                    deleteOrderPosition(op);
                                 }
-                                updateRecyclerView();
                             }
                         })
                         .setNegativeButton("Abbrechen", null)
