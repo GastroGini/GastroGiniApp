@@ -295,7 +295,18 @@ public class P2pClient {
         }, 3000);
     }
 
+    DoIt clientConnectionListener = new DoNothing();
+
+    public void addClientConnectionListener(DoIt doIt){
+        clientConnectionListener = doIt;
+    }
+
+    public void removeClientConnectionListener(){
+        clientConnectionListener = new DoNothing();
+    }
+
     public void disconnect(){
+        clientConnectionListener.doIt();
         connectionState = ConnectionState.DISCONNECTED;
         connectedToServer = false;
         messageReciever.terminate();

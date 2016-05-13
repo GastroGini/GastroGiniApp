@@ -27,7 +27,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
 
-public class OrderPayView extends AppCompatActivity implements OrderPayAdapter.OrderItemClickListener {
+public class OrderPayView extends ConnectionActivity implements OrderPayAdapter.OrderItemClickListener {
 
     @Bind(R.id.cancelButton) Button cancelButton;
     @Bind(R.id.proceedButton) Button proceedButton;

@@ -91,7 +91,7 @@
     <string name="dummy_data_2">aaa 2</string>
     <string name="dummy_data_3">aaa 3</string>
 
- <!--
+    <!--
     <string name="title_activity_service_home">ServiceHome</string>
     <string name="title_activity_table_order_view">TableOrderView</string>
     <string name="title_activity_order_pay_view">OrderPayView</string>
@@ -121,4 +121,5 @@
     <string name="title_activity_product_list_list_edit_view">Menüpunkt hinzufügen</string>
     <string name="cannot_delete_productList">Die gewählte Liste ist noch einem Event zugeordnet und kann deshalb nicht gelöscht werden</string>
     <string name="emptyProductDescriptionHintText">Es sind zurzeit keine Produktbeschreibungen verfügbar. Fügen Sie über den + Button neue Produktbeschreibungen hinzu!</string>
+    <string name="title_activity_status">StatusActivity</string>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import butterknife.Bind;
@@ -19,11 +20,18 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
 
-public class ServiceHome extends AppCompatActivity implements CommonAdapter.Listener<EventTable> {
+public class ServiceHome extends ConnectionActivity implements CommonAdapter.Listener<EventTable> {
 
 
     @Bind(R.id.toolbar)Toolbar toolbar;
     @Bind(R.id.eventTablesRecyclerView)RecyclerView eventTablesRecyclerView;
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, StatusActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

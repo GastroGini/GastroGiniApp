@@ -29,7 +29,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
 
-public class OrderControlView extends AppCompatActivity implements OrderControlAdapter.ProductItemClickListener{
+public class OrderControlView extends ConnectionActivity implements OrderControlAdapter.ProductItemClickListener{
 
     public final static int ORDERCONTROLVIEW_ABORT = 1453;
     public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
@@ -123,16 +123,7 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
         finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
     public EventTable getEventTableFromUUID (Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;

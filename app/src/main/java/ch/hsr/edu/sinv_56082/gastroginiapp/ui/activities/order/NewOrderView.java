@@ -22,7 +22,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
-public class NewOrderView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
+public class NewOrderView extends ConnectionActivity implements ProductAdapter.ProductItemClickListener{
     private final int NEWORDERVIEW_REQUESTCODE = 1989;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.newOrderRecyclerView) RecyclerView newOrderRecyclerView;
@@ -94,16 +94,6 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
     public EventTable getEventTableFromUUID (Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;

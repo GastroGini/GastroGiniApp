@@ -23,6 +23,17 @@ public class ConnectionController {
     private P2pClient client;
     private P2pServer server;
 
+    public void addClientConnectionListener(DoIt doIt) {
+        if (client==null)return;
+        client.addClientConnectionListener(doIt);
+    }
+
+    public void removeClientConnectionListener() {
+        if (client == null)return;
+        client.removeClientConnectionListener();
+    }
+
+
 
     public enum ConnectionType {
         SERVER, CLIENT, DISCONNECTED

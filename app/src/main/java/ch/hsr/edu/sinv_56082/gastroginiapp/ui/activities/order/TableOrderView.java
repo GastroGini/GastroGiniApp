@@ -30,7 +30,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
-public class TableOrderView extends AppCompatActivity implements TableRowAdapter.TableItemClickListener {
+public class TableOrderView extends ConnectionActivity implements TableRowAdapter.TableItemClickListener {
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
