@@ -28,7 +28,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ServiceResponseHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;

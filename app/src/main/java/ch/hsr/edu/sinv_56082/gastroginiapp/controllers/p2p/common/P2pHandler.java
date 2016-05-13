@@ -14,7 +14,7 @@ public class P2pHandler {
 
     private static final String TAG = "P2PHandler";
 
-    public static final String SERVICE_INSTANCE = "_|gagi|_";
+    public static final String SERVICE_INSTANCE = "_|gastrogini|_";
     public static final String SERVICE_REG_TYPE = "_presence._tcp";
     public static final String TXTRECORD_PROP_AVAILABLE = "available";
     public static final int RECIEVED_MESSAGE = 14532;

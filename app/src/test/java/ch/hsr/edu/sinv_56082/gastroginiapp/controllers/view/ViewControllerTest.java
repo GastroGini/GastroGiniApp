@@ -1,4 +1,4 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.controller;
+package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view;
 
 import org.junit.Before;
 import org.junit.Test;

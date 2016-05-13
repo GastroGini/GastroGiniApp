@@ -71,7 +71,7 @@ public class P2pServer {
                     return true;
                 }else if (P2pHandler.RECIEVED_MESSAGE == msg.what){
                     ConnectionMessage connectionMessage = (ConnectionMessage) msg.obj;
-                    messageHandler.handleMessages(connectionMessage);
+                    handleMessages(connectionMessage);
                     return true;
                 }else if (P2pHandler.DISCONNECTED == msg.what){
                     connectedDevices.get(((ConnectionMessage) msg.obj).fromAddress).connectionState = ConnectionState.RECONNECTING;
@@ -79,6 +79,10 @@ public class P2pServer {
                 return false;
             }
         });
+    }
+
+    void handleMessages(ConnectionMessage message){
+        messageHandler.handleMessages(message);
     }
 
     public void removeLocalService(){
