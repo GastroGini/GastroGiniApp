@@ -56,7 +56,20 @@ public class P2pHandler {
     public void disconnect(final DoIt doIt) {
         if(!isWifiP2pEnabled()) return;
 
-        wifiP2pManager.removeGroup(wifiP2pChannel, null);
+        wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                doIt.doIt();
+                Log.d(TAG, "onSuccess: Disconnected from p2p");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                doIt.doIt();
+                Log.d(TAG, "onFailure: faild to disconnect: "+reason);
+
+            }
+        });
     }
 
 

@@ -10,6 +10,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -110,7 +111,17 @@ public class P2pClient {
 
         WifiP2pDnsSdServiceRequest wifiP2pServiceRequest = WifiP2pDnsSdServiceRequest.newInstance();
         p2p.getWifiP2pManager().addServiceRequest(p2p.getWifiP2pChannel(), wifiP2pServiceRequest, null);
-        p2p.getWifiP2pManager().discoverServices(p2p.getWifiP2pChannel(), null);
+        p2p.getWifiP2pManager().discoverServices(p2p.getWifiP2pChannel(), new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: discovering local serices");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG, "onFailure: discovering local services");
+            }
+        });
     }
 
 
@@ -175,13 +186,21 @@ public class P2pClient {
 
     public void connectTo(final ServiceResponseHolder holder){
         if (!p2p.isWifiP2pEnabled()) return;
-        //p2p.disconnect(new DoNothing());
-        //p2p.getWifiP2pManager().cancelConnect(p2p.getWifiP2pChannel(), null);
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = holder.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
         config.groupOwnerIntent = 2;
-        p2p.getWifiP2pManager().connect(p2p.getWifiP2pChannel(), config, null);
+        p2p.getWifiP2pManager().connect(p2p.getWifiP2pChannel(), config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: started connection");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG, "onFailure: started connection");
+            }
+        });
     }
 
     private void registerConnectionInfoListener() {

@@ -58,7 +58,17 @@ public class P2pServer {
         if(!p2p.isWifiP2pEnabled()) return;
         p2p.getWifiP2pManager().cancelConnect(p2p.getWifiP2pChannel(), null);
 
-        p2p.getWifiP2pManager().createGroup(p2p.getWifiP2pChannel(), null);
+        p2p.getWifiP2pManager().createGroup(p2p.getWifiP2pChannel(), new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: created group");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG, "onFailure: failed to create group");
+            }
+        });
     }
 
     private void registerMessageHandler() {
@@ -87,7 +97,17 @@ public class P2pServer {
 
     public void removeLocalService(){
         if (p2p.isWifiP2pEnabled())
-            p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), null);
+            p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "onSuccess: remove local service");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "onFailure: remove local service");
+                }
+            });
     }
 
     public void setLocalService(final TransferEvent eventName) {
@@ -101,7 +121,17 @@ public class P2pServer {
             p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), null);
 
             wifiP2pService = WifiP2pDnsSdServiceInfo.newInstance(P2pHandler.SERVICE_INSTANCE + eventName.name, P2pHandler.SERVICE_REG_TYPE, record);
-            p2p.getWifiP2pManager().addLocalService(p2p.getWifiP2pChannel(), wifiP2pService, null);
+            p2p.getWifiP2pManager().addLocalService(p2p.getWifiP2pChannel(), wifiP2pService, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "onSuccess: local service hosted");
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(TAG, "onFailure: failed to host local service");
+                }
+            });
         }
     }
 
