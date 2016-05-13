@@ -25,21 +25,20 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageReciever;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.order_positions.OrderPositionsHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.Serializer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageReciever;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.order_positions.OrderPositionsHolder;
 
 public class P2pClient {
 

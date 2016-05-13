@@ -28,8 +28,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
 public class OrderControlView extends AppCompatActivity implements OrderControlAdapter.ProductItemClickListener{
 

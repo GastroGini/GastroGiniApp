@@ -8,14 +8,14 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
 
 public class ConnectionController {
 
@@ -24,7 +24,7 @@ public class ConnectionController {
     private P2pServer server;
 
 
-    enum ConnectionType {
+    public enum ConnectionType {
         SERVER, CLIENT, DISCONNECTED
     }
 
@@ -37,6 +37,11 @@ public class ConnectionController {
     private static final String TAG = "ConnectionController";
 
     private ConnectionState connectionState;
+
+    public ConnectionType getConnectionType() {
+        return connectionType;
+    }
+
     private ConnectionType connectionType;
 
     public void connectTo(ServiceResponseHolder serviceResponseHolder) {
@@ -94,6 +99,20 @@ public class ConnectionController {
         connectionType = ConnectionType.SERVER;
     }
 
+    /*
+            SERVER Forwarding
+     */
+
+    public void addOrderPositionListener(DoIt listener){
+        if (server == null) return;
+
+        server.addOrderPositionListener(listener);
+    }
+
+    public void removeOrderPositionListener(){
+        if (server == null) return;
+        server.removeOrderPositionListener();
+    }
 
     /*
             CLIENT Forwarding

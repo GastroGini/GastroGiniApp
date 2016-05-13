@@ -12,14 +12,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 
 public class P2pServer {
 
@@ -29,6 +31,8 @@ public class P2pServer {
     protected Event runningEvent;
     private Handler handler;
     private WifiP2pDnsSdServiceInfo wifiP2pService;
+    DoIt orderPositionListener = new DoNothing();
+
 
     protected Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
     private final ServerMessageHandler messageHandler;
@@ -160,5 +164,13 @@ public class P2pServer {
         serverService.terminate();
         p2p.disconnect();
         removeLocalService();
+    }
+
+    public void addOrderPositionListener(DoIt listener) {
+        orderPositionListener = listener;
+    }
+
+    public void removeOrderPositionListener(){
+        orderPositionListener = new DoNothing();
     }
 }

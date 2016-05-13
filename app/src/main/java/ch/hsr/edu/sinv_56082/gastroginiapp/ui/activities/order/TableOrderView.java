@@ -19,6 +19,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
@@ -42,6 +43,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
 
     private AppCompatActivity activity;
     TableRowAdapter adapter;
+    private FloatingActionButton fab_add_order;
+    private FloatingActionButton fab_select_all;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,8 +65,8 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);
 
-        FloatingActionButton fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
-        FloatingActionButton fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
+        fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
+        fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
 
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +80,7 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
         fab_select_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(CommonSelectable<OrderPosition> position : tableOrderPositions){
+                for (CommonSelectable<OrderPosition> position : tableOrderPositions) {
                     position.setSelected(!selectionStatus);
                 }
                 selectionStatus = !selectionStatus;
@@ -120,7 +123,37 @@ public class TableOrderView extends AppCompatActivity implements TableRowAdapter
                         .show();
             }
         });
+
+        handleUIifConnectedAsHost();
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectionController.getInstance().addOrderPositionListener(new DoIt() {
+            @Override
+            public void doIt() {
+                updateRecyclerView();
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ConnectionController.getInstance().removeOrderPositionListener();
+    }
+
+    private void handleUIifConnectedAsHost() {
+        if (ConnectionController.getInstance().getConnectionType() == ConnectionController.ConnectionType.SERVER){
+            deleteButton.setVisibility(View.GONE);
+            payButton.setVisibility(View.GONE);
+            fab_add_order.setVisibility(View.GONE);
+            fab_select_all.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);

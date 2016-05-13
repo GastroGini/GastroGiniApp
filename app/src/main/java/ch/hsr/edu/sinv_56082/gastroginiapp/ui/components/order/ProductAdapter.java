@@ -1,7 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order;
 
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

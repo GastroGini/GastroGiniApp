@@ -3,7 +3,15 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.initial_data.InitialDataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.order_positions.OrderPositionsHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -12,14 +20,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.initial_data.InitialDataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.order_positions.OrderPositionsHolder;
 
 public class ServerMessageHandler extends MessageHandler {
 
@@ -70,6 +70,7 @@ public class ServerMessageHandler extends MessageHandler {
                 for (final OrderPosition orderPosDTO: neo.orderPositions){
                     saveOrderPos(orderPosDTO);
                 }
+                server.orderPositionListener.doIt();
             }
         });
 
@@ -85,6 +86,7 @@ public class ServerMessageHandler extends MessageHandler {
                         }
                     });
                 }
+                server.orderPositionListener.doIt();
             }
         });
 
@@ -94,6 +96,7 @@ public class ServerMessageHandler extends MessageHandler {
                 for (OrderPosition orderPosition: holder.orderPositions){
                     saveOrderPos(orderPosition);
                 }
+                server.orderPositionListener.doIt();
             }
         });
     }
