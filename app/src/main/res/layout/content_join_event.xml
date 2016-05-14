@@ -80,7 +80,7 @@
             android:layout_gravity="right"
             android:layout_margin="16dp"
             android:text="@string/join"
-            />
+            android:id="@+id/join" />
     </LinearLayout>
 
 </LinearLayout>

@@ -11,4 +11,6 @@ public class ConnectedDevice {
     public String device;
 
     public ConnectionState connectionState = ConnectionState.CONNECTED;
+
+    public boolean authenticated = false;
 }

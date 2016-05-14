@@ -47,7 +47,6 @@ public class ServiceHome extends ConnectionActivity implements CommonAdapter.Lis
 
         String userName = new UserController().getUser().firstName;
 
-        String eventPassword = args.get("eventPassword").toString();
 
         setTitle("GastroGini - Event: " + event.name);
 
@@ -56,7 +55,7 @@ public class ServiceHome extends ConnectionActivity implements CommonAdapter.Lis
 
 
         //TODO: Remove password display, just for showcase
-        getSupportActionBar().setSubtitle("User: " + userName + " | Event Password: " + eventPassword);
+        getSupportActionBar().setSubtitle("User: " + userName);
 
         //EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));

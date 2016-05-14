@@ -29,6 +29,9 @@ public class P2pServer {
     private final P2pHandler p2p;
     private ServerSocketHandler serverService;
     protected Event runningEvent;
+
+    protected String currentPassword = "";
+
     private Handler handler;
     private WifiP2pDnsSdServiceInfo wifiP2pService;
     DoIt orderPositionListener = new DoNothing();
@@ -37,10 +40,11 @@ public class P2pServer {
     protected Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
     private final ServerMessageHandler messageHandler;
 
-    public P2pServer(Event event, P2pHandler p2p){
+    public P2pServer(Event event,  String pw, P2pHandler p2p){
         this.p2p = p2p;
         TransferEvent dto = new TransferEvent(event.getUuid(), event.name, event.startTime);
         runningEvent = event;
+        currentPassword = pw;
 
         initGroup();
         removeLocalService();

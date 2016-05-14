@@ -100,12 +100,12 @@ public class ConnectionController {
         connectionState = ConnectionState.DISCONNECTED;
     }
 
-    public void startServer(Event event){
+    public void startServer(Event event, String pw){
         if(server != null) {
             Log.d(TAG, "startServer: ");
             return;
         }
-        server = new P2pServer(event, p2p);
+        server = new P2pServer(event, pw, p2p);
         connectionState = ConnectionState.CONNECTED;
         connectionType = ConnectionType.SERVER;
     }
@@ -129,6 +129,20 @@ public class ConnectionController {
             CLIENT Forwarding
      */
 
+    public void authenticate(String pw){
+        if (client == null)return;
+        client.authenticate(pw);
+    }
+
+    public void onConnectionEstablished(DoIt doIt){
+        if (client == null)return;
+        client.addConnectionEstablishedListener(doIt);
+    }
+
+    public void removeConnectionEstablished(){
+        if (client == null)return;
+        client.removeConnectionEstablishedListener();
+    }
 
     public List<ServiceResponseHolder> getServiceList() {
         if (client == null) return new ArrayList<>();

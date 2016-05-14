@@ -25,6 +25,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageReciever;
@@ -33,6 +34,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMe
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.authenticate.Authenticate;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.new_event_order.NewEventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.order_positions.OrderPositionsHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.Serializer;
@@ -102,6 +104,16 @@ public class P2pClient {
 
     public void removeOnInitDataSucces(){
         setOnInitDataSuccess(new ConsumerDoNothing<String>());
+    }
+
+    DoIt onConnectionEstablished = new DoNothing();
+
+    public void addConnectionEstablishedListener(DoIt doIt){
+        onConnectionEstablished = doIt;
+    }
+
+    public void removeConnectionEstablishedListener(){
+        onConnectionEstablished = new DoNothing();
     }
 
 
@@ -189,6 +201,7 @@ public class P2pClient {
         config.deviceAddress = holder.device.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
         config.groupOwnerIntent = 2;
+        currentServerAddress = holder.device.deviceAddress;
         p2p.getWifiP2pManager().connect(p2p.getWifiP2pChannel(), config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -225,7 +238,7 @@ public class P2pClient {
                     connectedToServer = true;
                     messageReciever = ((ConnectedDevice) msg.obj).handler;
 
-                    sendMessage(new DataMessage(MessageAction.GET_INITIAL_DATA, null));
+                    onConnectionEstablished.doIt();
 
                     return true;
                 }else if (P2pHandler.RECIEVED_MESSAGE == msg.what){
@@ -246,8 +259,11 @@ public class P2pClient {
         messageHandler.handleMessages(message);
     }
 
+    public void authenticate(String pw){
+        sendMessage(new DataMessage(MessageAction.AUTHENTICATE, new Authenticate(new UserController().getUser(), pw)));
+    }
 
-    private void sendMessage(DataMessage message){
+    void sendMessage(DataMessage message){
         if (messageReciever == null) return;
         messageReciever.write(new Gson().toJson(message));
     }

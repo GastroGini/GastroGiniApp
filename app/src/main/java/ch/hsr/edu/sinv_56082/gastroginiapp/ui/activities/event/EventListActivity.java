@@ -30,6 +30,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceRespons
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.JoinEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
@@ -195,13 +196,10 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     protected void onResume() {
         super.onResume();
 
-        ConnectionController.getInstance().setOnInitDataSuccess(new Consumer<String>() {
+        ConnectionController.getInstance().onConnectionEstablished(new DoIt() {
             @Override
-            public void consume(String s) {
-                Intent intent = new Intent(activity, ServiceHome.class);
-                intent.putExtra("event-uuid", s);
-                intent.putExtra("userName", "new user");
-                intent.putExtra("eventPassword", "wrong pw");
+            public void doIt() {
+                Intent intent = new Intent(activity, JoinEventActivity.class);
                 startActivity(intent);
             }
         });
@@ -219,7 +217,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     @Override
     protected void onPause() {
         super.onPause();
-        ConnectionController.getInstance().removeOnInitDataSuccess();
+        ConnectionController.getInstance().removeConnectionEstablished();
         ConnectionController.getInstance().removeServiceResponseCallback();
     }
 

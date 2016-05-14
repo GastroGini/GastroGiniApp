@@ -1,8 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.widget.Toast;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
@@ -12,14 +10,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.HomeScreenActivity;
 
 public class ConnectionActivity extends CommonActivity {
-
-    private ConnectionActivity activity;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        this.activity = this;
-    }
 
     @Override
     protected void onResume() {
