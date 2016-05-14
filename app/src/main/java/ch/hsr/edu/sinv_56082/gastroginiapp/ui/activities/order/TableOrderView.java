@@ -20,6 +20,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ErrorMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
@@ -92,35 +94,34 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TableOrderView", "Paybutton");
-                Intent intent = new Intent(activity, OrderPayView.class);
-                intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
-                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivityForResult(intent, 1);
-                updateRecyclerView();
+                if(!adapter.getSelectedUUIDs().isEmpty()){
+                    Log.d("TableOrderView", "Paybutton"+adapter.getSelectedUUIDs().toString());
+                    Intent intent = new Intent(activity, OrderPayView.class);
+                    intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
+                    intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
+                    startActivityForResult(intent, 1);
+                    updateRecyclerView();
+                }
+                else{
+                    new ErrorMessage(activity, "Kein Element ausgewählt!");
+                }
             }
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(activity)
-                        .setIcon(android.R.drawable.ic_delete)
-                        .setTitle("Warnung")
-                        .setMessage("Wollen sie diese Position(en) wirklich löschen?")
-                        .setPositiveButton("Löschen", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
-                                ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
-                                for (OrderPosition op : orderPositionsToDelete) {
-                                    Log.d("delete orderPosition", "onClick: deleting order pos");
-                                    deleteOrderPosition(op);
-                                }
-                            }
-                        })
-                        .setNegativeButton("Abbrechen", null)
-                        .show();
+                new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
+                        ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
+                        for (OrderPosition op : orderPositionsToDelete) {
+                            Log.d("delete orderPosition", "onClick: deleting order pos");
+                            deleteOrderPosition(op);
+                        }
+                    }
+                });
             }
         });
 
