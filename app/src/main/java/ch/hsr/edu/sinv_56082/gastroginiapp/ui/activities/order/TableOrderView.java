@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,17 +28,14 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 public class TableOrderView extends ConnectionActivity implements TableRowAdapter.TableItemClickListener {
+    public static final int REQUEST_CODE = 2011;
     private boolean selectionStatus = false;
-
     private EventTable eventTable;
     private List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
-
     private AppCompatActivity activity;
     private TableRowAdapter adapter;
 
@@ -60,66 +56,11 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle args = getIntent().getExtras();
-        loadEventTableFromUUID(args);
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         setTitle(eventTable.name + " - " + getString(R.string.table_order_view_title_supplement));
         loadOrderPositions();
         startRecyclerView(createAdapter());
-
-        fab_add_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("TableOrderView:", "NewOrder");
-                Intent intent = new Intent(activity, NewOrderView.class);
-                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivityForResult(intent, 1);
-            }
-        });
-        fab_select_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (CommonSelectable<OrderPosition> position : tableOrderPositions) {
-                    position.setSelected(!selectionStatus);
-                }
-                selectionStatus = !selectionStatus;
-                adapter.notifyDataSetChanged();
-                Log.d("TableOrderView:", "Select all clicked");
-            }
-        });
-
-        payButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!adapter.getSelectedUUIDs().isEmpty()){
-                    Log.d("TableOrderView", "Paybutton"+adapter.getSelectedUUIDs().toString());
-                    Intent intent = new Intent(activity, OrderPayView.class);
-                    intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
-                    intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                    startActivityForResult(intent, 1);
-                    updateRecyclerView();
-                }
-                else{
-                    new ErrorMessage(activity, "Kein Element ausgewählt!");
-                }
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
-                        ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
-                        for (OrderPosition op : orderPositionsToDelete) {
-                            Log.d("delete orderPosition", "onClick: deleting order pos");
-                            deleteOrderPosition(op);
-                        }
-                    }
-                });
-            }
-        });
-
+        initializeButtonClickListeners();
         handleUIifConnectedAsHost();
 
     }
@@ -148,15 +89,61 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         Log.d("TableOrderView", "onActivityResult: returned");
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    void initializeButtonClickListeners(){
+        fab_add_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TableOrderView:", "NewOrder");
+                Intent intent = new Intent(activity, NewOrderView.class);
+                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+        fab_select_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (CommonSelectable<OrderPosition> position : tableOrderPositions) {
+                    position.setSelected(!selectionStatus);
+                }
+                selectionStatus = !selectionStatus;
+                adapter.notifyDataSetChanged();
+                Log.d("TableOrderView:", "Select all clicked");
+            }
+        });
+
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!adapter.getSelectedUUIDs().isEmpty()){
+                    Log.d("TableOrderView", "Paybutton" + adapter.getSelectedUUIDs().toString());
+                    Intent intent = new Intent(activity, OrderPayView.class);
+                    intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
+                    intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
+                    startActivityForResult(intent, REQUEST_CODE);
+                    updateRecyclerView();
+                }
+                else{
+                    new ErrorMessage(activity, "Kein Element ausgewählt!");
+                }
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
+                        ConnectionController.getInstance().sendDelete(orderPositionsToDelete); // TODO Controller
+                        for (OrderPosition op : orderPositionsToDelete) {
+                            Log.d("delete orderPosition", "onClick: deleting order pos");
+                            deleteOrderPosition(op);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void handleUIifConnectedAsHost() {
@@ -168,12 +155,12 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         }
     }
 
-    public void deleteOrderPosition (OrderPosition op){
+    private void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).delete(op);
         updateRecyclerView();
     }
 
-    public void updateRecyclerView(){
+    private void updateRecyclerView(){
         Log.d("TableOrderView", "updateRecyclerView: update view");
         loadOrderPositions();
         adapter.notifyDataSetChanged();
@@ -183,7 +170,8 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
     public void onClick(OrderPosition orderPosition) {
         //implemented in TableRowAdapter
     }
-    public void loadOrderPositions() {
+
+    private void loadOrderPositions() {
         Log.d("TableOrderView", "loadOrderPositions");
         tableOrderPositions.clear();
         for(EventOrder order : eventTable.orders()){
@@ -194,16 +182,13 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
             }
         }
     }
-    public void loadEventTableFromUUID(Bundle args){
-        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
-    }
 
     private TableRowAdapter createAdapter(){
         adapter = new TableRowAdapter(tableOrderPositions, this);
         return adapter;
     }
 
-    public void startRecyclerView(TableRowAdapter adapter){
+    private void startRecyclerView(TableRowAdapter adapter){
         tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         tableOrderRecyclerView.setAdapter(adapter);
         tableOrderRecyclerView.setHasFixedSize(true);

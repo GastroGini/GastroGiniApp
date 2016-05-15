@@ -34,9 +34,8 @@
     <string name="STATE_OPEN">Offnen</string>
     <string name="STATE_PAYED">Bezahlt</string>
 
-
     <!-- MenuMain -->
-    <string name="menu_main_menuMapButtonText">Menükarten</string>
+    <string name="menu_main_menuMapButtonText">Menükartenliste</string>
     <string name="menu_main_productsButtonText">Produkte</string>
     <string name="title_activity_menucard_list_view">Menükarten </string>
     <string name="title_activity_menucard_view">Menükarten</string>
@@ -64,7 +63,7 @@
     <string name="form_name">Benutzername</string>
     <string name="start">Starten</string>
     <string name="host">Hosten</string>
-    <string name="menu">Produktlisten</string>
+    <string name="menu">Menükarten</string>
     <string name="events">Feste</string>
     <string name="host_event">Fest hosten</string>
     <string name="start_event">Fest starten</string>
@@ -83,8 +82,8 @@
     <string name="menukarten_und_produkte">Menükarten und Produkte</string>
     <string name="host_local_event">Fest lokal hosten</string>
     <string name="local_host">Lokal starten</string>
-    <string name="menu_card">Menukarten</string>
-    <string name="menu_product_list">Produkt Liste</string>
+    <string name="menu_card">Menükarten</string>
+    <string name="menu_product_list">Produktliste</string>
     <string name="summary_of_order">Zusammenfassung der Bestellungen</string>
     <string name="no_event_alert">Sie haben noch keine Feste erstellt, über den &quot;+&quot; Button können Sie Ihren eigenen Fest erstellen</string>
     <string name="table_order_view_title_supplement">Übersicht</string>
