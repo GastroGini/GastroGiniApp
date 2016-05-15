@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ErrorMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
@@ -103,7 +102,7 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
                     updateRecyclerView();
                 }
                 else{
-                    new ErrorMessage(activity, "Error", "Kein Element ausgewählt!");
+                    new HintMessage(activity, "Error", "Kein Element ausgewählt!");
                 }
             }
         });

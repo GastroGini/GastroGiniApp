@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
@@ -27,7 +28,7 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
 
     ProductDescription productDescription;
     boolean isNewProductDescription = false;
-
+    CommonActivity activity;
     @Bind(R.id.toolbar) Toolbar toolbar;
     private ViewController<ProductDescription> productDescriptionController;
 
@@ -38,7 +39,7 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        activity=this;
 
         initializeProductDescription();
         productDescriptionEditName.setText(productDescription.name);
@@ -56,22 +57,32 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
         productDescriptionSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productDescriptionController.update(productDescription, new Consumer<ProductDescription>() {
-                    @Override
-                    public void consume(ProductDescription description) {
-                        productDescription.name = productDescriptionEditName.getText().toString();
-                        productDescription.description = productDescriptionEditDesc.getText().toString();
-                        productDescription.productCategory = (ProductCategory) productDescriptionCategorySelect.getSelectedItem();
-                    }
-                });
-                setResult(RESULT_OK);
-                finish();
+                if(fieldIsEmpty()){
+                    new HintMessage(activity, "Fehler", "Name oder beschreibung sind leer!");
+                }
+                else{
+                    productDescriptionController.update(productDescription, new Consumer<ProductDescription>() {
+                        @Override
+                        public void consume(ProductDescription description) {
+                            productDescription.name = productDescriptionEditName.getText().toString();
+                            productDescription.description = productDescriptionEditDesc.getText().toString();
+                            productDescription.productCategory = (ProductCategory) productDescriptionCategorySelect.getSelectedItem();
+                        }
+                    });
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
 
     }
 
-
+    public boolean fieldIsEmpty(){
+        if(productDescriptionEditName.getText().toString()=="" || productDescriptionEditDesc.getText().toString()==""){
+            return true;
+        }
+        return false;
+    }
     private void initializeProductDescription() {
         productDescriptionController = new ViewController<>(ProductDescription.class);
 
