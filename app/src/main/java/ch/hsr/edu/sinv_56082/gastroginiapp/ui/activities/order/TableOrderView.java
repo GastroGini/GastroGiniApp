@@ -29,24 +29,26 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
 public class TableOrderView extends ConnectionActivity implements TableRowAdapter.TableItemClickListener {
+    private boolean selectionStatus = false;
+
+    private EventTable eventTable;
+    private List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
+
+    private AppCompatActivity activity;
+    private TableRowAdapter adapter;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.tableOrderRecyclerView) RecyclerView tableOrderRecyclerView;
     @Bind(R.id.payButton) Button payButton;
     @Bind(R.id.deleteButton) Button deleteButton;
-    private boolean selectionStatus = false;
-
-    EventTable eventTable;
-    List<CommonSelectable<OrderPosition>> tableOrderPositions = new ArrayList<>();
-
-    private AppCompatActivity activity;
-    TableRowAdapter adapter;
-    private FloatingActionButton fab_add_order;
-    private FloatingActionButton fab_select_all;
+    @Bind(R.id.fab_add_order) FloatingActionButton fab_add_order;
+    @Bind(R.id.fab_select_all) FloatingActionButton fab_select_all;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,19 +58,12 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Bundle args = getIntent().getExtras();
-        setTitle("GastroGini - Tabelle Auftragssicht ");
-
         loadEventTableFromUUID(args);
+        setTitle(eventTable.name + " - " + getString(R.string.table_order_view_title_supplement));
         loadOrderPositions();
-
-        adapter = new TableRowAdapter(tableOrderPositions, this);
-        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tableOrderRecyclerView.setAdapter(adapter);
-        tableOrderRecyclerView.setHasFixedSize(true);
-
-        fab_add_order = (FloatingActionButton) findViewById(R.id.fab_add_order);
-        fab_select_all = (FloatingActionButton) findViewById(R.id.fab_select_all);
+        startRecyclerView(createAdapter());
 
         fab_add_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +141,24 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         ConnectionController.getInstance().removeOrderPositionListener();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        updateRecyclerView();
+        Log.d("TableOrderView", "onActivityResult: returned");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void handleUIifConnectedAsHost() {
         if (ConnectionController.getInstance().getConnectionType() == ConnectionController.ConnectionType.SERVER){
             deleteButton.setVisibility(View.GONE);
@@ -155,23 +168,18 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        updateRecyclerView();
-        Log.d("TableOrderView", "onActivityResult: returned");
-    }
-
     public void deleteOrderPosition (OrderPosition op){
         new ViewController<>(OrderPosition.class).delete(op);
         updateRecyclerView();
     }
+
     public void updateRecyclerView(){
         Log.d("TableOrderView", "updateRecyclerView: update view");
         loadOrderPositions();
         adapter.notifyDataSetChanged();
-        Log.d("LIST", "updateRecyclerView: "+tableOrderPositions);
+        Log.d("LIST", "updateRecyclerView: " + tableOrderPositions);
     }
+
     public void onClick(OrderPosition orderPosition) {
         //implemented in TableRowAdapter
     }
@@ -189,14 +197,16 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
     public void loadEventTableFromUUID(Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+    private TableRowAdapter createAdapter(){
+        adapter = new TableRowAdapter(tableOrderPositions, this);
+        return adapter;
     }
+
+    public void startRecyclerView(TableRowAdapter adapter){
+        tableOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tableOrderRecyclerView.setAdapter(adapter);
+        tableOrderRecyclerView.setHasFixedSize(true);
+    }
+
 }

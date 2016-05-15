@@ -106,13 +106,13 @@ public class NewOrderView extends ConnectionActivity implements ProductAdapter.P
         productList.addAll(eventTable.event.productList.products());
         return productList;
     }
-    public void startRecyclerView(ProductAdapter adapter){
+    private void startRecyclerView(ProductAdapter adapter){
         newOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         newOrderRecyclerView.setAdapter(adapter);
         newOrderRecyclerView.setHasFixedSize(true);
     }
 
-    public ProductAdapter createAdapter(List<Product> productList){
+    private ProductAdapter createAdapter(List<Product> productList){
         adapter = new ProductAdapter(productList, this);
         return adapter;
     }
