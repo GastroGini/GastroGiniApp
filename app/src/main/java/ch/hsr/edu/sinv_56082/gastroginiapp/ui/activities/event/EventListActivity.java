@@ -2,6 +2,7 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,17 +41,10 @@ public class EventListActivity extends CommonActivity implements Serializable, C
 
     private List<Event> myEventList = new ArrayList<>();
     private List<ServiceResponseHolder> foreignEventList;
-
-
     private static int MYEVENTLIST_IDENTIFIER = 1;
-
-
     private boolean myEventsCollapsedState = true;
-
-
-    //private EventsAdapter myEventsAdapter;
-    //private EventsAdapter foreignEventsAdapter;
-
+    private AppCompatActivity activity;
+    private ViewController<Event> eventController;
 
     @Bind(R.id.noAvailableEventsText) TextView noAvailableEventsText;
     @Bind(R.id.eventListMyEventsRecyclerView) RecyclerView eventListMyEventsRecyclerView;
@@ -61,37 +55,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     @Bind(R.id.foreignEventsExpandCollapseIcon) ImageView foreignEventsExpandCollapseIcon;
     @Bind(R.id.myEventsEditModeIcon) ImageView myEventEditModeIcon;
 
-
-    private AppCompatActivity activity;
-    private ViewController<Event> eventController;
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == MYEVENTLIST_IDENTIFIER) {
-            myEventList.clear();
-            myEventList.addAll(eventController.getModelList());
-            eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
-            Log.d("hj", "onActivityResult: reloaded list");
-        }
-        checkIfEventListEmpty();
-    }
-
-    /*
-
-    @Override
-    public void onClick(Event event, int identifier) {
-        try {
-            Intent intent = new Intent(this, EventViewActivity.class);
-            intent.putExtra("event-uuid", event.getUuid().toString());
-            startActivityForResult(intent, identifier);
-        }catch(ClassCastException ex){
-            ex.printStackTrace();
-        }
-    }*/
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,12 +63,8 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         activity = this;
-
         eventController = new ViewController<>(Event.class);
-
-        myEventList.addAll(eventController.getModelList());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,37 +74,8 @@ public class EventListActivity extends CommonActivity implements Serializable, C
             }
         });
 
-
-        //myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
-        //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
-
-        eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventListMyEventsRecyclerView.setAdapter(new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
-            @Override
-            public EventViewHolder createItemViewHolder(View view) {
-                return new EventViewHolder(view);
-            }
-
-            @Override
-            public void bindViewHolder(EventViewHolder holder, Event item) {
-                holder.columnRowEventTitle.setText(item.name);
-                holder.columnRowStartDate.setText(DateHelpers.dateToString(item.startTime));
-                holder.columnRowAmountOfTables.setText(String.valueOf(item.eventTables().size()));
-            }
-        });
-
-        foreignEventList = ConnectionController.getInstance().getServiceList();
-
-        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
-        eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ConnectionController.getInstance().connectTo(foreignEventList.get(position));
-            }
-        });
-        eventListMyEventsRecyclerView.setHasFixedSize(true);
-        //eventListForeignEventsRecyclerView.setHasFixedSize(true);
-
+        startMyEventRecyclerView();
+        startForeignEventRecyclerView();
 
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,21 +111,61 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         });
     }
 
-    public void checkIfEventListEmpty(){
-        if(myEventList.isEmpty()){
-            eventListMyEventsRecyclerView.setVisibility(View.GONE);
-            noAvailableEventsText.setVisibility(View.VISIBLE);
-        }else{
-            eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
-            noAvailableEventsText.setVisibility(View.GONE);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MYEVENTLIST_IDENTIFIER) {
+            myEventList.clear();
+            myEventList.addAll(eventController.getModelList());
+            eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+            Log.d("hj", "onActivityResult: reloaded list");
         }
+        checkIfEventListEmpty();
     }
 
+    private void startForeignEventRecyclerView() {
+        foreignEventList = ConnectionController.getInstance().getServiceList();
+        eventListForeignEventsRecyclerView.setAdapter(createForeignEventAdapter());
+        eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ConnectionController.getInstance().connectTo(foreignEventList.get(position));
+            }
+        });
+    }
+
+    private void startMyEventRecyclerView() {
+        myEventList.addAll(eventController.getModelList());
+        eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventListMyEventsRecyclerView.setAdapter(createMyEventAdapter());
+        eventListMyEventsRecyclerView.setHasFixedSize(true);
+    }
+
+    @NonNull
+    private ArrayAdapter<ServiceResponseHolder> createForeignEventAdapter() {
+        return new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList);
+    }
+
+    @NonNull
+    private CommonAdapter<Event, EventViewHolder> createMyEventAdapter() {
+        return new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+            @Override
+            public EventViewHolder createItemViewHolder(View view) {
+                return new EventViewHolder(view);
+            }
+
+            @Override
+            public void bindViewHolder(EventViewHolder holder, Event item) {
+                holder.columnRowEventTitle.setText(item.name);
+                holder.columnRowStartDate.setText(DateHelpers.dateToString(item.startTime));
+                holder.columnRowAmountOfTables.setText(String.valueOf(item.eventTables().size()));
+            }
+        };
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         ConnectionController.getInstance().onConnectionEstablished(new DoIt() {
             @Override
             public void doIt() {
@@ -203,8 +173,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 startActivity(intent);
             }
         });
-
-
         ConnectionController.getInstance().addServiceResponseCallback(new DoIt() {
             @Override
             public void doIt() {
@@ -219,15 +187,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         super.onPause();
         ConnectionController.getInstance().removeConnectionEstablished();
         ConnectionController.getInstance().removeServiceResponseCallback();
-    }
-
-    public static int getMyeventlistIdentifier(){
-        return MYEVENTLIST_IDENTIFIER;
-    }
-
-    public static int getForeigneventlistIdentifier(){
-        int FOREIGNEVENTLIST_IDENTIFIER = 2;
-        return FOREIGNEVENTLIST_IDENTIFIER;
     }
 
     @Override
@@ -246,5 +205,15 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         eventController.delete(ownEvent);
         myEventList.remove(ownEvent);
         eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    public void checkIfEventListEmpty(){
+        if(myEventList.isEmpty()){
+            eventListMyEventsRecyclerView.setVisibility(View.GONE);
+            noAvailableEventsText.setVisibility(View.VISIBLE);
+        }else{
+            eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
+            noAvailableEventsText.setVisibility(View.GONE);
+        }
     }
 }
