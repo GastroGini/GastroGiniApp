@@ -38,7 +38,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
-
     private List<Event> myEventList = new ArrayList<>();
     private List<ServiceResponseHolder> foreignEventList;
     private static int MYEVENTLIST_IDENTIFIER = 1;
@@ -66,6 +65,9 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         activity = this;
         eventController = new ViewController<>(Event.class);
 
+        startMyEventRecyclerView();
+        startForeignEventRecyclerView();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,9 +75,6 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 startActivityForResult(intent, MYEVENTLIST_IDENTIFIER);
             }
         });
-
-        startMyEventRecyclerView();
-        startForeignEventRecyclerView();
 
         myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
