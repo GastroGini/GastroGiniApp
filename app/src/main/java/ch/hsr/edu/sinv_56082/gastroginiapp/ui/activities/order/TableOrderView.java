@@ -103,7 +103,7 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
                     updateRecyclerView();
                 }
                 else{
-                    new ErrorMessage(activity, "Kein Element ausgewählt!");
+                    new ErrorMessage(activity, "Error", "Kein Element ausgewählt!");
                 }
             }
         });

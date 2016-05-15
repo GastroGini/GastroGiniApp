@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ErrorMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
@@ -56,8 +57,6 @@ public class EventViewActivity extends CommonActivity {
 
         eventViewActivity = this;
 
-
-
         Bundle args = getIntent().getExtras();
         boolean isNewEvent = false;
         if(args != null){
@@ -73,9 +72,6 @@ public class EventViewActivity extends CommonActivity {
             });
         }
         setTitle(event.name);
-
-
-
 
 
         List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
@@ -153,6 +149,7 @@ public class EventViewActivity extends CommonActivity {
                 }
                 setResult(RESULT_OK);
                 finish();
+                new ErrorMessage(eventViewActivity, "Änderungen wurden gespeichert", "");
             }
         });
 
