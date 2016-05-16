@@ -30,6 +30,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 public class EventViewActivity extends CommonActivity {
 
     private Event event;
+    private EventViewActivity eventViewActivity;
+    private int oldTableCount;
+    private ViewController<Event> eventController;
+    private Date eventDate;
 
     @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
     @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
@@ -37,13 +41,7 @@ public class EventViewActivity extends CommonActivity {
     @Bind(R.id.eventViewProductListSpinner) Spinner eventViewProductListSpinner;
     @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
     @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
-
-    private EventViewActivity eventViewActivity;
-    private int oldTableCount;
-
     @Bind(R.id.toolbar) Toolbar toolbar;
-    private ViewController<Event> eventController;
-    private Date eventDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,14 +50,13 @@ public class EventViewActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         eventController = new ViewController<>(Event.class);
-
         eventViewActivity = this;
-
-
 
         Bundle args = getIntent().getExtras();
         boolean isNewEvent = false;
+
         if(args != null){
             isNewEvent = false;
             event = eventController.get(args.getString("event-uuid"));
@@ -73,10 +70,6 @@ public class EventViewActivity extends CommonActivity {
             });
         }
         setTitle(event.name);
-
-
-
-
 
         List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, productLists);
@@ -100,12 +93,6 @@ public class EventViewActivity extends CommonActivity {
                 eventViewProductListSpinner.setSelection(i);
             }
         }
-
-        /*
-        if(event.getTitle().isEmpty() || event.getAmountOfTables() == 0){
-            eventViewSaveButton.setClickable(false);
-        }
-        */
 
         if(isNewEvent){
             eventViewStartButton.setVisibility(View.INVISIBLE);
