@@ -25,6 +25,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ConsumerDoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
@@ -55,21 +56,23 @@ public class P2pClient {
         return p2p;
     }
 
-    public ConnectionState connectionState;
     private String currentServerAddress;
     public boolean connectedToServer;
     private ArrayList<ServiceResponseHolder> serviceList;
     private boolean initialized;
 
+    private ConnectionController controller;
 
-    public P2pClient(P2pHandler p2p, Context context){
+
+    public P2pClient(P2pHandler p2p, Context context, ConnectionController controller){
         this.p2p = p2p;
         serviceList = new ArrayList<>();
+        this.controller = controller;
 
         messageHandler = new ClientMessageHandler(this);
         messageHandler.registerMessages();
 
-        connectionState = ConnectionState.DISCONNECTED;
+        controller.setConnectionState(ConnectionState.DISCONNECTED);
 
         registerServiceDiscovery();
         registerConnectionInfoListener();
@@ -174,22 +177,26 @@ public class P2pClient {
     private void onService(WifiP2pDevice srcDevice){
         if (serviceVisible.containsKey(srcDevice.deviceAddress)) {
             ServiceResponseHolder service = new ServiceResponseHolder(srcDevice, serviceVisible.get(srcDevice.deviceAddress));
-            for (ServiceResponseHolder holder : serviceList ){
-                if (holder.device.deviceAddress.equals(service.device.deviceAddress)){
-                    serviceList.remove(holder);
-                    break;
-                }
-            }
+            clearServiceList(service);
             serviceList.add(service);
 
-            if (connectionState == ConnectionState.DISCONNECTED) {
+            if (controller.getConnectionState() == ConnectionState.DISCONNECTED) {
                 serviceResponseCallback.doIt();
-            } else if (connectionState == ConnectionState.RECONNECTING){
+            } else if (controller.getConnectionState() == ConnectionState.RECONNECTING){
                 for (ServiceResponseHolder holder:serviceList){
                     if (holder.device.deviceAddress.equals(currentServerAddress)){
                         connectTo(holder);
                     }
                 }
+            }
+        }
+    }
+
+    private void clearServiceList(ServiceResponseHolder service) {
+        for (ServiceResponseHolder holder : serviceList ){
+            if (holder.device.deviceAddress.equals(service.device.deviceAddress)){
+                serviceList.remove(holder);
+                break;
             }
         }
     }
@@ -223,6 +230,7 @@ public class P2pClient {
                 if (!info.isGroupOwner) {
                     if(info.groupOwnerAddress != null) {
                         new ClientSocketHandler(reciever, info.groupOwnerAddress, new ConnectedDevice(p2p.getMacAddress())).start();
+                        controller.setConnectionState(ConnectionState.CONNECTED);
                     }
                 }
             }
@@ -234,7 +242,6 @@ public class P2pClient {
             @Override
             public boolean handleMessage(Message msg) {
                 if(P2pHandler.SET_MESSAGE_HANDLER == msg.what){
-                    connectionState = ConnectionState.CONNECTED;
                     connectedToServer = true;
                     messageReciever = ((ConnectedDevice) msg.obj).handler;
 
@@ -246,7 +253,7 @@ public class P2pClient {
                     handleMessages(message);
                     return true;
                 } else if (P2pHandler.DISCONNECTED == msg.what) {
-                    connectionState = ConnectionState.RECONNECTING;
+                    controller.setConnectionState(ConnectionState.RECONNECTING);
                     discoverServices();
                     return true;
                 }
@@ -323,7 +330,7 @@ public class P2pClient {
 
     public void disconnect(){
         clientConnectionListener.doIt();
-        connectionState = ConnectionState.DISCONNECTED;
+        controller.setConnectionState(ConnectionState.DISCONNECTED);
         connectedToServer = false;
         messageReciever.terminate();
         setInitialized(false);
@@ -345,4 +352,6 @@ public class P2pClient {
     public Consumer<String> getOnInitDataSuccess() {
         return onInitDataSuccess;
     }
+
+
 }

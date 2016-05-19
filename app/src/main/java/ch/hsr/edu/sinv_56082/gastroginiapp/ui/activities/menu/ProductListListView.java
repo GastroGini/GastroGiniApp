@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
@@ -115,28 +117,34 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
     }
 
     @Override
-    public void onDelete(ProductList item) {
-        try {
-            productListController.delete(item);
-            productLists.remove(item);
-            adapter.notifyDataSetChanged();
-        }catch (SQLiteConstraintException e){
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
-            builder1.setMessage(activity.getResources().getString(R.string.cannot_delete_productList));
-            builder1.setCancelable(true);
-            builder1.setNegativeButton(
-                    "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
-        }
+    public void onDelete(final ProductList item) {
+        new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                try {
+                    productListController.delete(item);
+                    productLists.remove(item);
+                    adapter.notifyDataSetChanged();
+                }catch (SQLiteConstraintException e){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+                    builder1.setMessage(activity.getResources().getString(R.string.cannot_delete_productList));
+                    builder1.setCancelable(true);
+                    builder1.setNegativeButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
 
-        //runRecyclerView(isMenuCardListEditable);
-        Log.e("menu list delete", "goto menu card view" + item.toString());
+                //runRecyclerView(isMenuCardListEditable);
+                Log.e("menu list delete", "goto menu card view" + item.toString());
+            }
+        });
+
     }
 
     @Override

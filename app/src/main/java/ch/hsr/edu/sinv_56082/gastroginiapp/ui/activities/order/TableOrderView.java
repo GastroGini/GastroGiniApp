@@ -19,15 +19,17 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.ErrorMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionType;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonSelectable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.table.TableRowAdapter;
 
@@ -123,7 +125,7 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
                     updateRecyclerView();
                 }
                 else{
-                    new ErrorMessage(activity, "Kein Element ausgewählt!");
+                    new HintMessage(activity, "Error", "Kein Element ausgewählt!");
                 }
             }
         });
@@ -146,8 +148,13 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         });
     }
 
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
+    }
+
     private void handleUIifConnectedAsHost() {
-        if (ConnectionController.getInstance().getConnectionType() == ConnectionController.ConnectionType.SERVER){
+        if (ConnectionController.getInstance().getConnectionType() == ConnectionType.SERVER){
             deleteButton.setVisibility(View.GONE);
             payButton.setVisibility(View.GONE);
             fab_add_order.setVisibility(View.GONE);

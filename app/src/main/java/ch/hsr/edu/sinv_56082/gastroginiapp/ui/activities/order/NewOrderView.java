@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +19,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
 public class NewOrderView extends ConnectionActivity implements ProductAdapter.ProductItemClickListener{
@@ -122,6 +122,10 @@ public class NewOrderView extends ConnectionActivity implements ProductAdapter.P
             productList.add(new ViewController<>(Product.class).get(product));
         }
         return productList;
+    }*/
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
-*/
 }

@@ -56,7 +56,7 @@
             android:name=".ui.activities.connection.JoinEventActivity"
             android:label="@string/title_activity_join_event"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".ui.activities.menu.MenuMain"
             android:label="@string/title_activity_menu_main"
@@ -66,7 +66,7 @@
             android:name=".ui.activities.order.ServiceHome"
             android:label="@string/title_activity_service_home"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".ui.activities.menu.ProductDescriptionListActivity"
             android:label="@string/title_activity_product_description_list"
@@ -92,7 +92,7 @@
             android:label="@string/title_activity_table_order_view"
             android:parentActivityName=".ui.activities.order.ServiceHome"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.ActionBar" />
         <!--
                     <activity
                     android:name=".ui.activities.menu.MenuCardView.MenuCardView"
@@ -125,7 +125,7 @@
             android:label="@string/title_activity_order_pay_view"
             android:parentActivityName=".ui.activities.order.TableOrderView"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.ActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
@@ -135,7 +135,7 @@
             android:label="@string/title_activity_new_order_view"
             android:parentActivityName=".ui.activities.order.TableOrderView"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.ActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.TableOrderView" />
@@ -146,15 +146,15 @@
             android:label="@string/title_activity_order_control_view"
             android:parentActivityName=".ui.activities.order.NewOrderView"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.ActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.NewOrderView" />
         </activity>
         <activity
-            android:name=".ui.activities.order.StatusActivity"
+            android:name=".ui.activities.connection.StatusActivity"
             android:label="@string/title_activity_status"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar" />
     </application>
 
 </manifest>

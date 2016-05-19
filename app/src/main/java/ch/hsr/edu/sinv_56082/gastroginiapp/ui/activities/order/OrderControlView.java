@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
 
 public class OrderControlView extends ConnectionActivity implements OrderControlAdapter.ProductItemClickListener{
@@ -154,5 +154,11 @@ public class OrderControlView extends ConnectionActivity implements OrderControl
     public void onDelete(Product product) {
         newOrderPositionUUID.remove(product.getUuid().toString());
         productList.remove(product);
+    }
+
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
 }

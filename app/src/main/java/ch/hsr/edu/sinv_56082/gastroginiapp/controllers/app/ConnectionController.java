@@ -8,6 +8,7 @@ import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
@@ -19,24 +20,22 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 
 public class ConnectionController {
 
+    private final ConnectionController controller;
     private P2pHandler p2p;
     private P2pClient client;
     private P2pServer server;
 
+
+    private DoIt connectionStateListener = new DoNothing();
+
     public void addClientConnectionListener(DoIt doIt) {
-        if (client==null)return;
+        if (client == null) return;
         client.addClientConnectionListener(doIt);
     }
 
     public void removeClientConnectionListener() {
-        if (client == null)return;
+        if (client == null) return;
         client.removeClientConnectionListener();
-    }
-
-
-
-    public enum ConnectionType {
-        SERVER, CLIENT, DISCONNECTED
     }
 
     private static ConnectionController instance = new ConnectionController(App.getApp());
@@ -56,7 +55,7 @@ public class ConnectionController {
     private ConnectionType connectionType;
 
     public void connectTo(ServiceResponseHolder serviceResponseHolder) {
-        if (client == null)return;
+        if (client == null) return;
         client.connectTo(serviceResponseHolder);
         connectionType = ConnectionType.CLIENT;
     }
@@ -73,13 +72,13 @@ public class ConnectionController {
             client.disconnectClient();
         }
         connectionType = ConnectionType.DISCONNECTED;
-        connectionState = ConnectionState.DISCONNECTED;
+        setConnectionState(ConnectionState.DISCONNECTED);
     }
 
-    private ConnectionState getConnectionState() {
+    public ConnectionState getConnectionState() {
         if (connectionType == ConnectionType.CLIENT){
             if (client == null) return ConnectionState.DISCONNECTED;
-            return client.connectionState;
+            return connectionState;
         }
         if (connectionType == ConnectionType.SERVER){
             return connectionState;
@@ -89,15 +88,16 @@ public class ConnectionController {
 
 
     private ConnectionController(final Context context){
+        this.controller = this;
         this.p2p = new P2pHandler(context, new DoIt() {
             @Override
             public void doIt() {
-                client = new P2pClient(p2p, context);
+                client = new P2pClient(p2p, context, controller);
             }
         });
 
         connectionType = ConnectionType.DISCONNECTED;
-        connectionState = ConnectionState.DISCONNECTED;
+        setConnectionState(ConnectionState.DISCONNECTED);
     }
 
     public void startServer(Event event, String pw){
@@ -106,7 +106,7 @@ public class ConnectionController {
             return;
         }
         server = new P2pServer(event, pw, p2p);
-        connectionState = ConnectionState.CONNECTED;
+        setConnectionState(ConnectionState.CONNECTED);
         connectionType = ConnectionType.SERVER;
     }
 
@@ -130,23 +130,22 @@ public class ConnectionController {
      */
 
     public void authenticate(String pw){
-        if (client == null)return;
+        if (client == null) return;
         client.authenticate(pw);
     }
 
     public void onConnectionEstablished(DoIt doIt){
-        if (client == null)return;
+        if (client == null) return;
         client.addConnectionEstablishedListener(doIt);
     }
 
     public void removeConnectionEstablished(){
-        if (client == null)return;
+        if (client == null) return;
         client.removeConnectionEstablishedListener();
     }
 
     public List<ServiceResponseHolder> getServiceList() {
         if (client == null) return new ArrayList<>();
-
         return client.getServiceList();
     }
 
@@ -166,12 +165,12 @@ public class ConnectionController {
     }
 
     public void setOnInitDataSuccess(Consumer<String> consumer) {
-        if (client == null)return;
+        if (client == null) return;
         client.setOnInitDataSuccess(consumer);
     }
 
     public void removeOnInitDataSuccess() {
-        if (client == null)return;
+        if (client == null) return;
         client.removeOnInitDataSucces();
     }
 
@@ -181,7 +180,7 @@ public class ConnectionController {
     }
 
     public void sendPayed(List<OrderPosition> opToPayList) {
-        if (client == null)return;
+        if (client == null) return;
         client.sendPayed(opToPayList);
     }
 
@@ -191,4 +190,16 @@ public class ConnectionController {
     }
 
 
+    public void addConnectionStateListener(DoIt doIt) {
+        connectionStateListener = doIt;
+    }
+
+    public void removeConnectionStateListener(){
+        connectionStateListener = new DoNothing();
+    }
+
+    public void setConnectionState(ConnectionState connectionState) {
+        this.connectionState = connectionState;
+        connectionStateListener.doIt();
+    }
 }

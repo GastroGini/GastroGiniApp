@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
@@ -30,7 +31,7 @@ public class MenuProductEditActivity extends CommonActivity {
 
     Product product;
     boolean isNewProduct = false;
-
+    CommonActivity activity;
     @Bind(R.id.toolbar) Toolbar toolbar;
     private ViewController<Product> productController;
 
@@ -41,7 +42,7 @@ public class MenuProductEditActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        activity=this;
         initializeProductDescription();
 
         productEditPrice.setText(String.valueOf(product.price));
@@ -58,24 +59,34 @@ public class MenuProductEditActivity extends CommonActivity {
         productEditSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isProductEmpty()){
+                    new HintMessage(activity, "Fehler", "Preis oder Menge nicht angegeben!");
+                }
+                else{
+                    productController.update(product, new Consumer<Product>() {
+                        @Override
+                        public void consume(Product product) {
+                            product.price = Double.valueOf(productEditPrice.getText().toString());
+                            product.volume = productEditVolume.getText().toString();
+                            product.productDescription = (ProductDescription) productDescriptionSelect.getSelectedItem();
+                        }
+                    });
 
-                productController.update(product, new Consumer<Product>() {
-                    @Override
-                    public void consume(Product product) {
-                        product.price = Double.valueOf(productEditPrice.getText().toString());
-                        product.volume = productEditVolume.getText().toString();
-                        product.productDescription = (ProductDescription) productDescriptionSelect.getSelectedItem();
-                    }
-                });
-
-                adapter.notifyDataSetChanged();
-                setResult(RESULT_OK);
-                finish();
+                    adapter.notifyDataSetChanged();
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
 
     }
 
+    public boolean isProductEmpty(){
+        if(productEditPrice.toString()=="0.0" || productEditVolume.toString()==""){
+            return true;
+        }
+        return false;
+    }
     private void initializeProductDescription() {
         productController = new ViewController<>(Product.class);
         final Bundle extras = getIntent().getExtras();

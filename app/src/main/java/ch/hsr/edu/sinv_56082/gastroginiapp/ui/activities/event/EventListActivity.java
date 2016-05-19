@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
@@ -200,10 +202,15 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     }
 
     @Override
-    public void onDelete(Event ownEvent) {
-        eventController.delete(ownEvent);
-        myEventList.remove(ownEvent);
-        eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+    public void onDelete(final Event ownEvent) {
+        new WarningMessage(activity, "Diesen Event wirklich löschen?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eventController.delete(ownEvent);
+                myEventList.remove(ownEvent);
+                eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
     }
 
     public void checkIfEventListEmpty(){
