@@ -25,6 +25,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
 
 public class OrderPayView extends ConnectionActivity implements OrderPayAdapter.OrderItemClickListener {
@@ -119,5 +120,10 @@ public class OrderPayView extends ConnectionActivity implements OrderPayAdapter.
     public EventTable getEventTableFromUUID (Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
+    }
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
 }
