@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
@@ -30,6 +31,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 public class EventViewActivity extends CommonActivity {
 
     private Event event;
+    private EventViewActivity eventViewActivity;
+    private int oldTableCount;
+    private ViewController<Event> eventController;
+    private Date eventDate;
 
     @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
     @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
@@ -37,13 +42,7 @@ public class EventViewActivity extends CommonActivity {
     @Bind(R.id.eventViewProductListSpinner) Spinner eventViewProductListSpinner;
     @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
     @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
-
-    private EventViewActivity eventViewActivity;
-    private int oldTableCount;
-
     @Bind(R.id.toolbar) Toolbar toolbar;
-    private ViewController<Event> eventController;
-    private Date eventDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,14 +51,13 @@ public class EventViewActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         eventController = new ViewController<>(Event.class);
-
         eventViewActivity = this;
-
-
 
         Bundle args = getIntent().getExtras();
         boolean isNewEvent = false;
+
         if(args != null){
             isNewEvent = false;
             event = eventController.get(args.getString("event-uuid"));
@@ -73,10 +71,6 @@ public class EventViewActivity extends CommonActivity {
             });
         }
         setTitle(event.name);
-
-
-
-
 
         List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
         ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, productLists);
@@ -101,12 +95,6 @@ public class EventViewActivity extends CommonActivity {
             }
         }
 
-        /*
-        if(event.getTitle().isEmpty() || event.getAmountOfTables() == 0){
-            eventViewSaveButton.setClickable(false);
-        }
-        */
-
         if(isNewEvent){
             eventViewStartButton.setVisibility(View.INVISIBLE);
         }
@@ -128,31 +116,39 @@ public class EventViewActivity extends CommonActivity {
         eventViewSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                eventController.update(event, new Consumer<Event>() {
-                    @Override
-                    public void consume(Event saveEvent) {
-                        saveEvent.startTime = eventDate;
-                        saveEvent.name = eventViewTitleInput.getText().toString();
-                        saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
-                    }
-                });
-
-                int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
-                if(newTableCount > oldTableCount){
-                    for (int i = oldTableCount + 1; i <= newTableCount; i++){
-                        final int finalI = i;
-                        new ViewController<>(EventTable.class).create(new Supplier<EventTable>() {
-                            @Override
-                            public EventTable supply() {
-                                return new EventTable(finalI, "Tisch " + finalI, event);
-                            }
-                        });
-                        Log.d("aaaaaaaaa", "onClick: new table");
-                    }
+                if(fieldIsEmpty()){
+                    new HintMessage(eventViewActivity, "Fehler", "Titel oder Anzahl Tische fehlt!");
                 }
-                setResult(RESULT_OK);
-                finish();
+                else{
+                    eventController.update(event, new Consumer<Event>() {
+                        @Override
+                        public void consume(Event saveEvent) {
+                            saveEvent.startTime = eventDate;
+                            saveEvent.name = eventViewTitleInput.getText().toString();
+                            saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                        }
+                    });
+
+                    int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
+                    if(newTableCount > oldTableCount){
+                        for (int i = oldTableCount + 1; i <= newTableCount; i++){
+                            final int finalI = i;
+                            new ViewController<>(EventTable.class).create(new Supplier<EventTable>() {
+                                @Override
+                                public EventTable supply() {
+                                    return new EventTable(finalI, "Tisch " + finalI, event);
+                                }
+                            });
+                            Log.d("aaaaaaaaa", "onClick: new table");
+                        }
+                    }
+                    //TODO: Add functionality for lower count of tables
+//                    if(newTableCount < oldTableCount){
+//                        new ViewController<>(EventTable.class);
+//                    }
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
 
@@ -165,6 +161,14 @@ public class EventViewActivity extends CommonActivity {
             }
         });
 
+    }
+    public boolean fieldIsEmpty(){
+        String title = eventViewTitleInput.getText().toString();
+        String amountOfTables = eventViewTableNumberInput.getText().toString();
+        if(title.isEmpty() || amountOfTables.isEmpty() ||
+                amountOfTables.equals("0"))
+            return true;
+        return false;
     }
 
 }

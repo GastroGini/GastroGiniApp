@@ -10,8 +10,8 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
@@ -52,10 +52,8 @@ public class StartEventActivity extends CommonActivity {
                 String eventPassword = startEventPasswordInput.getText().toString();
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
-                intent.putExtra("userName", userName);
-                intent.putExtra("eventPassword", eventPassword);
 
-                ConnectionController.getInstance().startServer(event);
+                ConnectionController.getInstance().startServer(event, eventPassword);
 
                 startActivity(intent);
             }
@@ -66,11 +64,8 @@ public class StartEventActivity extends CommonActivity {
             public void onClick(View v) {
                 String userNameLocal = startEventUserNameLocalInput.getText().toString();
                 userController.saveUser(userNameLocal);
-                String eventPassword = "";
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
-                intent.putExtra("userName", userNameLocal);
-                intent.putExtra("eventPassword", eventPassword);
                 startActivity(intent);
             }
         });

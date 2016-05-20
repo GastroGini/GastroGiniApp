@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
@@ -119,10 +121,15 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     @Override
-    public void onDelete(Product item) {
-        new ViewController<>(Product.class).delete(item);
-        adapter.getList().remove(item);
-        adapter.notifyDataSetChanged();
+    public void onDelete(final Product item) {
+        new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new ViewController<>(Product.class).delete(item);
+                adapter.getList().remove(item);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

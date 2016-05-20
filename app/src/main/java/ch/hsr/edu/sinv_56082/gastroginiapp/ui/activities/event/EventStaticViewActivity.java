@@ -10,7 +10,6 @@ import android.view.View;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public class EventStaticViewActivity extends AppCompatActivity {
-    //TODO which one is that?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

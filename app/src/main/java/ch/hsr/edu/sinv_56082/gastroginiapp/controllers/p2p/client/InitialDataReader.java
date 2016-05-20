@@ -1,8 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client;
 
-import android.util.Log;
-
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.initial_data.InitialDataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -12,8 +11,6 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 
 public class InitialDataReader extends MessageObject<InitialDataMessage> {
     private P2pClient p2pClient;

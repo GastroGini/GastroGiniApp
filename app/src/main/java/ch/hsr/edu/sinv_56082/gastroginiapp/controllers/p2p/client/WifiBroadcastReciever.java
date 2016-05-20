@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 
 

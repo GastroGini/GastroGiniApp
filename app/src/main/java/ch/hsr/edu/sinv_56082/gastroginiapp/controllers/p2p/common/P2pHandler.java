@@ -14,7 +14,7 @@ public class P2pHandler {
 
     private static final String TAG = "P2PHandler";
 
-    public static final String SERVICE_INSTANCE = "_|gagi|_";
+    public static final String SERVICE_INSTANCE = "_|gastrogini|_";
     public static final String SERVICE_REG_TYPE = "_presence._tcp";
     public static final String TXTRECORD_PROP_AVAILABLE = "available";
     public static final int RECIEVED_MESSAGE = 14532;
@@ -56,7 +56,20 @@ public class P2pHandler {
     public void disconnect(final DoIt doIt) {
         if(!isWifiP2pEnabled()) return;
 
-        wifiP2pManager.removeGroup(wifiP2pChannel, null);
+        wifiP2pManager.removeGroup(wifiP2pChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                doIt.doIt();
+                Log.d(TAG, "onSuccess: Disconnected from p2p");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                doIt.doIt();
+                Log.d(TAG, "onFailure: faild to disconnect: "+reason);
+
+            }
+        });
     }
 
 

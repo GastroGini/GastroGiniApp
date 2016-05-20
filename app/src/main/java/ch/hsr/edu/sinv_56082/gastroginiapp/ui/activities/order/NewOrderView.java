@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,20 +19,21 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
-public class NewOrderView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
+public class NewOrderView extends ConnectionActivity implements ProductAdapter.ProductItemClickListener{
     private final int NEWORDERVIEW_REQUESTCODE = 1989;
+    private AppCompatActivity activity;
+    private ArrayList<String> newOrderPositionUUID = new ArrayList<>();
+    private EventTable eventTable = new EventTable();
+    private List<Product> productList = new ArrayList<>();
+    private ProductAdapter adapter;
+
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.newOrderRecyclerView) RecyclerView newOrderRecyclerView;
     @Bind(R.id.cancelButton) Button cancelButton;
     @Bind(R.id.finishButton) Button finishButton;
-
-    private AppCompatActivity activity;
-    ArrayList<String> newOrderPositionUUID = new ArrayList<>();
-    EventTable eventTable = new EventTable();
-    List<Product> productList = new ArrayList<>();
-    ProductAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,9 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         Bundle args = getIntent().getExtras();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        eventTable=getEventTableFromUUID(args);
-        productList=loadProducts(eventTable);
-        adapter=createAdapter(productList);
+        eventTable = getEventTableFromUUID(args);
+        productList = loadProducts(eventTable);
+        adapter = createAdapter(productList);
         startRecyclerView(adapter);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +70,6 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
         });
     }
 
-    public List<Product> reloadProducts (ArrayList<String> newOrderPositionUUID){
-        for(String product : newOrderPositionUUID){
-            productList.add(new ViewController<>(Product.class).get(product));
-        }
-        return productList;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,34 +88,6 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    public EventTable getEventTableFromUUID (Bundle args){
-        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
-        return eventTable;
-    }
-    public List<Product> loadProducts (EventTable eventTable){
-        productList.addAll(eventTable.event.productList.products());
-        return productList;
-    }
-    public void startRecyclerView(ProductAdapter adapter){
-        newOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        newOrderRecyclerView.setAdapter(adapter);
-        newOrderRecyclerView.setHasFixedSize(true);
-    }
-    public ProductAdapter createAdapter(List<Product> productList){
-        adapter = new ProductAdapter(productList, this);
-        return adapter;
-    }
-
-    @Override
     public void onClick(Product product) {
         Log.d("NewOrderView", "product added to new order");
         newOrderPositionUUID.add(product.getUuid().toString());
@@ -131,5 +96,36 @@ public class NewOrderView extends AppCompatActivity implements ProductAdapter.Pr
     @Override
     public void onDelete(Product product) {
         newOrderPositionUUID.remove(product.getUuid().toString());
+    }
+
+    private EventTable getEventTableFromUUID (Bundle args){
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
+        return eventTable;
+    }
+    private List<Product> loadProducts (EventTable eventTable){
+        productList.addAll(eventTable.event.productList.products());
+        return productList;
+    }
+    private void startRecyclerView(ProductAdapter adapter){
+        newOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        newOrderRecyclerView.setAdapter(adapter);
+        newOrderRecyclerView.setHasFixedSize(true);
+    }
+
+    private ProductAdapter createAdapter(List<Product> productList){
+        adapter = new ProductAdapter(productList, this);
+        return adapter;
+    }
+
+    /*    public List<Product> reloadProducts (ArrayList<String> newOrderPositionUUID){
+        for(String product : newOrderPositionUUID){
+            productList.add(new ViewController<>(Product.class).get(product));
+        }
+        return productList;
+    }*/
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
 }

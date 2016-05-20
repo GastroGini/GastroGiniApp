@@ -1,7 +1,10 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,32 +27,26 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.JoinEventActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 public class EventListActivity extends CommonActivity implements Serializable, CommonAdapter.Listener<Event> {
-
     private List<Event> myEventList = new ArrayList<>();
     private List<ServiceResponseHolder> foreignEventList;
-
-
     private static int MYEVENTLIST_IDENTIFIER = 1;
-
-
     private boolean myEventsCollapsedState = true;
-
-
-    //private EventsAdapter myEventsAdapter;
-    //private EventsAdapter foreignEventsAdapter;
-
+    private AppCompatActivity activity;
+    private ViewController<Event> eventController;
 
     @Bind(R.id.noAvailableEventsText) TextView noAvailableEventsText;
     @Bind(R.id.eventListMyEventsRecyclerView) RecyclerView eventListMyEventsRecyclerView;
@@ -60,10 +57,67 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     @Bind(R.id.foreignEventsExpandCollapseIcon) ImageView foreignEventsExpandCollapseIcon;
     @Bind(R.id.myEventsEditModeIcon) ImageView myEventEditModeIcon;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_event_list);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    private AppCompatActivity activity;
-    private ViewController<Event> eventController;
+        activity = this;
+        eventController = new ViewController<>(Event.class);
 
+        startMyEventRecyclerView();
+        startForeignEventRecyclerView();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, EventViewActivity.class);
+                startActivityForResult(intent, MYEVENTLIST_IDENTIFIER);
+            }
+        });
+
+        myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonAdapter adapter = ((CommonAdapter) eventListMyEventsRecyclerView.getAdapter());
+                adapter.setEditMode(!adapter.isEditMode());
+            }
+        });
+
+        myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+        myEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!myEventsCollapsedState) {
+                    myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+                    eventListMyEventsRecyclerView.setVisibility(View.GONE);
+                    noAvailableEventsText.setVisibility(View.GONE);
+                } else {
+                    eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
+                    myEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
+                    checkIfEventListEmpty();
+                }
+                myEventsCollapsedState = !myEventsCollapsedState;
+            }
+        });
+
+        foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+        foreignEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (eventListForeignEventsRecyclerView.getVisibility() == View.VISIBLE) {
+                    foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+                    eventListForeignEventsRecyclerView.setVisibility(View.GONE);
+                } else {
+                    eventListForeignEventsRecyclerView.setVisibility(View.VISIBLE);
+                    foreignEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
+                }
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -77,49 +131,32 @@ public class EventListActivity extends CommonActivity implements Serializable, C
         checkIfEventListEmpty();
     }
 
-    /*
-
-    @Override
-    public void onClick(Event event, int identifier) {
-        try {
-            Intent intent = new Intent(this, EventViewActivity.class);
-            intent.putExtra("event-uuid", event.getUuid().toString());
-            startActivityForResult(intent, identifier);
-        }catch(ClassCastException ex){
-            ex.printStackTrace();
-        }
-    }*/
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        activity = this;
-
-        eventController = new ViewController<>(Event.class);
-
-        myEventList.addAll(eventController.getModelList());
-
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void startForeignEventRecyclerView() {
+        foreignEventList = ConnectionController.getInstance().getServiceList();
+        eventListForeignEventsRecyclerView.setAdapter(createForeignEventAdapter());
+        eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, EventViewActivity.class);
-                startActivityForResult(intent, MYEVENTLIST_IDENTIFIER);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ConnectionController.getInstance().connectTo(foreignEventList.get(position));
             }
         });
+    }
 
-
-        //myEventsAdapter = new EventsAdapter(this, myEventList,MYEVENTLIST_IDENTIFIER, activity);
-        //foreignEventsAdapter = new EventsAdapter(this,foreignEventList,FOREIGNEVENTLIST_IDENTIFIER);
-
+    private void startMyEventRecyclerView() {
+        myEventList.addAll(eventController.getModelList());
         eventListMyEventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        eventListMyEventsRecyclerView.setAdapter(new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
+        eventListMyEventsRecyclerView.setAdapter(createMyEventAdapter());
+        eventListMyEventsRecyclerView.setHasFixedSize(true);
+    }
+
+    @NonNull
+    private ArrayAdapter<ServiceResponseHolder> createForeignEventAdapter() {
+        return new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList);
+    }
+
+    @NonNull
+    private CommonAdapter<Event, EventViewHolder> createMyEventAdapter() {
+        return new CommonAdapter<Event, EventViewHolder>(R.layout.column_row_events, myEventList, this) {
             @Override
             public EventViewHolder createItemViewHolder(View view) {
                 return new EventViewHolder(view);
@@ -131,82 +168,19 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 holder.columnRowStartDate.setText(DateHelpers.dateToString(item.startTime));
                 holder.columnRowAmountOfTables.setText(String.valueOf(item.eventTables().size()));
             }
-        });
-
-        foreignEventList = ConnectionController.getInstance().getServiceList();
-
-        eventListForeignEventsRecyclerView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foreignEventList));
-        eventListForeignEventsRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ConnectionController.getInstance().connectTo(foreignEventList.get(position));
-            }
-        });
-        eventListMyEventsRecyclerView.setHasFixedSize(true);
-        //eventListForeignEventsRecyclerView.setHasFixedSize(true);
-
-
-        myEventEditModeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonAdapter adapter = ((CommonAdapter) eventListMyEventsRecyclerView.getAdapter());
-                adapter.setEditMode(!adapter.isEditMode());
-            }
-        });
-
-        myEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!myEventsCollapsedState) {
-                    eventListMyEventsRecyclerView.setVisibility(View.GONE);
-                    noAvailableEventsText.setVisibility(View.GONE);
-                } else {
-                    eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
-                    checkIfEventListEmpty();
-                }
-                myEventsCollapsedState = !myEventsCollapsedState;
-            }
-        });
-
-        foreignEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (eventListForeignEventsRecyclerView.getVisibility() == View.VISIBLE) {
-                    eventListForeignEventsRecyclerView.setVisibility(View.GONE);
-                } else {
-                    eventListForeignEventsRecyclerView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        };
     }
-
-    public void checkIfEventListEmpty(){
-        if(myEventList.isEmpty()){
-            eventListMyEventsRecyclerView.setVisibility(View.GONE);
-            noAvailableEventsText.setVisibility(View.VISIBLE);
-        }else{
-            eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
-            noAvailableEventsText.setVisibility(View.GONE);
-        }
-    }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        ConnectionController.getInstance().setOnInitDataSuccess(new Consumer<String>() {
+        ConnectionController.getInstance().onConnectionEstablished(new DoIt() {
             @Override
-            public void consume(String s) {
-                Intent intent = new Intent(activity, ServiceHome.class);
-                intent.putExtra("event-uuid", s);
-                intent.putExtra("userName", "new user");
-                intent.putExtra("eventPassword", "wrong pw");
+            public void doIt() {
+                Intent intent = new Intent(activity, JoinEventActivity.class);
                 startActivity(intent);
             }
         });
-
-
         ConnectionController.getInstance().addServiceResponseCallback(new DoIt() {
             @Override
             public void doIt() {
@@ -219,17 +193,8 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     @Override
     protected void onPause() {
         super.onPause();
-        ConnectionController.getInstance().removeOnInitDataSuccess();
+        ConnectionController.getInstance().removeConnectionEstablished();
         ConnectionController.getInstance().removeServiceResponseCallback();
-    }
-
-    public static int getMyeventlistIdentifier(){
-        return MYEVENTLIST_IDENTIFIER;
-    }
-
-    public static int getForeigneventlistIdentifier(){
-        int FOREIGNEVENTLIST_IDENTIFIER = 2;
-        return FOREIGNEVENTLIST_IDENTIFIER;
     }
 
     @Override
@@ -244,9 +209,24 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     }
 
     @Override
-    public void onDelete(Event ownEvent) {
-        eventController.delete(ownEvent);
-        myEventList.remove(ownEvent);
-        eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+    public void onDelete(final Event ownEvent) {
+        new WarningMessage(activity, "Diesen Event wirklich löschen?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eventController.delete(ownEvent);
+                myEventList.remove(ownEvent);
+                eventListMyEventsRecyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void checkIfEventListEmpty(){
+        if(myEventList.isEmpty()){
+            eventListMyEventsRecyclerView.setVisibility(View.GONE);
+            noAvailableEventsText.setVisibility(View.VISIBLE);
+        }else{
+            eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
+            noAvailableEventsText.setVisibility(View.GONE);
+        }
     }
 }

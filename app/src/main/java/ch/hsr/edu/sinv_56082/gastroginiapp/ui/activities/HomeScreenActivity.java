@@ -9,9 +9,9 @@ import android.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DummyData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
-import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DummyData;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu.MenuMain;
 

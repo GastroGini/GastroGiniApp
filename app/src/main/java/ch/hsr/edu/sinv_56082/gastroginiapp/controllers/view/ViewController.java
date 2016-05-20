@@ -62,4 +62,6 @@ public class ViewController<M extends UUIDModel> {
         M model = get(oldModel.getUuid());
         model.delete();
     }
+
+
 }

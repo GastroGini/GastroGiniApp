@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,11 +26,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderPayAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 
-public class OrderControlView extends AppCompatActivity implements OrderControlAdapter.ProductItemClickListener{
+public class OrderControlView extends ConnectionActivity implements OrderControlAdapter.ProductItemClickListener{
 
     public final static int ORDERCONTROLVIEW_ABORT = 1453;
     public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
@@ -125,16 +123,7 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
         finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
     public EventTable getEventTableFromUUID (Bundle args){
         eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
@@ -165,5 +154,11 @@ public class OrderControlView extends AppCompatActivity implements OrderControlA
     public void onDelete(Product product) {
         newOrderPositionUUID.remove(product.getUuid().toString());
         productList.remove(product);
+    }
+
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
 }

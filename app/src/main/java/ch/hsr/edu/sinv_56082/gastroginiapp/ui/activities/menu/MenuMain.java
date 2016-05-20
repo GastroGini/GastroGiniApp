@@ -27,11 +27,8 @@ public class MenuMain extends CommonActivity {
         setContentView(R.layout.activity_menu_main);
         ButterKnife.bind(this);
 
-
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         menuCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,11 +47,5 @@ public class MenuMain extends CommonActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //((App)getApplication()).p2p.removeLocalService();
     }
 }

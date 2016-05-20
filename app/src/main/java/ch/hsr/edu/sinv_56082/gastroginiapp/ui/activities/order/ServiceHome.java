@@ -2,7 +2,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,14 +15,23 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StatusActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.EventTableViewHolder;
 
-public class ServiceHome extends AppCompatActivity implements CommonAdapter.Listener<EventTable> {
+public class ServiceHome extends ConnectionActivity implements CommonAdapter.Listener<EventTable> {
 
 
     @Bind(R.id.toolbar)Toolbar toolbar;
     @Bind(R.id.eventTablesRecyclerView)RecyclerView eventTablesRecyclerView;
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, StatusActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,6 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
 
         String userName = new UserController().getUser().firstName;
 
-        String eventPassword = args.get("eventPassword").toString();
 
         setTitle("GastroGini - Event: " + event.name);
 
@@ -48,7 +55,7 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
 
 
         //TODO: Remove password display, just for showcase
-        getSupportActionBar().setSubtitle("User: " + userName + " | Event Password: " + eventPassword);
+        getSupportActionBar().setSubtitle("User: " + userName);
 
         //EventTablesAdapter adapter = new EventTablesAdapter(this,event.eventTables());
         eventTablesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,5 +84,10 @@ public class ServiceHome extends AppCompatActivity implements CommonAdapter.List
     @Override
     public void onDelete(EventTable item) {
 
+    }
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
     }
 }
