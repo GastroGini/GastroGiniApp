@@ -104,10 +104,7 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         fab_select_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (CommonSelectable<OrderPosition> position : tableOrderPositions) {
-                    position.setSelected(!selectionStatus);
-                }
-                selectionStatus = !selectionStatus;
+                selectAllOrderPositions();
                 adapter.notifyDataSetChanged();
                 Log.d("TableOrderView:", "Select all clicked");
             }
@@ -116,15 +113,14 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!adapter.getSelectedUUIDs().isEmpty()){
+                if (!adapter.getSelectedUUIDs().isEmpty()) {
                     Log.d("TableOrderView", "Paybutton" + adapter.getSelectedUUIDs().toString());
                     Intent intent = new Intent(activity, OrderPayView.class);
                     intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                     intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
                     startActivityForResult(intent, REQUEST_CODE);
                     updateRecyclerView();
-                }
-                else{
+                } else {
                     new HintMessage(activity, "Error", "Kein Element ausgewählt!");
                 }
             }
@@ -133,7 +129,13 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+                String warningMessage = "Wollen sie diese Position(en) wirklich löschen?";
+                if (adapter.getSelectedOrderPositions().isEmpty()) {
+                    selectionStatus = false;
+                    warningMessage = "Wollen sie alle Positionen wirklich löschen?";
+                    selectAllOrderPositions();
+                }
+                new WarningMessage(activity, warningMessage, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         List<OrderPosition> orderPositionsToDelete = adapter.getSelectedOrderPositions();
@@ -176,6 +178,13 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
 
     public void onClick(OrderPosition orderPosition) {
         //implemented in TableRowAdapter
+    }
+
+    private void selectAllOrderPositions() {
+        for (CommonSelectable<OrderPosition> position : tableOrderPositions) {
+            position.setSelected(!selectionStatus);
+        }
+        selectionStatus = !selectionStatus;
     }
 
     private void loadOrderPositions() {

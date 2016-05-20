@@ -36,10 +36,9 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:id="@+id/myEventsExpandCollapseIcon"
-            android:src="@drawable/ic_menu_slideshow"
+            android:src="@android:drawable/ic_menu_more"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
-            android:tint="@color/colorIconLight" />
+            android:layout_marginRight="16dp" />
 
         <Space
             android:layout_width="20px"
@@ -98,10 +97,9 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:id="@+id/foreignEventsExpandCollapseIcon"
-            android:src="@drawable/ic_menu_slideshow"
+            android:src="@android:drawable/ic_menu_more"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
-            android:tint="@color/colorIconLight" />
+            android:layout_marginRight="16dp" />
     </LinearLayout>
 
     <ListView

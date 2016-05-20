@@ -2,6 +2,7 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -86,27 +87,33 @@ public class EventListActivity extends CommonActivity implements Serializable, C
             }
         });
 
+        myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
         myEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!myEventsCollapsedState) {
+                    myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
                     eventListMyEventsRecyclerView.setVisibility(View.GONE);
                     noAvailableEventsText.setVisibility(View.GONE);
                 } else {
                     eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
+                    myEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
                     checkIfEventListEmpty();
                 }
                 myEventsCollapsedState = !myEventsCollapsedState;
             }
         });
 
+        foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
         foreignEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (eventListForeignEventsRecyclerView.getVisibility() == View.VISIBLE) {
+                    foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
                     eventListForeignEventsRecyclerView.setVisibility(View.GONE);
                 } else {
                     eventListForeignEventsRecyclerView.setVisibility(View.VISIBLE);
+                    foreignEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
                 }
             }
         });

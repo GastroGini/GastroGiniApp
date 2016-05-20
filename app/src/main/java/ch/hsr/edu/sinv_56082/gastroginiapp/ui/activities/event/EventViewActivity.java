@@ -142,6 +142,10 @@ public class EventViewActivity extends CommonActivity {
                             Log.d("aaaaaaaaa", "onClick: new table");
                         }
                     }
+                    //TODO: Add functionality for lower count of tables
+//                    if(newTableCount < oldTableCount){
+//                        new ViewController<>(EventTable.class);
+//                    }
                     setResult(RESULT_OK);
                     finish();
                 }
@@ -159,11 +163,11 @@ public class EventViewActivity extends CommonActivity {
 
     }
     public boolean fieldIsEmpty(){
-        if(     eventViewTitleInput.getText().toString()=="" ||
-                eventViewTableNumberInput.getText().toString()=="0" ||
-                eventDate.before(new Date(System.currentTimeMillis()))){
+        String title = eventViewTitleInput.getText().toString();
+        String amountOfTables = eventViewTableNumberInput.getText().toString();
+        if(title.isEmpty() || amountOfTables.isEmpty() ||
+                amountOfTables.equals("0"))
             return true;
-        }
         return false;
     }
 
