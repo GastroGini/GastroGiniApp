@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config;
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)

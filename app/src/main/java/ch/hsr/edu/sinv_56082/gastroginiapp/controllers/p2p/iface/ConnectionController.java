@@ -1,17 +1,21 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app;
+package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.ServiceResponseHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionType;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
@@ -20,13 +24,13 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 
 public class ConnectionController {
 
-    private final ConnectionController controller;
     private P2pHandler p2p;
     private P2pClient client;
     private P2pServer server;
 
 
     private DoIt connectionStateListener = new DoNothing();
+    private volatile boolean tryReconnecting = false;
 
     public void addClientConnectionListener(DoIt doIt) {
         if (client == null) return;
@@ -66,7 +70,12 @@ public class ConnectionController {
 
         if (connectionType == ConnectionType.SERVER) {
             if (server == null) return;
-            server.sendStop();
+            server.sendStop(new DoIt() {
+                @Override
+                public void doIt() {
+                    server = null;
+                }
+            });
         }else if (connectionType == ConnectionType.CLIENT){
             if (client == null) return;
             client.disconnectClient();
@@ -78,7 +87,7 @@ public class ConnectionController {
     public ConnectionState getConnectionState() {
         if (connectionType == ConnectionType.CLIENT){
             if (client == null) return ConnectionState.DISCONNECTED;
-            return connectionState;
+            return client.getConnectionState();
         }
         if (connectionType == ConnectionType.SERVER){
             return connectionState;
@@ -88,26 +97,55 @@ public class ConnectionController {
 
 
     private ConnectionController(final Context context){
-        this.controller = this;
         this.p2p = new P2pHandler(context, new DoIt() {
             @Override
             public void doIt() {
-                client = new P2pClient(p2p, context, controller);
+                client = new P2pClient(p2p, context, new DoIt() {
+                    @Override
+                    public void doIt() {
+                        setConnectionState(client.getConnectionState());
+                        if (client.getConnectionState() == ConnectionState.RECONNECTING){
+                            tryReconnecting = true;
+                        }else {
+                            tryReconnecting = false;
+                        }
+                    }
+                });
             }
         });
 
         connectionType = ConnectionType.DISCONNECTED;
         setConnectionState(ConnectionState.DISCONNECTED);
+
+
+        final Handler h = new Handler();
+        final int delay = 30000;
+        h.postDelayed(new Runnable() {
+            public void run() {
+                if (tryReconnecting){
+                    if(connectionType == ConnectionType.CLIENT)
+                        client.discoverServices();
+                }
+                h.postDelayed(this, delay);
+            }
+        }, delay);
+
     }
 
-    public void startServer(Event event, String pw){
+    public boolean startServer(Event event, String pw){
         if(server != null) {
-            Log.d(TAG, "startServer: ");
-            return;
+            Log.d(TAG, "startServer: allready running");
+            return false;
         }
-        server = new P2pServer(event, pw, p2p);
-        setConnectionState(ConnectionState.CONNECTED);
-        connectionType = ConnectionType.SERVER;
+        try {
+            server = new P2pServer(event, pw, p2p);
+            setConnectionState(ConnectionState.CONNECTED);
+            connectionType = ConnectionType.SERVER;
+        }catch (IOException e){
+            Log.d(TAG, "startServer: failed to start server");
+            return false;
+        }
+        return true;
     }
 
     /*

@@ -6,12 +6,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
@@ -53,9 +54,11 @@ public class StartEventActivity extends CommonActivity {
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
 
-                ConnectionController.getInstance().startServer(event, eventPassword);
-
-                startActivity(intent);
+                if(ConnectionController.getInstance().startServer(event, eventPassword)){
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(startEventActivity, "Failed to start Server", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -5,10 +5,6 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.Serializer;
 
 public abstract class MessageHandler {
