@@ -49,7 +49,7 @@
         <ImageView android:src="@android:drawable/button_onoff_indicator_on"
             android:layout_weight="1"
             android:layout_width="8dp"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:id="@+id/subtractAmount"
             android:layout_gravity="center"
             android:tint="@color/colorAlert" />

@@ -66,7 +66,7 @@ public abstract class ConnectionActivity extends CommonActivity {
                 Drawable icon = menu.findItem(R.id.action_connstat).getIcon();
                 switch (ConnectionController.getInstance().getConnectionState()){
                     case DISCONNECTED:
-                        icon.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                        icon.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                         break;
                     case CONNECTED:
                         icon.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
@@ -88,7 +88,7 @@ public abstract class ConnectionActivity extends CommonActivity {
         this.menu = menu;
 
         Drawable icon = menu.findItem(R.id.action_connstat).getIcon();
-        icon.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        icon.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
 
         ConnectionController c = ConnectionController.getInstance();
         c.setConnectionState(c.getConnectionState());

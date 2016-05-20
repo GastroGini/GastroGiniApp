@@ -38,7 +38,8 @@
             android:id="@+id/myEventsExpandCollapseIcon"
             android:src="@android:drawable/ic_menu_more"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight" />
 
         <Space
             android:layout_width="20px"
@@ -99,7 +100,8 @@
             android:id="@+id/foreignEventsExpandCollapseIcon"
             android:src="@android:drawable/ic_menu_more"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:tint="@color/colorIconLight" />
     </LinearLayout>
 
     <ListView

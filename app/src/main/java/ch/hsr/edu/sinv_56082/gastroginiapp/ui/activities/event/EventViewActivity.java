@@ -142,10 +142,12 @@ public class EventViewActivity extends CommonActivity {
                             Log.d("aaaaaaaaa", "onClick: new table");
                         }
                     }
-                    //TODO: Add functionality for lower count of tables
-//                    if(newTableCount < oldTableCount){
-//                        new ViewController<>(EventTable.class);
-//                    }
+                    if(newTableCount < oldTableCount){
+                        List<EventTable> eventTables = event.eventTables();
+                        for(int i = oldTableCount-1; i >= newTableCount;i--){
+                            new ViewController<>(EventTable.class).delete(eventTables.remove(i));
+                        }
+                    }
                     setResult(RESULT_OK);
                     finish();
                 }

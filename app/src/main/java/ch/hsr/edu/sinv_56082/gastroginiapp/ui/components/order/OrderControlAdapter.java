@@ -81,15 +81,15 @@ public class OrderControlAdapter extends RecyclerView.Adapter<ProductViewHolder>
         holder.getNameTextView().setText(name);
         holder.getSizeTextView().setText(selectable.getItem().volume);
         holder.getPriceTextView().setText(selectable.getItem().price + "");
-        holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.increaseCount();
-                holder.getAmountCounterView().setText(holder.getCount() + "");
-                listener.onClick(selectable.getItem());
-                ((OrderControlView)listener).updateSubTotalField();
-            }
-        });
+//        holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                holder.increaseCount();
+//                holder.getAmountCounterView().setText(holder.getCount() + "");
+//                listener.onClick(selectable.getItem());
+//                ((OrderControlView)listener).updateSubTotalField();
+//            }
+//        });
         holder.getAmountCounterView().setText(holder.getCount()+"");
 
         holder.getSubtractAmountView().setOnClickListener(new View.OnClickListener() {

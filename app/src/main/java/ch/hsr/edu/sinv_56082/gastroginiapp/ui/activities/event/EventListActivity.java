@@ -86,34 +86,33 @@ public class EventListActivity extends CommonActivity implements Serializable, C
                 adapter.setEditMode(!adapter.isEditMode());
             }
         });
-
-        myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+        myEventsExpandCollapseIcon.setAlpha(0.25f);
         myEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!myEventsCollapsedState) {
-                    myEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+                    myEventsExpandCollapseIcon.setAlpha(0.25f);
                     eventListMyEventsRecyclerView.setVisibility(View.GONE);
                     noAvailableEventsText.setVisibility(View.GONE);
                 } else {
                     eventListMyEventsRecyclerView.setVisibility(View.VISIBLE);
-                    myEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
+                    myEventsExpandCollapseIcon.setAlpha(1.00f);
                     checkIfEventListEmpty();
                 }
                 myEventsCollapsedState = !myEventsCollapsedState;
             }
         });
 
-        foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+        foreignEventsExpandCollapseIcon.setAlpha(0.25f);
         foreignEventsExpandCollapseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (eventListForeignEventsRecyclerView.getVisibility() == View.VISIBLE) {
-                    foreignEventsExpandCollapseIcon.setColorFilter(Color.WHITE);
+                    foreignEventsExpandCollapseIcon.setAlpha(0.25f);
                     eventListForeignEventsRecyclerView.setVisibility(View.GONE);
                 } else {
                     eventListForeignEventsRecyclerView.setVisibility(View.VISIBLE);
-                    foreignEventsExpandCollapseIcon.setColorFilter(Color.GREEN);
+                    foreignEventsExpandCollapseIcon.setAlpha(1.00f);
                 }
             }
         });

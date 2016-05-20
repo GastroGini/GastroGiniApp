@@ -91,14 +91,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 //            }
 //        }
 
-        holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.increaseCount();
-                holder.getAmountCounterView().setText(holder.getCount() + "");
-                listener.onClick(selectable.getItem());
-            }
-        });
+//        holder.getEventTablesView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                holder.increaseCount();
+//                holder.getAmountCounterView().setText(holder.getCount() + "");
+//                listener.onClick(selectable.getItem());
+//            }
+//        });
 
         holder.getSubtractAmountView().setOnClickListener(new View.OnClickListener() {
             @Override

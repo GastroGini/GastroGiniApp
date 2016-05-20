@@ -33,7 +33,6 @@
         android:src="@android:drawable/ic_menu_agenda"
         android:layout_alignParentBottom="false"
         android:layout_alignParentRight="true"
-        android:layout_alignParentStart="false"
         android:layout_alignParentEnd="true"
         android:tint="@color/colorIconLight" />
 
@@ -47,7 +46,6 @@
         android:src="@drawable/ic_add"
         android:layout_alignParentBottom="false"
         android:layout_alignParentRight="true"
-        android:layout_alignParentStart="false"
         android:layout_alignParentEnd="true"
         android:tint="@color/colorIconLight" />
 
