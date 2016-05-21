@@ -13,6 +13,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
@@ -49,8 +50,7 @@ public class ServerMessageHandlerTest {
 
         messagePaid = new ConnectionMessage("unwichtig", Serializer.get().toJson(new DataMessage(MessageAction.SET_ORDER_POSITIONS_PAYED, holder)));
 
-        p2pServer = new P2pServer(testData.event, new P2pHandler(App.getApp(), new DoNothing()));
-
+        p2pServer = new P2pServer(testData.event,"" ,new P2pHandler(App.getApp(), new DoNothing()));
 
         testData.orderPos.orderState = OrderState.STATE_OPEN;
         testData.orderPos.save();
@@ -58,13 +58,8 @@ public class ServerMessageHandlerTest {
 
     @Test
     public void testOrdersPaid(){
-
-
-
         p2pServer.handleMessages(messagePaid);
-
         assertEquals(new ViewController<>(OrderPosition.class).get(uuid).orderState, OrderState.STATE_PAYED);
-
     }
 
 }
