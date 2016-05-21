@@ -13,13 +13,13 @@ import org.junit.runner.RunWith;
 
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 import static org.robolectric.Shadows.shadowOf;
-import org.robolectric.Robolectric;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
+import org.robolectric.annotation.Config;
+import org.robolectric.Robolectric;
 import static org.junit.Assert.assertEquals;
 
 
