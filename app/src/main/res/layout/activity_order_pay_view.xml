@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:id="@+id/coordinatorLayout"
     tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.OrderPayView">
 
     <android.support.design.widget.AppBarLayout

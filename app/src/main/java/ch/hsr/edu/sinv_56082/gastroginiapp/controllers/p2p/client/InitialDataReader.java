@@ -1,7 +1,7 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.initial_data.InitialDataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.ModelHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;

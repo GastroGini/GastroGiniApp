@@ -18,12 +18,10 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 public class ServerSocketHandler extends Thread {
 
     private final String macAddress;
-    ServerSocket socket = null;
+    volatile ServerSocket socket = null;
     private final int THREAD_COUNT = 30;
     private Handler handler;
     private static final String TAG = "ServerSocketHandler";
-
-    private volatile boolean running = true;
 
     public ServerSocketHandler(Handler handler, String macAddress) throws IOException {
         this.macAddress = macAddress;
@@ -44,7 +42,7 @@ public class ServerSocketHandler extends Thread {
 
     @Override
     public void run() {
-        while (running) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 // A blocking operation. Initiate a MessageReciever instance when
                 // there is a new connection
@@ -53,20 +51,34 @@ public class ServerSocketHandler extends Thread {
 
             } catch (IOException e) {
                 try {
-                    if (socket != null && !socket.isClosed())
+                    if (socket != null && !socket.isClosed()) {
                         socket.close();
+                        Log.d(TAG, "closeSocket: closing");
+                    }
                 } catch (IOException ioe) {
-
+                    Log.d(TAG, "closeSocket: allready closed or dead");
                 }
                 e.printStackTrace();
                 pool.shutdownNow();
                 break;
             }
         }
+        Log.d(TAG, "run: shutting down");
+
     }
 
     public void terminate(){
-        running = false;
+        Log.d(TAG, "terminate: Stopping Server handler");
+        pool.shutdownNow();
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                Log.d(TAG, "closeSocket: closing");
+            }
+        } catch (IOException ioe) {
+            Log.d(TAG, "closeSocket: allready closed or dead");
+        }
+        Thread.currentThread().interrupt();
     }
 
 }

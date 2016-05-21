@@ -1,9 +1,9 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client;
 
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageObject;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageObject;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.authenticate.AuthenticateResult;
 
 public class ClientMessageHandler extends MessageHandler {

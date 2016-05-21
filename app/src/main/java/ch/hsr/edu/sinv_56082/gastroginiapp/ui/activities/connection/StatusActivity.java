@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
 
 public class StatusActivity extends ConnectionActivity {
 

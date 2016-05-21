@@ -1,6 +1,5 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +11,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 
 public class JoinEventActivity extends ConnectionActivity {
@@ -44,6 +43,12 @@ public class JoinEventActivity extends ConnectionActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        ConnectionController.getInstance().disconnect();
+        backHome();
     }
 
     @Override

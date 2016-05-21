@@ -15,11 +15,11 @@ import java.util.Map;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoIt;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionState;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.TransferEvent;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 
@@ -40,7 +40,7 @@ public class P2pServer {
     protected Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
     private final ServerMessageHandler messageHandler;
 
-    public P2pServer(Event event,  String pw, P2pHandler p2p){
+    public P2pServer(Event event,  String pw, P2pHandler p2p) throws IOException {
         this.p2p = p2p;
         TransferEvent dto = new TransferEvent(event.getUuid(), event.name, event.startTime);
         runningEvent = event;
@@ -51,15 +51,9 @@ public class P2pServer {
         messageHandler = new ServerMessageHandler(this, runningEvent);
         messageHandler.registerMessages();
         registerMessageHandler();
-        try {
-            serverService = new ServerSocketHandler(handler, p2p.getMacAddress());
-            serverService.start();
-        } catch (IOException e) {
-            Log.e(TAG, "P2pServer: failed to create server socket", e);
-        }
+        serverService = new ServerSocketHandler(handler, p2p.getMacAddress());
+        serverService.start();
         setLocalService(dto);
-
-
     }
 
     public void initGroup() {
@@ -120,11 +114,11 @@ public class P2pServer {
 
     public void setLocalService(final TransferEvent eventName) {
         if (p2p.isWifiP2pEnabled()) {
-            Map<String, String> record = new HashMap<>();
+            final Map<String, String> record = new HashMap<>();
             record.put(P2pHandler.TXTRECORD_PROP_AVAILABLE, "visible");
-            record.put(p2p.EVENT_INFO+"name", eventName.name);
-            record.put(p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
-            record.put(p2p.EVENT_INFO+"date", eventName.startDate.toString());
+            //record.put(p2p.EVENT_INFO+"name", eventName.name);
+            //record.put(p2p.EVENT_INFO+"uuid", eventName.uuid.toString());
+            //record.put(p2p.EVENT_INFO+"date", eventName.startDate.toString());
 
             p2p.getWifiP2pManager().clearLocalServices(p2p.getWifiP2pChannel(), null);
 
@@ -132,7 +126,7 @@ public class P2pServer {
             p2p.getWifiP2pManager().addLocalService(p2p.getWifiP2pChannel(), wifiP2pService, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
-                    Log.d(TAG, "onSuccess: local service hosted");
+                    Log.d(TAG, "onSuccess: local service hosted"+eventName.name+record.toString());
                 }
 
                 @Override
@@ -147,7 +141,7 @@ public class P2pServer {
         connectedDevices.get(to).handler.write(new Gson().toJson(message));
     }
 
-    public void sendStop() {
+    public void sendStop(final DoIt doIt) {
         for (ConnectedDevice device : connectedDevices.values()){
             sendMessage(device.device, new DataMessage(MessageAction.STOP_SERVER, new Object()));
         }
@@ -156,18 +150,21 @@ public class P2pServer {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                stop();
+                stop(doIt);
             }
         }, 3000);
     }
 
-    public void stop(){
+    public void stop(DoIt doIt){
         for (ConnectedDevice device : connectedDevices.values()) {
             device.handler.terminate();
         }
-        serverService.terminate();
+        if (serverService!= null) {
+            serverService.terminate();
+        }
         p2p.disconnect();
         removeLocalService();
+        doIt.doIt();
     }
 
     public void addOrderPositionListener(DoIt listener) {

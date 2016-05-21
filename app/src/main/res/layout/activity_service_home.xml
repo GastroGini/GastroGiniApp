@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/coordinatorLayout"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome">
