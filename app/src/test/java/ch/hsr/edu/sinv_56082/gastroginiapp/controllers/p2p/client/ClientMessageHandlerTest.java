@@ -13,14 +13,11 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
-<<<<<<< HEAD
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
-=======
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectionMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.DataMessage;
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.MessageAction;
->>>>>>> eda290c881382dfc57778a691398b8e9c9d5d8d9
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.MessageAction;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.initial_data.InitialDataMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.serialization.Serializer;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;

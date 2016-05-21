@@ -24,21 +24,5 @@ public class WarningMessage {
                 .setNegativeButton("Abbrechen", null)
                 .show();
     }
-
-    public WarningMessage (View view, String message ){
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout)  view.findViewById(R.id
-                .coordinatorLayout);
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
-
-
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.YELLOW);
-        snackbar.show();
-    }
-
-
-
-
+ 
 }
