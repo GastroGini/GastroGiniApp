@@ -82,10 +82,10 @@ public class MenuProductEditActivity extends CommonActivity {
     }
 
     public boolean isProductEmpty(){
-        if(productEditPrice.toString()=="0.0" || productEditVolume.toString()==""){
-            return true;
-        }
-        return false;
+
+        boolean isPriceEmpty =  productEditPrice.getText().toString().trim().isEmpty()  ? true : false;
+        boolean isDescEmpty  =  productEditVolume.getText().toString().trim().isEmpty()   ? true : false;
+        return (isPriceEmpty == false && isDescEmpty == false) ? false : true;
     }
     private void initializeProductDescription() {
         productController = new ViewController<>(Product.class);

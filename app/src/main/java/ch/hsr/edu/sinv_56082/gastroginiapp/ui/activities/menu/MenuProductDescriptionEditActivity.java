@@ -2,6 +2,7 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,7 +58,8 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
         productDescriptionSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fieldIsEmpty()){
+
+                if(fieldIsEmpty() == true){
                     new HintMessage(activity, "Fehler", "Name oder beschreibung sind leer!");
                 }
                 else{
@@ -78,10 +80,10 @@ public class MenuProductDescriptionEditActivity extends CommonActivity {
     }
 
     public boolean fieldIsEmpty(){
-        if(productDescriptionEditName.getText().toString()=="" || productDescriptionEditDesc.getText().toString()==""){
-            return true;
-        }
-        return false;
+
+        boolean isNameEmpty =  productDescriptionEditName.getText().toString().trim().isEmpty()  ? true : false;
+        boolean isDescEmpty =  productDescriptionEditDesc.getText().toString().trim().isEmpty()   ? true : false;
+        return (isNameEmpty == false && isDescEmpty == false) ? false : true;
     }
     private void initializeProductDescription() {
         productDescriptionController = new ViewController<>(ProductDescription.class);

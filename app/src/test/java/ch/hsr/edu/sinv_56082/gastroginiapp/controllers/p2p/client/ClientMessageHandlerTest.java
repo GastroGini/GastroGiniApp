@@ -14,6 +14,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.P2pHandler;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.DataMessage;
@@ -45,7 +46,8 @@ public class ClientMessageHandlerTest {
         InitialDataMessage msg = new InitialDataMessage(testData.event, products, tables1);
         message = new ConnectionMessage("unwichtig", Serializer.get().toJson(new DataMessage(MessageAction.INITIAL_DATA, msg)));
 
-        p2pClient = new P2pClient(new P2pHandler(App.getApp(), new DoNothing()), App.getApp());
+        ConnectionController controller = ConnectionController.getInstance();
+        p2pClient = new P2pClient(new P2pHandler(App.getApp(), new DoNothing()), App.getApp(),controller);
 
     }
 
