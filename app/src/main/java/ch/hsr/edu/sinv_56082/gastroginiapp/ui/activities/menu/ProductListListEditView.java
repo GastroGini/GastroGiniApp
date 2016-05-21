@@ -29,7 +29,7 @@ public class ProductListListEditView extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFieldEmpty(productListNameInput)){
+                if(isFieldEmpty(productListNameInput) == true){
                     new HintMessage(activity, "Fehler", "Name ist leer!");
                 }
                 else{
@@ -47,10 +47,10 @@ public class ProductListListEditView extends AppCompatActivity {
 
     }
     public boolean isFieldEmpty(EditText newProductListName){
-        if(newProductListName.getText().toString()==""){
-            return true;
-        }
-        return false;
+
+        boolean isNameEmpty =  newProductListName.getText().toString().trim().isEmpty()  ? true : false;
+
+        return (isNameEmpty == false) ? false : true;
     }
 
 }

@@ -11,8 +11,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.messages.ConnectionMessage;
-
 public class MessageReciever implements Runnable{
 
     private volatile boolean running = true;
@@ -51,6 +49,7 @@ public class MessageReciever implements Runnable{
             }
         } catch (IOException e) {
             Log.e(TAG, "Exception during reading", e);
+            handler.obtainMessage(P2pHandler.DISCONNECTED, new ConnectionMessage(device.device, "disconnect")).sendToTarget();
         } finally {
             try {
                 socket.close();
