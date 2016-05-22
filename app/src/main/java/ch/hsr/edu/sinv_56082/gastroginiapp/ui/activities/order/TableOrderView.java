@@ -119,7 +119,6 @@ public class TableOrderView extends ConnectionActivity implements TableRowAdapte
                     intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
                     intent.putStringArrayListExtra("tableOrderPositions", adapter.getSelectedUUIDs());
                     startActivityForResult(intent, REQUEST_CODE);
-                    updateRecyclerView();
                 } else {
                     new HintMessage(activity, "Error", "Kein Element ausgewählt!");
                 }
