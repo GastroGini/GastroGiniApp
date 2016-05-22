@@ -74,7 +74,7 @@ public class ServiceHome extends ConnectionActivity implements CommonAdapter.Lis
     }
 
     @Override
-    public void onItemClick(EventTable item) {
+    public void onClick(EventTable item) {
         Log.e("ServiceHome:", "Table selected");
         Intent intent = new Intent(this, TableOrderView.class);
         intent.putExtra("eventTable-uuid", item.getUuid().toString());

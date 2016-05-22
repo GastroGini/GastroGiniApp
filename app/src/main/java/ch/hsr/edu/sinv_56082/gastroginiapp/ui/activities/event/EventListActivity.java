@@ -195,7 +195,7 @@ public class EventListActivity extends CommonActivity implements Serializable, C
     }
 
     @Override
-    public void onItemClick(Event ownEvent) {
+    public void onClick(Event ownEvent) {
         try {
             Intent intent = new Intent(this, EventViewActivity.class);
             intent.putExtra("event-uuid", ownEvent.getUuid().toString());

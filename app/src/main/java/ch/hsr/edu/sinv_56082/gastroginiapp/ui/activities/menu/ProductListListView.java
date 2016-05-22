@@ -108,7 +108,7 @@ public class ProductListListView extends CommonActivity implements CommonAdapter
     }
 
     @Override
-    public void onItemClick(ProductList item) {
+    public void onClick(ProductList item) {
         Log.e("menu card list view", "goto menu card view" + item); // Erro
         Intent intent = new Intent(this,ProductListActivity.class);
         intent.putExtra("menucardRowItem-uuid", item.getUuid());

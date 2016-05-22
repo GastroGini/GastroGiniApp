@@ -113,7 +113,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     @Override
-    public void onItemClick(Product item) {
+    public void onClick(Product item) {
         Intent intent = new Intent(this, MenuProductEditActivity.class);
         intent.putExtra("product-uuid", item.getUuid().toString());
         intent.putExtra("menucardRowItem-uuid", item.productList.getUuid().toString());

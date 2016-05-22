@@ -20,7 +20,7 @@ public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends Recy
     }
 
     public interface Listener<ET>{
-        void onItemClick(ET item);
+        void onClick(ET item);
         void onDelete(ET item);
     }
 
@@ -64,7 +64,7 @@ public abstract class CommonAdapter<ET,VH extends CommonViewHolder> extends Recy
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onItemClick(item);
+                        listener.onClick(item);
                     }
                 });
             }

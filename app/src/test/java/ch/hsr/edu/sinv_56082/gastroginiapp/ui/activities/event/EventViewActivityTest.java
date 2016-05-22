@@ -24,41 +24,39 @@ import org.robolectric.annotation.Config;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventViewActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class EventListActivityTest {
+public class EventViewActivityTest {
 
     private TestDataSetup testData;
-    private EventListActivity activity;
+    private EventViewActivity activity;
 
     @Before
     public void setUp(){
         testData = new TestDataSetup();
-
     }
 
     @Test
-    public void testSetup(){
-        activity = Robolectric.setupActivity(EventListActivity.class);
-        assertEquals(1, activity.eventListMyEventsRecyclerView.getAdapter().getItemCount());
+    public void eventTitleEmptyOnBlankEventViewActivityStartTest(){
+        activity = Robolectric.setupActivity(EventViewActivity.class);
+        assertEquals("",activity.eventViewTitleInput.getText().toString());
     }
 
     @Test
-    public void myEventsRecyclerViewIsCollapsedOnEnteringActivity(){
-        activity = Robolectric.setupActivity(EventListActivity.class);
-        activity.myEventsExpandCollapseIcon.callOnClick();
-        assertEquals(View.VISIBLE, activity.eventListMyEventsRecyclerView.getVisibility());
+    public void eventTableAmountIsZeroOnBlankEventViewActivityStartTest(){
+        activity = Robolectric.setupActivity(EventViewActivity.class);
+        assertEquals("0",activity.eventViewTableNumberInput.getText().toString());
     }
 
     @Test
-    public void fabOnClickStartsNewActivityTest(){
-        activity = Robolectric.setupActivity(EventListActivity.class);
-        activity.fab.performClick();
+    public void newEventStartedOnStartButtonClickedTest(){
+        activity = Robolectric.setupActivity(EventViewActivity.class);
+        activity.eventViewStartButton.performClick();
         ShadowApplication application = shadowOf(RuntimeEnvironment.application);
         assertThat("Next activity has started", application.getNextStartedActivity(), is(notNullValue()));
     }
