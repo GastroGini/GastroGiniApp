@@ -6,12 +6,14 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.IOException;
 import java.util.List;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.DoNothing;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.common.ConnectedDevice;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.client.P2pClient;
 import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.server.P2pServer;
@@ -29,7 +31,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 
 import static org.junit.Assert.*;
- /*
+
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ServerMessageHandlerTest {
@@ -49,10 +51,19 @@ public class ServerMessageHandlerTest {
 
         OrderPositionsHolder holder = new OrderPositionsHolder(testData.order.orderPositions());
 
-        messagePaid = new ConnectionMessage("unwichtig", Serializer.get().toJson(new DataMessage(MessageAction.SET_ORDER_POSITIONS_PAYED, holder)));
+        messagePaid = new ConnectionMessage("fromAddress", Serializer.get().toJson(new DataMessage(MessageAction.SET_ORDER_POSITIONS_PAYED, holder)));
 
         ConnectionController controller = ConnectionController.getInstance();
-        p2pServer = new P2pServer(testData.event,"password", new P2pHandler(App.getApp(), new DoNothing()));
+
+        ConnectedDevice connectedClient = new ConnectedDevice("fromAddress");
+        connectedClient.authenticated = true;
+
+        try {
+            p2pServer = new P2pServer(testData.event,"password", new P2pHandler(App.getApp(), new DoNothing()));
+            p2pServer.connectedDevices.put("fromAddress", connectedClient);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         testData.orderPos.orderState = OrderState.STATE_OPEN;
         testData.orderPos.save();
@@ -67,4 +78,4 @@ public class ServerMessageHandlerTest {
 
 
 }
- */
+
