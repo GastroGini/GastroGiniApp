@@ -39,7 +39,7 @@ public class ServerMessageHandlerTest {
     private TestDataSetup testData;
     private String uuid;
     private ConnectionMessage messagePaid;
-    private P2pServer p2pServer;
+    private P2pServerMock p2pServer;
 
     @Before
     public void setUp(){
@@ -59,7 +59,7 @@ public class ServerMessageHandlerTest {
         connectedClient.authenticated = true;
 
         try {
-            p2pServer = new P2pServer(testData.event,"password", new P2pHandler(App.getApp(), new DoNothing()));
+            p2pServer = new P2pServerMock(testData.event,"password", new P2pHandler(App.getApp(), new DoNothing()));
             p2pServer.connectedDevices.put("fromAddress", connectedClient);
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,9 +71,13 @@ public class ServerMessageHandlerTest {
 
 
     @Test
-    public void testOrdersPaid(){
+    public void test(){
         p2pServer.handleMessages(messagePaid);
         assertEquals(new ViewController<>(OrderPosition.class).get(uuid).orderState, OrderState.STATE_PAYED);
+        p2pServer.handleMessages(new ConnectionMessage("fromAddress", Serializer.get().toJson(new DataMessage(MessageAction.GET_INITIAL_DATA, null))));
+
+        assertNotSame(p2pServer.sent, "");
+        p2pServer.sent = "";
     }
 
 

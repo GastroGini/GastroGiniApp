@@ -11,7 +11,8 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.R;
 
 public class CommonViewHolder extends RecyclerView.ViewHolder {
     public View itemView;
-    @Bind(R.id.delete_button) ImageView delete_button;
+    @Bind(R.id.delete_button)
+    public ImageView delete_button;
     public CommonViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;

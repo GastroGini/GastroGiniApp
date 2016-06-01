@@ -32,7 +32,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductCategoryVie
 public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private ProductDescriptionListActivity activity;
-    private CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
+    CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
     private List<ProductDescriptionAdapter> productDescriptionAdapterList = new ArrayList<>();
     private boolean editMode = false;
     @Bind(R.id.superProductDescriptionRecyclerView) RecyclerView s_recycler;

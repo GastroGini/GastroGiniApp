@@ -3,6 +3,7 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event;
 import android.app.Activity;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ import org.robolectric.annotation.Config;
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.event.EventListActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonViewHolder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.event.EventViewHolder;
 
 import static org.junit.Assert.assertEquals;
@@ -62,4 +65,5 @@ public class EventListActivityTest {
         ShadowApplication application = shadowOf(RuntimeEnvironment.application);
         assertThat("Next activity has started", application.getNextStartedActivity(), is(notNullValue()));
     }
+
 }

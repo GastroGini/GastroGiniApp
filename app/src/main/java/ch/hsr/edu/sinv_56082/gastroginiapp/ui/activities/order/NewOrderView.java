@@ -25,7 +25,7 @@ import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
 public class NewOrderView extends ConnectionActivity implements ProductAdapter.ProductItemClickListener{
     private final int NEWORDERVIEW_REQUESTCODE = 1989;
     private AppCompatActivity activity;
-    private ArrayList<String> newOrderPositionUUID = new ArrayList<>();
+    ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     private EventTable eventTable = new EventTable();
     private List<Product> productList = new ArrayList<>();
     private ProductAdapter adapter;

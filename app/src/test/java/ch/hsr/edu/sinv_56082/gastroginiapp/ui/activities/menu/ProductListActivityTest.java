@@ -1,4 +1,5 @@
-package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
+package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
+
 
 import android.content.Intent;
 
@@ -9,35 +10,33 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.ArrayList;
-
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
 import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class OrderControlViewTest {
+public class ProductListActivityTest {
 
-    private Intent intent;
     private TestDataSetup testData;
-    ArrayList<String> newOrderPositionUUID = new ArrayList<>();
+    private Intent intent;
 
     @Before
     public void setUp(){
+
         testData = new TestDataSetup();
 
         intent = new Intent(Intent.ACTION_VIEW);
-        newOrderPositionUUID.add(testData.prod.getUuid().toString());
-        intent.putStringArrayListExtra("newOrderPositionsUUID", newOrderPositionUUID);
-        intent.putExtra("eventTable-uuid", testData.table.getUuid().toString());
+        intent.putExtra("menucardRowItem-uuid", testData.pList.getUuid());
     }
 
     @Test
     public void testSetup(){
-        OrderControlView activity  = Robolectric.buildActivity(OrderControlView.class).withIntent(intent).create().get();
-        assertEquals(activity.productList.size(),1);
+        ProductListActivity activity  = Robolectric.buildActivity(ProductListActivity.class).withIntent(intent).create().get();
+        assertEquals(activity.productRecyclerView.getAdapter().getItemCount(), 4);
     }
+
+
 }
