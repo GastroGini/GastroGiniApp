@@ -6,12 +6,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.util.UUID;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order.ServiceHome;
@@ -28,6 +30,7 @@ public class StartEventActivity extends CommonActivity {
 
     private Event event;
     private StartEventActivity startEventActivity;
+    private UserController userController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,20 +40,25 @@ public class StartEventActivity extends CommonActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        userController = new UserController();
 
-        event = Event.get(UUID.fromString(getIntent().getExtras().getString("event-uuid")));
+        event = new ViewController<>(Event.class).get(getIntent().getExtras().getString("event-uuid"));
         startEventActivity = this;
 
         hostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userName = startEventUserNameInput.getText().toString();
+                userController.saveUser(userName);
                 String eventPassword = startEventPasswordInput.getText().toString();
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
-                intent.putExtra("userName", userName);
-                intent.putExtra("eventPassword", eventPassword);
-                startActivity(intent);
+
+                if(ConnectionController.getInstance().startServer(event, eventPassword)){
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(startEventActivity, "Failed to start Server", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -58,14 +66,14 @@ public class StartEventActivity extends CommonActivity {
             @Override
             public void onClick(View v) {
                 String userNameLocal = startEventUserNameLocalInput.getText().toString();
-                String eventPassword = "";
+                userController.saveUser(userNameLocal);
                 Intent intent = new Intent(startEventActivity, ServiceHome.class);
                 intent.putExtra("event-uuid", event.getUuid().toString());
-                intent.putExtra("userName", userNameLocal);
-                intent.putExtra("eventPassword", eventPassword);
                 startActivity(intent);
             }
         });
+
+
     }
 
 }

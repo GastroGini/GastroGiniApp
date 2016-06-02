@@ -42,12 +42,6 @@ public class DomainProductCategoryTest {
         assertEquals(category, query);
     }
 
-    @Test
-    public void testGet(){
-        ProductCategory query = ProductCategory.get(test1.getUuid());
-        assertEquals(test1, query);
-    }
-
 
     @Test
     public void testToString(){

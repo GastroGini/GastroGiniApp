@@ -8,10 +8,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.BuildConfig;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
+import ch.hsr.edu.sinv_56082.gastroginiapp.TestDataSetup;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,6 +62,7 @@ public class DomainRelationsTest {
     public void testPerson(){
         assertEquals(testData.pers.eventsHosted().size(),1);
         assertEquals(testData.pers.workAssignments().size(),1);
+        assertEquals(testData.pers.ordersCreated().size(), 1);
     }
 
     @Test
@@ -83,6 +81,7 @@ public class DomainRelationsTest {
     public void testOrders(){
         assertEquals(testData.order.eventTable, testData.table);
 
+        assertEquals(testData.order.createdBy, testData.pers);
         assertEquals(testData.order.orderPositions().size(), 1);
     }
 
@@ -92,10 +91,4 @@ public class DomainRelationsTest {
         assertEquals(testData.orderPos.orderState, testData.state);
         assertEquals(testData.orderPos.product, testData.prod);
     }
-
-    @Test
-    public void testOrderState(){
-        assertEquals(testData.state.orderPositions().size(), 1);
-    }
-
 }

@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="Offene Bestellungen"
+                android:text="@string/open_order"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight"/>
         </LinearLayout>
@@ -44,10 +44,10 @@
                 android:id="@+id/product_item_name_name"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="Produkt"
+                android:textAlignment="center"
+                android:text="@string/product"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
@@ -57,8 +57,8 @@
                 android:layout_height="40dp"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="Grösse"
+                android:text="@string/size"
+                android:textAlignment="center"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
@@ -68,62 +68,67 @@
                 android:layout_height="40dp"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="Preis"
+                android:textAlignment="center"
+                android:text="@string/preis"
                 android:background="@color/colorSubTitleDark"
                 android:textColor="@color/colorIconLight" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            <android.support.v7.widget.RecyclerView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tableOrderRecyclerView"
-                android:layout_alignParentStart="true"/>
-        </LinearLayout>
+                android:layout_height="263dp"
+                android:orientation="vertical"
+                android:minHeight="352dp"
+                android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_below="@id/tableOrderRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true">
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tableOrderRecyclerView"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.31" />
 
-            <Button
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:text="Stornieren"
-                android:id="@+id/deleteButton"
-                android:layout_gravity="left"
-                android:layout_margin="16dp"/>
+            </LinearLayout>
 
-            <Button
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:text="Bezahlen"
-                android:id="@+id/payButton"
-                android:layout_gravity="right"
-                android:layout_margin="16dp" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_order"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        app:layout_anchorGravity="bottom|right|end"
-        android:src="@drawable/ic_add"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/linear_layout_padding"
+        android:paddingRight="@dimen/linear_layout_padding"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="false"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="false"
+        android:gravity="bottom|center"
+        android:paddingTop="@dimen/linear_layout_padding">
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/stornieren"
+            android:id="@+id/deleteButton"
+            android:layout_gravity="left"
+            android:layout_margin="16dp" />
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/pay"
+            android:id="@+id/payButton"
+            android:layout_gravity="right"
+            android:layout_margin="16dp" />
+    </LinearLayout>
+
 
 </RelativeLayout>

@@ -68,9 +68,4 @@ public class DomainPersonTest {
         assertEquals(person, query);
     }
 
-    @Test
-    public void testGet(){
-        Person query = Person.get(test1.getUuid());
-        assertEquals(test1, query);
-    }
 }

@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,19 +19,20 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductCategory;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.ProductDescriptionAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.ProductDescriptionAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductCategoryViewHolder;
 
 public class ProductDescriptionListActivity extends CommonActivity implements ProductDescriptionAdapter.Listener {
     private static final int PRODUCT_DESCRIPTION_RESULT = 2987;
     private ProductDescriptionListActivity activity;
-    private List<ProductCategory> productCategories = new ArrayList<>();
-    private CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
+    CommonAdapter<ProductCategory,ProductCategoryViewHolder> adapter;
     private List<ProductDescriptionAdapter> productDescriptionAdapterList = new ArrayList<>();
     private boolean editMode = false;
     @Bind(R.id.superProductDescriptionRecyclerView) RecyclerView s_recycler;
@@ -55,12 +57,12 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
         });
 
         activity = this;
-        productCategories = new Select().from(ProductCategory.class).execute();
+        List<ProductCategory> productCategories = new ViewController<>(ProductCategory.class).getModelList();
 
         checkIfHintTextNecessary();
 
         adapter = new CommonAdapter<ProductCategory, ProductCategoryViewHolder>(
-                        R.layout.column_row_product_description_categories,productCategories ) {
+                        R.layout.column_row_product_description_categories, productCategories) {
                     @Override
                     public ProductCategoryViewHolder createItemViewHolder(View view) {
                         return new ProductCategoryViewHolder(view);
@@ -71,8 +73,9 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
                         holder.productRecycler.setVisibility(View.GONE);
                         holder.expandCollapseIcon.setAlpha(0.25f);
 
-                        List<ProductDescription> productDescriptions = new Select().from(ProductDescription.class)
-                                .where("productCategory = ?", item.getId()).execute();
+                        List<ProductDescription> productDescriptions = item.productDescriptions();
+                                //productDescriptions = new Select().from(ProductDescription.class)
+                                //.where("productCategory = ?", item.getId()).execute();
 
                         if(productDescriptions.size() > 0){
                             holder.menuTitle.setVisibility(View.VISIBLE);
@@ -140,7 +143,7 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
     }
 
     private void checkIfHintTextNecessary(){
-        if(new Select().from(ProductDescription.class).execute().isEmpty()){
+        if(new Select().from(ProductDescription.class).execute().isEmpty()){ //TODO heavy operation for empty check
             hintText.setVisibility(View.VISIBLE);
             s_recycler.setVisibility(View.GONE);
         }else{
@@ -171,10 +174,15 @@ public class ProductDescriptionListActivity extends CommonActivity implements Pr
     }
 
     @Override
-    public void onDelete(ProductDescription item) {
-        item.delete();
-        removeItemFromCorrespondingList(item);
-        checkIfHintTextNecessary();
+    public void onDelete(final ProductDescription item) {
+        new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new ViewController<>(ProductDescription.class).delete(item);
+                removeItemFromCorrespondingList(item);
+                checkIfHintTextNecessary();
+            }
+        });
     }
 
     private void removeItemFromCorrespondingList(ProductDescription item) {

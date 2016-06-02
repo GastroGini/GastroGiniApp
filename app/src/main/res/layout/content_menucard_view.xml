@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Product List"
+            android:text="@string/menu_product_list"
             android:id="@+id/MenuCard"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -43,7 +43,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:id="@+id/editMenuItem"
-            android:src="@android:drawable/ic_menu_edit"
+            android:src="@android:drawable/ic_menu_delete"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
             android:tint="@color/colorIconLight"

@@ -8,11 +8,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductDescription;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
@@ -29,8 +31,9 @@ public class MenuProductEditActivity extends CommonActivity {
 
     Product product;
     boolean isNewProduct = false;
-
+    CommonActivity activity;
     @Bind(R.id.toolbar) Toolbar toolbar;
+    private ViewController<Product> productController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,42 +42,63 @@ public class MenuProductEditActivity extends CommonActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        activity=this;
         initializeProductDescription();
 
         productEditPrice.setText(String.valueOf(product.price));
         productEditVolume.setText(product.volume);
-        final ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<ProductDescription>(
+        final ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_dropdown_item,
-                new Select().from(ProductDescription.class).<ProductDescription>execute());
+                new ViewController(ProductDescription.class).getModelList());
         productDescriptionSelect.setAdapter(adapter);
 
-        int position = adapter.getPosition(product.productDescription);
+        final int position = adapter.getPosition(product.productDescription);
         productDescriptionSelect.setSelection(position);
         adapter.notifyDataSetChanged();
 
         productEditSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                product.price = Double.valueOf(productEditPrice.getText().toString());
-                product.volume = productEditVolume.getText().toString();
-                product.productDescription = (ProductDescription) productDescriptionSelect.getSelectedItem();
-                product.save();
-                adapter.notifyDataSetChanged();
-                setResult(RESULT_OK);
-                finish();
+                if(isProductEmpty()){
+                    new HintMessage(activity, "Fehler", "Preis oder Menge nicht angegeben!");
+                }
+                else{
+                    productController.update(product, new Consumer<Product>() {
+                        @Override
+                        public void consume(Product product) {
+                            product.price = Double.valueOf(productEditPrice.getText().toString());
+                            product.volume = productEditVolume.getText().toString();
+                            product.productDescription = (ProductDescription) productDescriptionSelect.getSelectedItem();
+                        }
+                    });
+
+                    adapter.notifyDataSetChanged();
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
 
     }
 
+    public boolean isProductEmpty(){
+
+        boolean isPriceEmpty =  productEditPrice.getText().toString().trim().isEmpty()  ? true : false;
+        boolean isDescEmpty  =  productEditVolume.getText().toString().trim().isEmpty()   ? true : false;
+        return (isPriceEmpty == false && isDescEmpty == false) ? false : true;
+    }
     private void initializeProductDescription() {
-        Bundle extras = getIntent().getExtras();
+        productController = new ViewController<>(Product.class);
+        final Bundle extras = getIntent().getExtras();
         if(extras.getString("product-uuid")==null) isNewProduct = true;
-        ProductList productList = ProductList.get(extras.getString("menucardRowItem-uuid"));
-        product = new Product(null, productList, 0.0,"");
+        product = productController.prepare(new Supplier<Product>() {//TODO musst be diff
+            @Override
+            public Product supply() {
+                return new Product(null, new ViewController<>(ProductList.class).get(extras.getString("menucardRowItem-uuid")), 0.0,"");
+            }
+        });
         if(!isNewProduct){
-            product = Product.get(extras.getString("product-uuid"));
+            product = productController.get(extras.getString("product-uuid"));
         }
     }
 

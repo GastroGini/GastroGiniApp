@@ -19,14 +19,14 @@
         android:layout_margin="16dp" />
     <Button
         android:layout_width="match_parent"
-        android:text="Feste"
+        android:text="@string/events"
         android:layout_margin="16dp"
         android:layout_height="wrap_content"
         android:id="@+id/eventButton" />
     <Button
         android:layout_width="match_parent"
         android:layout_margin="16dp"
-        android:text="Menu"
+        android:text="@string/menu"
         android:layout_height="wrap_content"
         android:id="@+id/menuButton" />
 

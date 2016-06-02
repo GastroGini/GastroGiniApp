@@ -1,125 +1,164 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.order;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import java.util.Date;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
-import com.activeandroid.query.Select;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.p2p.iface.ConnectionController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventOrder;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderPosition;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.OrderState;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.ProductAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.ConnectionActivity;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.order.OrderControlAdapter;
 
-public class OrderControlView extends AppCompatActivity implements ProductAdapter.ProductItemClickListener{
+public class OrderControlView extends ConnectionActivity implements OrderControlAdapter.ProductItemClickListener{
+
+    public final static int ORDERCONTROLVIEW_ABORT = 1453;
+    public final static int ORDERCONTROLVIEW_CONFIRM = 1071;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.orderControlRecyclerView) RecyclerView orderControlRecyclerView;
     @Bind(R.id.backButton) Button backButton;
     @Bind(R.id.finishButton) Button finishButton;
+    @Bind(R.id.order_control_subtotal) TextView subTotal;
 
-    private AppCompatActivity activity;
     ArrayList<String> newOrderPositionUUID = new ArrayList<>();
     EventTable eventTable = new EventTable();
     List<Product> productList = new ArrayList<>();
-    ProductAdapter adapter;
+    OrderControlAdapter adapter;
+    private ViewController<OrderPosition> orderPositionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_control_view);
         ButterKnife.bind(this);
-        activity = this;
+        AppCompatActivity activity = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        orderPositionController = new ViewController<>(OrderPosition.class);
 
         Bundle args = getIntent().getExtras();
         newOrderPositionUUID=getIntent().getStringArrayListExtra("newOrderPositionsUUID");
 
         eventTable=getEventTableFromUUID(args);
         productList=loadProducts(newOrderPositionUUID);
-        adapter=createAdapter(productList);
+        updateSubTotalField();
+        adapter = createAdapter(productList);
         startRecyclerView(adapter);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                setResult(ORDERCONTROLVIEW_ABORT);
+                finish();
             }
         });
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("OrderControlView", "Create new orders");
-                EventOrder eventOrder=new EventOrder(eventTable, new Date(System.currentTimeMillis()));
-                eventOrder.save();
-                for(Product product : productList){
-                    OrderPosition op = new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
-                    op.save();
+
+                final EventOrder eventOrder = new ViewController<>(EventOrder.class).create(new Supplier<EventOrder>() {
+                    @Override
+                    public EventOrder supply() {
+                        return new EventOrder(eventTable, new Date(), new UserController().getUser());
+                    }
+                });
+
+                for(final Product product : productList){
+                    orderPositionController.create(new Supplier<OrderPosition>() {
+                        @Override
+                        public OrderPosition supply() {
+                            return new OrderPosition(null, OrderState.STATE_OPEN, product, eventOrder);
+                        }
+                    });
                 }
-                eventTable.orders().add(eventOrder);
-                Log.d("OrderControlView", "new Orders created");
-                //TODO: persistenz???
-                Intent intent = new Intent(activity, TableOrderView.class);
-                intent.putExtra("eventTable-uuid", eventTable.getUuid().toString());
-                startActivity(intent);
+
+                Log.d("adding order", "onClick: "+new ViewController<>(EventOrder.class).get(eventOrder.getUuid()).orderPositions());
+
+                ConnectionController.getInstance().sendNew(eventOrder); // TODO Controller
+
+                setResult(ORDERCONTROLVIEW_CONFIRM);
+                finish();
 
             }
         });
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+
+    private String calculateSubTotal(List<Product> productList) {
+        double sum = 0;
+        for(Product item : productList){
+            sum += item.price;
         }
-        return super.onOptionsItemSelected(item);
+        return sum + "";
     }
+
+    public void updateSubTotalField(){
+        subTotal.setText("Zwischensumme: " + calculateSubTotal(productList));
+    }
+
+    @Override
+    public void onBackPressed(){
+        setResult(ORDERCONTROLVIEW_ABORT);
+        finish();
+    }
+
+
     public EventTable getEventTableFromUUID (Bundle args){
-        eventTable = new Select().from(EventTable.class).where
-                ("uuid = ?", UUID.fromString(args.getString("eventTable-uuid"))).executeSingle();
+        eventTable = new ViewController<>(EventTable.class).get(args.getString("eventTable-uuid"));
         return eventTable;
     }
     public List<Product> loadProducts (ArrayList<String> newOrderPositionUUID){
         for(String product : newOrderPositionUUID){
-            productList.add(Product.get(product));
+            productList.add(new ViewController<>(Product.class).get(product));
         }
         return productList;
     }
-    public void startRecyclerView(ProductAdapter adapter){
+    public void startRecyclerView(OrderControlAdapter adapter){
         orderControlRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderControlRecyclerView.setAdapter(adapter);
         orderControlRecyclerView.setHasFixedSize(true);
     }
-    public ProductAdapter createAdapter(List<Product> productList){
-        adapter = new ProductAdapter(productList, this);
+    public OrderControlAdapter createAdapter(List<Product> productList){
+        adapter = new OrderControlAdapter(productList, this);
         return adapter;
     }
 
-   // @Override
+    @Override
     public void onClick(Product product) {
-
+        newOrderPositionUUID.add(product.getUuid().toString());
+        productList.add(product);
     }
-    //No functionality
+
+    @Override
+    public void onDelete(Product product) {
+        newOrderPositionUUID.remove(product.getUuid().toString());
+        productList.remove(product);
+    }
+
+
+    @Override
+    public ConnectionActivity getActivity() {
+        return this;
+    }
 }

@@ -10,28 +10,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.activeandroid.query.Select;
-
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Consumer;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.HintMessage;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.Supplier;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
-import ch.hsr.edu.sinv_56082.gastroginiapp.app.App;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.app.UserController;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Event;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.EventTable;
-import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Person;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.CommonActivity;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.connection.StartEventActivity;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.DateHelpers;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.DateHelpers;
 
 public class EventViewActivity extends CommonActivity {
 
     private Event event;
-    private boolean isNewEvent = false;
+    private EventViewActivity eventViewActivity;
+    private int oldTableCount;
+    private ViewController<Event> eventController;
+    private Date eventDate;
 
     @Bind(R.id.eventViewTitleInput) EditText eventViewTitleInput;
     @Bind(R.id.eventViewTableNumberInput) EditText eventViewTableNumberInput;
@@ -39,10 +42,6 @@ public class EventViewActivity extends CommonActivity {
     @Bind(R.id.eventViewProductListSpinner) Spinner eventViewProductListSpinner;
     @Bind(R.id.eventViewSaveButton) Button eventViewSaveButton;
     @Bind(R.id.eventViewStartButton) Button eventViewStartButton;
-
-    private EventViewActivity eventViewActivity;
-    private int oldTableCount;
-
     @Bind(R.id.toolbar) Toolbar toolbar;
 
     @Override
@@ -53,28 +52,28 @@ public class EventViewActivity extends CommonActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        eventController = new ViewController<>(Event.class);
         eventViewActivity = this;
 
-
-
         Bundle args = getIntent().getExtras();
+        boolean isNewEvent = false;
+
         if(args != null){
             isNewEvent = false;
-            event = Event.get(UUID.fromString(args.getString("event-uuid")));
+            event = eventController.get(args.getString("event-uuid"));
         }else{
             isNewEvent = true;
-            UUID localUser = ((App) getApplication()).getLocalUser();
-            event = new Event(new ProductList("Unused List"), "", new Date(), new Date(), Person.get(localUser));
+            event = eventController.prepare(new Supplier<Event>() {
+                @Override
+                public Event supply() {
+                    return new Event(new ProductList("Unused List"), "", new Date(), new Date(), new UserController().getUser());
+                }
+            });
         }
         setTitle(event.name);
 
-
-
-
-
-        List<ProductList> productLists = new Select().from(ProductList.class).execute();
-        ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<ProductList>(this,android.R.layout.simple_spinner_dropdown_item,productLists);
+        List<ProductList> productLists = new ViewController<>(ProductList.class).getModelList();
+        ArrayAdapter<ProductList> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, productLists);
         eventViewProductListSpinner.setAdapter(spinnerAdapter);
 
         eventViewTitleInput.setText(event.name);
@@ -88,18 +87,13 @@ public class EventViewActivity extends CommonActivity {
 
         }
         eventViewDateInput.setText(DateHelpers.dateToString(event.startTime));
+        eventDate = event.startTime;
 
         for(int i = 0;i < productLists.size();i++){
             if(productLists.get(i).name.equals(event.productList.name)){
                 eventViewProductListSpinner.setSelection(i);
             }
         }
-
-        /*
-        if(event.getTitle().isEmpty() || event.getAmountOfTables() == 0){
-            eventViewSaveButton.setClickable(false);
-        }
-        */
 
         if(isNewEvent){
             eventViewStartButton.setVisibility(View.INVISIBLE);
@@ -111,7 +105,7 @@ public class EventViewActivity extends CommonActivity {
                 new DateHelpers.Picker(eventViewActivity, new DateHelpers.Callback() {
                     @Override
                     public void onSet(Date date) {
-                        event.startTime = date;
+                        eventDate = date;
                         eventViewDateInput.setText(DateHelpers.dateToString(date));
                     }
                 });
@@ -122,21 +116,41 @@ public class EventViewActivity extends CommonActivity {
         eventViewSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                event.name = eventViewTitleInput.getText().toString();
-                event.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
-                int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
-
-                event.save();
-
-                if(newTableCount > oldTableCount){
-                    for (int i = oldTableCount + 1; i <= newTableCount; i++){
-                        new EventTable(i, "Tisch "+i, event).save();
-                        Log.d("aaaaaaaaa", "onClick: new table");
-                    }
+                if(fieldIsEmpty()){
+                    new HintMessage(eventViewActivity, "Fehler", "Titel oder Anzahl Tische fehlt!");
                 }
-                setResult(RESULT_OK);
-                finish();
+                else{
+                    eventController.update(event, new Consumer<Event>() {
+                        @Override
+                        public void consume(Event saveEvent) {
+                            saveEvent.startTime = eventDate;
+                            saveEvent.name = eventViewTitleInput.getText().toString();
+                            saveEvent.productList = (ProductList) eventViewProductListSpinner.getSelectedItem();
+                        }
+                    });
+
+                    int newTableCount = Integer.parseInt(eventViewTableNumberInput.getText().toString());
+                    if(newTableCount > oldTableCount){
+                        for (int i = oldTableCount + 1; i <= newTableCount; i++){
+                            final int finalI = i;
+                            new ViewController<>(EventTable.class).create(new Supplier<EventTable>() {
+                                @Override
+                                public EventTable supply() {
+                                    return new EventTable(finalI, "Tisch " + finalI, event);
+                                }
+                            });
+                            Log.d("aaaaaaaaa", "onClick: new table");
+                        }
+                    }
+                    if(newTableCount < oldTableCount){
+                        List<EventTable> eventTables = event.eventTables();
+                        for(int i = oldTableCount-1; i >= newTableCount;i--){
+                            new ViewController<>(EventTable.class).delete(eventTables.remove(i));
+                        }
+                    }
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
         });
 
@@ -149,6 +163,14 @@ public class EventViewActivity extends CommonActivity {
             }
         });
 
+    }
+    public boolean fieldIsEmpty(){
+        String title = eventViewTitleInput.getText().toString();
+        String amountOfTables = eventViewTableNumberInput.getText().toString();
+        if(title.isEmpty() || amountOfTables.isEmpty() ||
+                amountOfTables.equals("0"))
+            return true;
+        return false;
     }
 
 }

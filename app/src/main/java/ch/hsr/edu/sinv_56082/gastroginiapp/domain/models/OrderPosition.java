@@ -2,11 +2,9 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -25,7 +23,7 @@ public class OrderPosition extends UUIDModel implements Serializable{
     @Column
     public Date payTime;
 
-    @Column(onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column
     public OrderState orderState;
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
@@ -34,7 +32,4 @@ public class OrderPosition extends UUIDModel implements Serializable{
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public EventOrder eventOrder;
 
-    public static OrderPosition get(UUID uuid) {
-        return new Select().from(OrderPosition.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

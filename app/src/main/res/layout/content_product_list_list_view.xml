@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Cards List"
+            android:text="@string/menu_card_list"
             android:id="@+id/menuCardList"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -40,7 +40,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:id="@+id/EditMenuCardList"
-            android:src="@android:drawable/ic_menu_edit"
+            android:src="@android:drawable/ic_menu_delete"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
             android:tint="@color/colorIconLight"

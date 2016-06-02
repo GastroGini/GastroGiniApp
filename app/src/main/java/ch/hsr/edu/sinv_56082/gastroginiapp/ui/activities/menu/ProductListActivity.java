@@ -1,5 +1,6 @@
 package ch.hsr.edu.sinv_56082.gastroginiapp.ui.activities.menu;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +16,12 @@ import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ch.hsr.edu.sinv_56082.gastroginiapp.Helpers.WarningMessage;
 import ch.hsr.edu.sinv_56082.gastroginiapp.R;
+import ch.hsr.edu.sinv_56082.gastroginiapp.controllers.view.ViewController;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.Product;
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.models.ProductList;
-import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.CommonAdapter;
+import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.common.CommonAdapter;
 import ch.hsr.edu.sinv_56082.gastroginiapp.ui.components.menu.ProductViewHolder;
 
 public class ProductListActivity extends AppCompatActivity implements CommonAdapter.Listener<Product> {
@@ -74,10 +77,17 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
 
             @Override
             public void bindViewHolder(ProductViewHolder holder, Product item) {
-                holder.productTitle.setText(item.productDescription.name);
-                holder.productDescription.setText(item.productDescription.description);
+                String name = (item != null && item.productDescription != null && item.productDescription.name != null)
+                        ? item.productDescription.name
+                        : "";
+                String description = (item != null && item.productDescription != null && item.productDescription.description != null)
+                ?item.productDescription.description
+                :"";
+
+                holder.productTitle.setText(name);
+                holder.productDescription.setText(description);
                 holder.productVolume.setText(item.volume);
-                holder.productPrice.setText(item.price+".-");
+                holder.productPrice.setText(item.price+"");
             }
         };
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -95,7 +105,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     public void loadDataSet(){
-       productList = ProductList.get(menucardRowItem);
+       productList = new ViewController<>(ProductList.class).get(menucardRowItem);
     }
 
     public void refreshList(){
@@ -103,7 +113,7 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     @Override
-    public void onItemClick(Product item) {
+    public void onClick(Product item) {
         Intent intent = new Intent(this, MenuProductEditActivity.class);
         intent.putExtra("product-uuid", item.getUuid().toString());
         intent.putExtra("menucardRowItem-uuid", item.productList.getUuid().toString());
@@ -111,10 +121,15 @@ public class ProductListActivity extends AppCompatActivity implements CommonAdap
     }
 
     @Override
-    public void onDelete(Product item) {
-        item.delete();
-        adapter.getList().remove(item);
-        adapter.notifyDataSetChanged();
+    public void onDelete(final Product item) {
+        new WarningMessage(activity, "Wollen sie diese Position(en) wirklich löschen?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new ViewController<>(Product.class).delete(item);
+                adapter.getList().remove(item);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

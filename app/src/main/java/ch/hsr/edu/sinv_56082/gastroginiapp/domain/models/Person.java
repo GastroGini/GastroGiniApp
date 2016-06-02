@@ -3,7 +3,6 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,10 +49,6 @@ public class Person extends UUIDModel{
 
     public List<EventOrder> ordersCreated() {
         return getMany(EventOrder.class, "createdBy");
-    }
-
-    public static Person get(UUID uuid){
-        return new Select().from(Person.class).where("uuid = ?", uuid.toString()).executeSingle();
     }
 
 }

@@ -3,11 +3,9 @@ package ch.hsr.edu.sinv_56082.gastroginiapp.domain.models;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import ch.hsr.edu.sinv_56082.gastroginiapp.domain.UUIDModel;
 
@@ -16,9 +14,10 @@ public class EventOrder extends UUIDModel{
 
     public EventOrder(){}
 
-    public EventOrder(EventTable eventTable, Date orderTime) {
+    public EventOrder(EventTable eventTable, Date orderTime, Person createdBy) {
         this.eventTable = eventTable;
         this.orderTime = orderTime;
+        this.createdBy = createdBy;
     }
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
@@ -34,7 +33,4 @@ public class EventOrder extends UUIDModel{
         return getMany(OrderPosition.class, "eventOrder");
     }
 
-    public static EventOrder get(UUID uuid) {
-        return new Select().from(EventOrder.class).where("uuid=?", uuid.toString()).executeSingle();
-    }
 }

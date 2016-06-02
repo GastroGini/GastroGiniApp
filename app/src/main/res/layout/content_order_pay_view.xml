@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bezahlen"
+            android:text="@string/pay"
             android:id="@+id/payOrderTitle"
             android:textSize="16dp"
             android:padding="16dp"
@@ -42,10 +42,11 @@
             android:layout_height="40dp"
             android:layout_weight="3"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:text="Anzahl"
+            android:paddingLeft="@dimen/linear_layout_padding"
+            android:text="@string/volume"
             android:background="@color/colorSubTitleDark"
-            android:textColor="@color/colorIconLight" />
+            android:textColor="@color/colorIconLight"
+            android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/product_item_name_name"
@@ -53,10 +54,10 @@
             android:layout_height="40dp"
             android:layout_weight="3"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:text="Produkt"
+            android:text="@string/product"
             android:background="@color/colorSubTitleDark"
-            android:textColor="@color/colorIconLight" />
+            android:textColor="@color/colorIconLight"
+            android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/product_item_name_size"
@@ -64,59 +65,68 @@
             android:layout_height="40dp"
             android:layout_weight="3"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:text="Grösse"
+            android:paddingLeft="@dimen/linear_layout_padding"
+            android:text="@string/size"
             android:background="@color/colorSubTitleDark"
-            android:textColor="@color/colorIconLight" />
+            android:textColor="@color/colorIconLight"
+            android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/product_item_name_price"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_weight="3"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:text="Preis"
+            android:text="@string/preis"
             android:background="@color/colorSubTitleDark"
-            android:textColor="@color/colorIconLight" />
+            android:textColor="@color/colorIconLight"
+            android:textAlignment="center"
+            android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="240dp"
+        android:id="@+id/orderPayRecyclerViewLL">
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/orderPayRecyclerView"
             android:layout_alignParentStart="true"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Subtotal:"
+        android:id="@+id/order_pay_subtotal"
+        android:layout_margin="@dimen/linear_layout_padding"
+        android:textSize="16dp" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
-<!--
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5" />
-        -->
-        <Button
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:text="Abbrechen"
-            android:id="@+id/cancelButton"
-            android:layout_gravity="left"
-            android:layout_margin="16dp"/>
+        android:layout_height="wrap_content"
+        android:padding="@dimen/linear_layout_padding"
+        android:layout_below="@id/orderPayRecyclerViewLL"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center">
 
         <Button
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Abschliessen"
+            android:text="@string/cancel"
+            android:id="@+id/cancelButton"
+            android:layout_gravity="left"
+            android:layout_marginRight="@dimen/linear_layout_padding" />
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/complete"
             android:id="@+id/proceedButton"
-            android:layout_gravity="right"
-            android:layout_margin="16dp" />
+            android:layout_gravity="right" />
     </LinearLayout>
 </LinearLayout>
